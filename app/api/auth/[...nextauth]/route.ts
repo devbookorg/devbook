@@ -1,5 +1,6 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { addUser } from '@/firebase/users';
+import NextAuth, { DefaultUser } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -10,6 +11,18 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
+  callbacks: {
+    async signIn({ user }: { user: DefaultUser }) {
+      if (user.name && user.email) {
+        const customUser = {
+          name: user.name,
+          email: user.email,
+        };
+        addUser(customUser);
+      }
+      return true;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

@@ -1,4 +1,5 @@
-import { db } from ".";
+import { db } from '.';
+import { v4 as uuidv4 } from 'uuid';
 import {
   collection,
   CollectionReference,
@@ -12,66 +13,54 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
 interface IUser {
   id: string;
+  name: string;
   email: string;
   likeQuestions: string[];
 }
 
-const usersCollection = collection(db, "users");
+const usersCollection = collection(db, 'users');
 
-// 1. 유저를 db에 등록하는 함수
-export const createUser = async (userData: {
-  id: string;
-  email: string;
-}): Promise<IUser> => {
+// 1. 유저를 db에 추가하는 함수
+export const addUser = async (userData: { name: string; email: string }) => {
+  const id = uuidv4();
   try {
-    const userQuery = await getDocs(
-      query(usersCollection, where("id", "==", userData.id))
-    );
+    const userQuery = await getDocs(query(usersCollection, where('email', '==', userData.email)));
 
     if (userQuery.empty) {
-      const newUserRef = await addDoc(usersCollection, {
+      addDoc(usersCollection, {
         ...userData,
+        id,
         likeQuestions: [],
       });
-      const newUserSnapshot = await getDoc(newUserRef); // 수정된 부분
-      const newUser = newUserSnapshot.data() as IUser;
-      return newUser;
-    } else {
-      // 이미 등록된 유저가 있을 경우 해당 유저 정보를 반환
-      return userQuery.docs[0].data() as IUser;
     }
   } catch (error) {
-    console.error("Failed to create or get user:", error);
+    console.error('Failed to add User:', error);
     throw error;
   }
 };
 
 // 2. 유저정보를 불러오는 함수
-export const getUser = async (userData: {
-  id: string;
-  email: string;
-}): Promise<IUser | null> => {
+// export const getUser = async (userData: { id: string; email: string }): Promise<IUser | null> => {
+export const getUser = async (userData: { email: string }): Promise<IUser | null> => {
   try {
     const userQuery = await getDocs(
-      query(
-        usersCollection,
-        where("id", "==", userData.id),
-        where("email", "==", userData.email)
-      )
+      // query(usersCollection, where('id', '==', userData.id), where('email', '==', userData.email))
+      query(usersCollection, where('email', '==', userData.email))
     );
 
     if (userQuery.empty) {
       return null;
     } else {
       const user = userQuery.docs[0].data() as IUser;
+      console.log('user : ', user);
       return user;
     }
   } catch (error) {
-    console.error("Failed to get user:", error);
+    console.error('Failed to get user:', error);
     throw error;
   }
 };
@@ -89,7 +78,7 @@ export const updateUserLikeQuestions = async (
     const updatedUser = updatedUserSnapshot.data() as IUser;
     return updatedUser;
   } catch (error) {
-    console.error("Failed to update user likeQuestions:", error);
+    console.error('Failed to update user likeQuestions:', error);
     throw error;
   }
 };
@@ -108,7 +97,7 @@ export const deleteUser = async (userId: string): Promise<IUser | null> => {
       return null;
     }
   } catch (error) {
-    console.error("Failed to delete user:", error);
+    console.error('Failed to delete user:', error);
     throw error;
   }
 };

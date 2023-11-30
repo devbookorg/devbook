@@ -22,7 +22,7 @@ import {
 
 interface IQuestion {
   id: string;
-  category?: string;
+  category: "JS"|"TS"|"HTML"|"CSS"|"REACT"|"NEXT"|"CS";
   title: string;
   answer: string;
   userId: string;
@@ -56,6 +56,7 @@ export const createQuestion = async (body: {
       answer,
       userId,
       likes: 0,
+      message:'',
       approved: 0,
       dataCreated: new Date(),
     });
@@ -183,6 +184,7 @@ export const getFilteredQuestions = async (filters: {
     const questions = questionsSnapshot.docs.map(
       (doc) => doc.data() as IQuestion
     ); // 타입 어설션 추가
+    console.log('조회한 질문들 :',questions)
     return questions;
   } catch (error) {
     console.error("Failed to get filtered questions:", error);
@@ -195,6 +197,7 @@ export const getQuestionsCount = async (): Promise<number> => {
   try {
     const questionsSnapshot = await getDocs(questionsCollection);
     const count: number = questionsSnapshot.size;
+    console.log('전체문제갯수 : ',count)
     return count;
   } catch (error) {
     console.error("Failed to get question count:", error);

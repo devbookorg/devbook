@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.7",
     "firebase": "^10.7.0",
     "next": "14.0.3",
     "next-auth": "^4.24.5",
