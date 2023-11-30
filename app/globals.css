@@ -8,3 +8,12 @@
     @apply text-black;
   }
 }
+
+@layer components {
+  .btn-primary {
+    @apply rounded-3xl border border-solid border-deepGreen px-4 py-2;
+  }
+  .btn-ghost {
+    @apply border-none p-2;
+  }
+}
