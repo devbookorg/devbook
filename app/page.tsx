@@ -1,9 +1,10 @@
-import Login from "@/components/Login";
+import Layout from '@/components/common/layout/Layout';
+import Main from '@/components/main/Main';
 
 export default async function Home() {
   return (
-    <main>
-      <Login />
-    </main>
+    <Layout page="main">
+      <Main />
+    </Layout>
   );
 }
