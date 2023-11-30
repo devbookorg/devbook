@@ -1,3 +1,9 @@
-export default function Home() {
-  return <main></main>;
+import Login from "@/components/Login";
+
+export default async function Home() {
+  return (
+    <main>
+      <Login />
+    </main>
+  );
 }
