@@ -1,9 +1,5 @@
-import QuestionsList from "./QuestionsList";
-
 const Main = () => {
-  return <div>Main
-    <QuestionsList/>
-  </div>;
+  return <div>Main</div>;
 };
 
 export default Main;

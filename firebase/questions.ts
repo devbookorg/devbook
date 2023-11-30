@@ -1,4 +1,5 @@
-import { db, storage } from ".";
+import IQuestion from '@/types/questions';
+import { db, storage } from '.';
 import {
   Query,
   getDoc,
@@ -18,28 +19,14 @@ import {
   updateDoc,
   where,
   FirestoreDataConverter as FirestoreDataConverterType,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
-interface IQuestion {
-  id: string;
-  category: "JS"|"TS"|"HTML"|"CSS"|"REACT"|"NEXT"|"CS";
-  title: string;
-  answer: string;
-  userId: string;
-  likes: number;
-  message: string;
-  approved: 0 | 1 | 2;
-  dataCreated: Date;
-}
-// interface IQuestion extends IQuestion {
-//   id: string;
-// }
 interface FirestoreDataConverter<T> {
   toFirestore(modelObject: T): DocumentData;
   fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>): T;
 }
 
-const questionsCollection = collection(db, "questions");
+const questionsCollection = collection(db, 'questions');
 
 // 1. question을 생성하는 로직
 export const createQuestion = async (body: {
@@ -47,24 +34,21 @@ export const createQuestion = async (body: {
   title: string;
   answer: string;
   userId: string;
-}): Promise<IQuestion> => {
+}) => {
   try {
     const { category, title, answer, userId } = body;
-    const newQuestionRef = await addDoc(questionsCollection, {
+    addDoc(questionsCollection, {
       category,
       title,
       answer,
       userId,
       likes: 0,
-      message:'',
+      message: '',
       approved: 0,
       dataCreated: new Date(),
     });
-    const newQuestionSnapshot = await getDoc(newQuestionRef);
-    const newQuestion: IQuestion = newQuestionSnapshot.data() as IQuestion;
-    return newQuestion;
   } catch (error) {
-    console.error("Failed to create a new question:", error);
+    console.error('Failed to create a new question:', error);
     throw error;
   }
 };
@@ -84,11 +68,10 @@ export const updateQuestion = async (
     await updateDoc(questionRef, updatedData);
 
     const updatedQuestionSnapshot = await getDoc(questionRef);
-    const updatedQuestion: IQuestion =
-      updatedQuestionSnapshot.data() as IQuestion;
+    const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
     return updatedQuestion;
   } catch (error) {
-    console.error("Failed to update question:", error);
+    console.error('Failed to update question:', error);
     throw error;
   }
 };
@@ -103,11 +86,10 @@ export const updateQuestionLikes = async (
     await updateDoc(questionRef, { likes: body.likes });
 
     const updatedQuestionSnapshot = await getDoc(questionRef);
-    const updatedQuestion: IQuestion =
-      updatedQuestionSnapshot.data() as IQuestion;
+    const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
     return updatedQuestion;
   } catch (error) {
-    console.error("Failed to update question likes:", error);
+    console.error('Failed to update question likes:', error);
     throw error;
   }
 };
@@ -122,29 +104,25 @@ export const updateQuestionApproved = async (
     await updateDoc(questionRef, { approved: body.approved });
 
     const updatedQuestionSnapshot = await getDoc(questionRef);
-    const updatedQuestion: IQuestion =
-      updatedQuestionSnapshot.data() as IQuestion;
+    const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
     return updatedQuestion;
   } catch (error) {
-    console.error("Failed to update question approved status:", error);
+    console.error('Failed to update question approved status:', error);
     throw error;
   }
 };
 
 // 5. question을 삭제하는 로직
-export const deleteQuestion = async (
-  questionId: string
-): Promise<IQuestion | null> => {
+export const deleteQuestion = async (questionId: string): Promise<IQuestion | null> => {
   try {
     const questionRef = doc(questionsCollection, questionId);
     const deletedQuestionSnapshot = await getDoc(questionRef);
-    const deletedQuestion: IQuestion =
-      deletedQuestionSnapshot.data() as IQuestion;
+    const deletedQuestion: IQuestion = deletedQuestionSnapshot.data() as IQuestion;
 
     await deleteDoc(questionRef);
     return deletedQuestion;
   } catch (error) {
-    console.error("Failed to delete question:", error);
+    console.error('Failed to delete question:', error);
     throw error;
   }
 };
@@ -161,33 +139,27 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 
 // 6. question을 불러오는 필터링이 가능한 로직
 export const getFilteredQuestions = async (filters: {
-  sortByLikes?: "asc" | "desc";
-  sortByDate?: "asc" | "desc";
+  sortByLikes?: 'asc' | 'desc';
+  sortByDate?: 'asc' | 'desc';
   category?: string;
   userId?: string;
 }): Promise<IQuestion[]> => {
   try {
     const { sortByLikes, sortByDate, category, userId } = filters;
-    let filteredQuery = query(questionsCollection, orderBy("dataCreated"));
+    let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
 
-    if (category)
-      filteredQuery = query(filteredQuery, where("category", "==", category));
-    if (userId)
-      filteredQuery = query(filteredQuery, where("userId", "==", userId));
+    if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
+    if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
 
-    if (sortByLikes)
-      filteredQuery = query(filteredQuery, orderBy("likes", sortByLikes));
-    if (sortByDate)
-      filteredQuery = query(filteredQuery, orderBy("dataCreated", sortByDate));
+    if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
+    if (sortByDate) filteredQuery = query(filteredQuery, orderBy('dataCreated', sortByDate));
 
     const questionsSnapshot = await getDocs(filteredQuery);
-    const questions = questionsSnapshot.docs.map(
-      (doc) => doc.data() as IQuestion
-    ); // 타입 어설션 추가
-    console.log('조회한 질문들 :',questions)
+    const questions = questionsSnapshot.docs.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
+
     return questions;
   } catch (error) {
-    console.error("Failed to get filtered questions:", error);
+    console.error('Failed to get filtered questions:', error);
     throw error;
   }
 };
@@ -197,10 +169,9 @@ export const getQuestionsCount = async (): Promise<number> => {
   try {
     const questionsSnapshot = await getDocs(questionsCollection);
     const count: number = questionsSnapshot.size;
-    console.log('전체문제갯수 : ',count)
     return count;
   } catch (error) {
-    console.error("Failed to get question count:", error);
+    console.error('Failed to get question count:', error);
     throw error;
   }
 };

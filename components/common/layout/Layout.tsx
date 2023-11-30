@@ -22,3 +22,17 @@ const Layout = (props: Props) => {
 };
 
 export default Layout;
+
+interface LabeledType {
+  label: string;
+  children: React.ReactNode;
+}
+
+export const Labeled = ({ label, children }: LabeledType) => {
+  return (
+    <div className="grid gap-4">
+      <label className="text-lg">{label}</label>
+      {children}
+    </div>
+  );
+};
