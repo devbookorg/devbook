@@ -1,5 +1,5 @@
 import QuestionsList from './QuestionsList';
-import Button from '../common/button/Button';
+import Button from '../common/Button';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { deleteUser } from '@/firebase/users';

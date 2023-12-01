@@ -1,6 +1,6 @@
 import IQuestion from '@/types/questions';
 import React from 'react';
-import Button from '../common/button/Button';
+import Button from '../common/Button';
 import Icon from '../common/Icon';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { useModal } from '@/hooks/useModal';

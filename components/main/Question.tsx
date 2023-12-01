@@ -13,7 +13,7 @@ import IQuestion from '@/types/questions';
 import Heart from '@/assets/icons/heart.svg';
 import HeartFill from '@/assets/icons/heartFill.svg';
 import Icon from '../common/Icon';
-import Button from '../common/button/Button';
+import Button from '../common/Button';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 
 interface QuestionProps {
