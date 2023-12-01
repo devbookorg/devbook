@@ -18,11 +18,7 @@ interface Props {
 
 const Button = ({ children, handleClick, styles, btnStyle, type }: Props) => {
   return (
-    <button
-      type={type ?? 'button'}
-      className={`{${styles || ''} ${btnStyle}}`}
-      onClick={handleClick}
-    >
+    <button type={type ?? 'button'} className={`${styles || ''} ${btnStyle}`} onClick={handleClick}>
       {children}
     </button>
   );
