@@ -4,12 +4,14 @@ import { getFilteredQuestions } from '@/firebase/questions';
 import IQuestion from '@/types/questions';
 import Question from './Question';
 
-const QuestionsList = () => {
+const QuestionsList = ({ user }: IUser) => {
+  console.log(user.id, 'user:');
   const [tab, setTab] = useState<number>(0);
+
   const [questions, setQuestions] = useState<IQuestion[]>([]);
 
   useEffect(() => {
-    getFilteredQuestions({}).then((res) => setQuestions(res));
+    // getFilteredQuestions({ userId: user.id }).then((res) => console.log('필터링된 데이터 ', res));
   }, []);
 
   const handleTab = (n: number) => {

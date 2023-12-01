@@ -50,6 +50,7 @@ export default function Question({ question }: QuestionProps) {
           <strong className="text-lg font-semibold">{question.title}</strong>
           <span>{question.answer}</span>
         </div>
+
         <div className="flex flex-col items-end gap-5">
           <span>{formatUnixTime(question.dataCreated.seconds)}</span>
           <div className="flex items-center gap-2">

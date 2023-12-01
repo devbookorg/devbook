@@ -5,6 +5,7 @@ import Main from '@/components/main/Main';
 import QuestionsList from '@/components/main/QuestionsList';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import IQuestion from '@/types/questions';
+import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -16,7 +17,6 @@ export default function Home() {
     });
     getQuestionsCount().then((res) => setNumberOfQuestions(res));
   }, []);
-
   return (
     <>
       <Main />
