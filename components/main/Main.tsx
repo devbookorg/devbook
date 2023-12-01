@@ -1,4 +1,4 @@
-import { userMailState } from '@/recoil/user/atoms';
+import { userMailState } from '@/recoil/user';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';

@@ -1,6 +1,6 @@
 'use client';
 
-import { userStateQuery } from '@/recoil/user/atoms';
+import { userStateQuery } from '@/recoil/user';
 import { useRecoilValue } from 'recoil';
 
 import QuestionsList from './QuestionsList';
