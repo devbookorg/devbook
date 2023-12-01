@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Button from './button/Button';
+import Button from './Button';
 import ChevronUp from '@/assets/icons/chevronUp.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import Icon from './Icon';

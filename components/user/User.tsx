@@ -1,30 +1,27 @@
-'use client';
-
-import { userStateQuery } from '@/recoil/user';
-import { useRecoilValue } from 'recoil';
-
 import QuestionsList from './QuestionsList';
-import Button from '../common/button/Button';
+import Button from '../common/Button';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { deleteUser } from '@/firebase/users';
+import IQuestion from '@/types/questions';
 
-const User = () => {
-  const user = useRecoilValue(userStateQuery);
+interface Props {
+  name: string;
+  id: string;
+  userPost: IQuestion[];
+}
+
+const User = (props: Props) => {
+  const { id, name, userPost } = props;
   const router = useRouter();
-
-  if (!user) return <></>;
-
-  const { name, id } = user;
-  console.log(id, '<<<<<<<<<');
 
   return (
     <article className="flex flex-col gap-6 ">
       <section className="flex items-center gap-2">
         <b className="text-lg">{name}</b>님
       </section>
-      <QuestionsList user={user} />
-      <section className="my-4 flex  gap-4">
+      <QuestionsList questions={userPost} />
+      <section className="my-4 flex gap-4">
         <Button
           btnStyle="btn-state-lg"
           styles="flex-1 border-gray text-gray hover:border-red hover:text-red"

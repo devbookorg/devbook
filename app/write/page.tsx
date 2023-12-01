@@ -1,7 +1,7 @@
 'use client';
 import DropDownBox from '@/components/common/DropDownBox';
 import { LabeledInput } from '@/components/common/Input';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button';
 import { Labeled } from '@/components/common/layout/Layout';
 import { questionCategory } from '@/utils/variable';
 import { useState } from 'react';

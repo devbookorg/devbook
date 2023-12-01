@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal';
 import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil';
 

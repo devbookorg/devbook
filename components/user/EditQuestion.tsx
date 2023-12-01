@@ -1,7 +1,7 @@
 import { useModal } from '@/hooks/useModal';
 import React, { useState } from 'react';
 import Icon from '../common/Icon';
-import Button from '../common/button/Button';
+import Button from '../common/Button';
 
 interface Props {
   title: string;

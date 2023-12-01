@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../common/button/Button';
+import Button from '../common/Button';
 
 const tabs = ['작성한 게시물', '좋아요'];
 

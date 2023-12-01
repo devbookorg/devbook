@@ -1,5 +1,6 @@
 import IQuestion from '@/types/questions';
-import Question from './Question';
+import QuestionItem from './QuestionItem';
+import Question from '../common/Question';
 
 interface QuestionsListProps {
   questions: IQuestion[];
@@ -7,8 +8,12 @@ interface QuestionsListProps {
 export default function QuestionsList({ questions }: QuestionsListProps) {
   return (
     <div>
-      {questions.map((question, index) => {
-        return <Question key={`question_${question.id}_${index}`} question={question} />;
+      {questions.map((question) => {
+        return (
+          <Question key={question.id} {...question}>
+            <QuestionItem {...question} />
+          </Question>
+        );
       })}
     </div>
   );

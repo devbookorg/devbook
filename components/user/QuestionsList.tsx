@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import QuestionsListTab from './QuestionsListTab';
-import { getFilteredQuestions } from '@/firebase/questions';
 import IQuestion from '@/types/questions';
-import Question from './Question';
+import Question from '../common/Question';
+import QuestionItem from './QuestionItem';
 
-const QuestionsList = ({ user }: IUser) => {
-  console.log(user.id, 'user:');
+interface Props {
+  questions: IQuestion[];
+}
+
+const QuestionsList = (props: Props) => {
+  const { questions } = props;
   const [tab, setTab] = useState<number>(0);
-
-  const [questions, setQuestions] = useState<IQuestion[]>([]);
-
-  useEffect(() => {
-    // getFilteredQuestions({ userId: user.id }).then((res) => console.log('필터링된 데이터 ', res));
-  }, []);
 
   const handleTab = (n: number) => {
     setTab(n);
@@ -22,8 +20,10 @@ const QuestionsList = ({ user }: IUser) => {
     <>
       <QuestionsListTab handleTab={handleTab} tab={tab} />
       <ul>
-        {questions.map((q, idx) => (
-          <Question key={idx} {...q} />
+        {questions.map((q) => (
+          <Question key={q.id} {...q}>
+            <QuestionItem {...q} />
+          </Question>
         ))}
       </ul>
     </>
