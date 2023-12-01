@@ -18,7 +18,6 @@ export default function Question(props: Props & IQuestion) {
   const { dataCreated, id, likes } = props;
 
   const date = new Date(dataCreated.seconds * 1000);
-  console.log(date, '날짜');
 
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => {
@@ -29,11 +28,10 @@ export default function Question(props: Props & IQuestion) {
     setIsHovered(false);
   };
 
-  const likeToggle = (questionsId, currentLikes) => {
-    updateUserLikeQuestions('9bdad09e-e243-4a57-b3e1-2baad6960ba2', questionsId).then((res) =>
-      console.log('결과물 : ', res)
-    );
-    // updateQuestionLikes();
+  const likeToggle = (questionsId: string) => {
+    updateQuestionLikes(questionsId, +1).then(() => {
+      updateUserLikeQuestions('58f6e3b6-b61d-477f-b728-73816391ee0c', questionsId);
+    });
   };
 
   return (
@@ -42,7 +40,7 @@ export default function Question(props: Props & IQuestion) {
       <div className="flex items-center gap-2">
         <button
           onClick={() => {
-            likeToggle(id, likes);
+            likeToggle(id);
           }}
           className="w-fit"
           onMouseEnter={handleMouseEnter}

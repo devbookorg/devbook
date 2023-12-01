@@ -1,5 +1,6 @@
 import IQuestion from '@/types/questions';
 import { db, storage } from '.';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Query,
   getDoc,
@@ -36,8 +37,10 @@ export const createQuestion = async (body: {
   userId: string;
 }) => {
   try {
+    const id = uuidv4();
     const { category, title, answer, userId } = body;
     addDoc(questionsCollection, {
+      id,
       category,
       title,
       answer,
@@ -79,10 +82,22 @@ export const updateQuestion = async (
 // 3. question의 likes를 수정하는 로직
 export const updateQuestionLikes = async (questionId: string, increment: number) => {
   try {
-    const questionRef = doc(questionsCollection, questionId);
+    // const questionRef = doc(questionsCollection, questionId);
 
-    // increment를 이용하여 likes 필드 업데이트
-    await updateDoc(questionRef, { likes: increment });
+    const questionQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
+
+    if (!questionQuery.empty) {
+      const firstDocumentId = questionQuery.docs[0].id;
+      const QuestionRef = doc(questionsCollection, firstDocumentId);
+      const updateQuestionSnapshot = await getDoc(QuestionRef);
+
+      if (updateQuestionSnapshot.exists()) {
+        const currentLikes = updateQuestionSnapshot.data().likes || 0;
+        const newLikes = currentLikes + increment;
+
+        await updateDoc(QuestionRef, { likes: newLikes });
+      }
+    }
   } catch (error) {
     console.error('Failed to update question likes:', error);
     throw error;
