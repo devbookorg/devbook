@@ -1,13 +1,15 @@
-import { atom } from 'recoil';
+import { getUser } from '@/firebase/users';
+import { atom, selector } from 'recoil';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  likeQuestions: string[];
-}
+export const userMailState = atom<string>({
+  key: 'userMailState',
+  default: '',
+});
 
-export const userState = atom<User>({
-  key: 'userState',
-  default: { id: '', email: '', name: '', likeQuestions: [] },
+export const userStateQuery = selector({
+  key: 'userInfoState',
+  get: async ({ get }) => {
+    const response = await getUser({ email: get(userMailState) });
+    return response;
+  },
 });
