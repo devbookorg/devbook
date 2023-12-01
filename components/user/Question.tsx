@@ -3,12 +3,14 @@ import React from 'react';
 import Button from '../common/button/Button';
 import Icon from '../common/Icon';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
+import { useModal } from '@/hooks/useModal';
+import EditQuestion from './EditQuestion';
 
 interface Props {}
 
 const Question = (props: Props & IQuestion) => {
   const { title, answer, dataCreated, category, message, approved } = props;
-
+  const { openModal } = useModal();
   return (
     <>
       <li className="flex justify-between p-3">
@@ -24,7 +26,7 @@ const Question = (props: Props & IQuestion) => {
             {approved === 0 ? (
               <>
                 <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
-                <Button btnStyle="btn-state" styles="text-deepGreen border-deepGreen">
+                <Button btnStyle="btn-state-sm" styles="text-deepGreen border-deepGreen">
                   대기
                 </Button>
               </>
@@ -35,9 +37,25 @@ const Question = (props: Props & IQuestion) => {
               </>
             )}
           </div>
-          <div className="flex gap-2">
-            <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
-            <Icon name="trash" className="h-5 w-5 fill-red" />
+          <div className="flex">
+            <>
+              {approved !== 1 && (
+                <Button
+                  btnStyle="btn-ghost"
+                  handleClick={() => {
+                    openModal({
+                      children: <EditQuestion title={title} answer={answer} category={category} />,
+                    });
+                  }}
+                >
+                  <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
+                </Button>
+              )}
+            </>
+
+            <Button btnStyle="btn-ghost">
+              <Icon name="trash" className="h-5 w-5 fill-red" />
+            </Button>
           </div>
         </section>
       </li>
