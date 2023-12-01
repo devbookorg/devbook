@@ -17,8 +17,32 @@
     @apply border-none p-2;
   }
   .btn-fill {
-    @apply flex h-16 w-full justify-center rounded-lg  border border-deepGreen  bg-deepGreen p-4 align-middle text-xl leading-tight text-white
+    @apply flex h-16 w-full items-center justify-center  rounded-lg border  border-deepGreen bg-deepGreen p-4 text-xl leading-tight text-white
     hover:bg-green;
+  }
+  .btn-categoryBtn {
+    @apply flex w-fit cursor-default items-center justify-center rounded-lg px-1.5 py-1 leading-tight text-white hover:bg-opacity-60;
+  }
+  .btn-JS {
+    @apply bg-yellow text-black;
+  }
+  .btn-TS {
+    @apply bg-sky;
+  }
+  .btn-HTML {
+    @apply bg-orange;
+  }
+  .btn-CSS {
+    @apply bg-blue;
+  }
+  .btn-REACT {
+    @apply bg-sky;
+  }
+  .btn-NEXT {
+    @apply bg-black;
+  }
+  .btn-CS {
+    @apply bg-deepGreen;
   }
   .input-primary {
     @apply h-16

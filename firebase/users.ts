@@ -68,15 +68,42 @@ export const getUser = async (userData: { email: string }): Promise<IUser | null
 // 3. 유저의 데이터 중 likeQuestions 값을 수정하는 업데이트 함수
 export const updateUserLikeQuestions = async (
   userId: string,
-  likeQuestions: string[]
+  questionId: string
 ): Promise<IUser | null> => {
   try {
-    const userRef = doc(usersCollection, userId); // 수정된 부분
-    await updateDoc(userRef, { likeQuestions });
+    const userRef = doc(usersCollection, userId);
+    const userSnapshot = await getDoc(userRef);
+    console.log(userSnapshot);
+    if (userSnapshot.exists()) {
+      const userData = userSnapshot.data() as IUser;
+      let updatedLikeQuestions: string[];
 
-    const updatedUserSnapshot = await getDoc(userRef);
-    const updatedUser = updatedUserSnapshot.data() as IUser;
-    return updatedUser;
+      // 이미 해당 questionId가 likeQuestions 배열에 존재하는지 확인
+      const questionIndex = userData.likeQuestions.indexOf(questionId);
+
+      if (questionIndex !== -1) {
+        // 이미 존재하는 경우, 해당 questionId를 배열에서 제거
+        updatedLikeQuestions = [
+          ...userData.likeQuestions.slice(0, questionIndex),
+          ...userData.likeQuestions.slice(questionIndex + 1),
+        ];
+      } else {
+        // 존재하지 않는 경우, 해당 questionId를 배열에 추가
+        updatedLikeQuestions = [...userData.likeQuestions, questionId];
+      }
+
+      // 업데이트된 likeQuestions를 사용하여 유저 데이터 업데이트
+      await updateDoc(userRef, { likeQuestions: updatedLikeQuestions });
+
+      // 업데이트 이후의 user 데이터를 가져오기
+      const updatedUserSnapshot = await getDoc(userRef);
+      const updatedUser = updatedUserSnapshot.data() as IUser;
+
+      return updatedUser;
+    } else {
+      console.error('User not found.');
+      return null;
+    }
   } catch (error) {
     console.error('Failed to update user likeQuestions:', error);
     throw error;

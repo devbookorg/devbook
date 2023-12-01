@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export default interface IQuestion {
   id: string;
   category: 'JS' | 'TS' | 'HTML' | 'CSS' | 'REACT' | 'NEXT' | 'CS';
@@ -7,5 +9,5 @@ export default interface IQuestion {
   likes: number;
   message: string;
   approved: 0 | 1 | 2;
-  dataCreated: Date;
+  dataCreated: Timestamp;
 }

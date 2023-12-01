@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Button from './button/Button';
 import ChevronUp from '@/assets/icons/chevronUp.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
+import Icon from './Icon';
 
 type ArrayWrapper<T> = T extends number | string | boolean ? T[] : never;
 
@@ -30,14 +31,14 @@ export default function DropDownBox<T>({
     <div className="relative">
       <div
         onClick={dropDownToggle}
-        className="input-primary flex cursor-pointer justify-between align-middle"
+        className="input-primary -middle flex cursor-pointer justify-between"
       >
         {selectedValue}
         <div>
           {dropDownVisible ? (
-            <ChevronUp className="stroke-deepGreen" />
+            <Icon name="chevronUp" className="stroke-deepGreen" />
           ) : (
-            <ChevronDown className="stroke-deepGreen" />
+            <Icon name="chevronDown" className="stroke-deepGreen" />
           )}
         </div>
       </div>

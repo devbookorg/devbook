@@ -77,17 +77,12 @@ export const updateQuestion = async (
 };
 
 // 3. question의 likes를 수정하는 로직
-export const updateQuestionLikes = async (
-  questionId: string,
-  body: { likes: number }
-): Promise<IQuestion | null> => {
+export const updateQuestionLikes = async (questionId: string, increment: number) => {
   try {
     const questionRef = doc(questionsCollection, questionId);
-    await updateDoc(questionRef, { likes: body.likes });
 
-    const updatedQuestionSnapshot = await getDoc(questionRef);
-    const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
-    return updatedQuestion;
+    // increment를 이용하여 likes 필드 업데이트
+    await updateDoc(questionRef, { likes: increment });
   } catch (error) {
     console.error('Failed to update question likes:', error);
     throw error;

@@ -15,6 +15,10 @@ const config: Config = {
       green: '#A7D6B7',
       deepGreen: '#31854D',
       red: '#E34646',
+      yellow: '#FFF04D',
+      sky: '#45B8CC',
+      orange: '#DD4B25',
+      blue: '#2862E9',
     },
     fontSize: {
       xs: '0.75rem' /* 12px */,
