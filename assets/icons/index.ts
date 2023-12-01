@@ -8,3 +8,4 @@ export { default as ArrowLeft } from './arrowLeft.svg';
 export { default as Bell } from './bell.svg';
 export { default as Edit } from './edit.svg';
 export { default as Trash } from './trash.svg';
+export { default as Close } from './close.svg';
