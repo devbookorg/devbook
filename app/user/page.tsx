@@ -13,8 +13,9 @@ const UserPage = () => {
   // const [likesData, setLikesData] = useState<IQuestion[]>([]);
 
   useEffect(() => {
-    getFilteredQuestions({ userId: user!.id }).then((res) => setUserData(res));
+    getFilteredQuestions({ userId: user?.id }).then((res) => setUserData(res));
   }, []);
+  // user페이지 올때마다 getFilteredQuestions실행/
 
   if (!user) {
     return <h1>?</h1>;

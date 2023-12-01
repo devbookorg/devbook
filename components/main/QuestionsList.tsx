@@ -7,15 +7,16 @@ import { userStateQuery } from '@/recoil/user';
 
 interface QuestionsListProps {
   questions: IQuestion[];
+  loadQuestions: () => void;
 }
-export default function QuestionsList({ questions }: QuestionsListProps) {
+export default function QuestionsList({ questions, loadQuestions }: QuestionsListProps) {
   const user = useRecoilValue(userStateQuery);
   return (
     <div>
       {questions.map((question) => {
         return (
           <Question key={question.id} {...question}>
-            <QuestionItem {...question} user={user} />
+            <QuestionItem {...question} user={user} loadQuestions={loadQuestions} />
           </Question>
         );
       })}

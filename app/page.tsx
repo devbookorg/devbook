@@ -15,10 +15,13 @@ export default function Home() {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
 
-  useEffect(() => {
+  const loadQuestions = () => {
     getFilteredQuestions({}).then((res) => {
       setQuestions(res);
     });
+  };
+  useEffect(() => {
+    loadQuestions();
     getQuestionsCount().then((res) => setNumberOfQuestions(res));
   }, []);
 
@@ -31,7 +34,7 @@ export default function Home() {
   return (
     <>
       전체 질문 수 : {numberOfQuestions}
-      <QuestionsList questions={questions} />
+      <QuestionsList questions={questions} loadQuestions={loadQuestions} />
     </>
   );
 }

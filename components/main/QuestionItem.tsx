@@ -18,9 +18,10 @@ import { userMailState, userStateQuery } from '@/recoil/user';
 
 interface Props {
   user: IUser;
+  loadQuestions: () => void;
 }
 export default function Question(props: Props & IQuestion) {
-  const { dataCreated, id, likes, user } = props;
+  const { dataCreated, id, likes, user, loadQuestions } = props;
   const [isHovered, setIsHovered] = useState(false);
   const refresh = useRecoilRefresher_UNSTABLE(userStateQuery);
   const handleMouseEnter = () => {
@@ -33,10 +34,11 @@ export default function Question(props: Props & IQuestion) {
 
   const likeToggle = (questionsId: string) => {
     const filterArr = user?.likeQuestions.find((question) => question === questionsId);
-
     const increment = filterArr ? -1 : +1;
+
     updateQuestionLikes(questionsId, increment).then(() => {
       updateUserLikeQuestions(user?.id, questionsId);
+      loadQuestions();
       refresh();
     });
   };

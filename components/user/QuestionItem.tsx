@@ -5,6 +5,7 @@ import Icon from '../common/Icon';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { useModal } from '@/hooks/useModal';
 import EditQuestion from './EditQuestion';
+import QuestionForm from '../common/Form';
 
 interface Props {}
 
@@ -35,7 +36,12 @@ const QuestionItem = (props: Props & IQuestion) => {
               btnStyle="btn-ghost"
               handleClick={() => {
                 openModal({
-                  children: <EditQuestion title={title} answer={answer} category={category} />,
+                  // children: <EditQuestion title={title} answer={answer} category={category} />,
+                  children: (
+                    <div className="w-40 bg-white">
+                      <QuestionForm />
+                    </div>
+                  ),
                 });
               }}
             >
