@@ -9,7 +9,7 @@ import EditQuestion from './EditQuestion';
 interface Props {}
 
 const Question = (props: Props & IQuestion) => {
-  const { title, answer, dataCreated, category, message, approved } = props;
+  const { title, answer, dataCreated, category, approved } = props;
   const { openModal } = useModal();
   return (
     <>
@@ -33,7 +33,7 @@ const Question = (props: Props & IQuestion) => {
             ) : (
               <>
                 <Button btnStyle="btn-ghost">사유보기</Button>
-                <Button>거부</Button>
+                <Button btnStyle="btn-ghost">거부</Button>
               </>
             )}
           </div>
