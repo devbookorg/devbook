@@ -20,9 +20,9 @@ interface QuestionProps {
   question: IQuestion;
 }
 export default function Question({ question }: QuestionProps) {
-  console.log(question);
+  // console.log(question);
   const date = new Date(question.dataCreated.seconds * 1000);
-  console.log(date, '날짜');
+  // console.log(date, '날짜');
 
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => {
@@ -33,11 +33,14 @@ export default function Question({ question }: QuestionProps) {
     setIsHovered(false);
   };
 
-  const likeToggle = (questionsId, currentLikes) => {
-    updateUserLikeQuestions('9bdad09e-e243-4a57-b3e1-2baad6960ba2', questionsId).then((res) =>
-      console.log('결과물 : ', res)
-    );
-    // updateQuestionLikes();
+  const likeToggle = (questionsId: string) => {
+    console.log(question);
+    console.log(questionsId);
+    // 유저데이터불러와서 - 좋아요누른배열데이터에 ' questionsId들어있으면?+1:-1
+
+    updateQuestionLikes(questionsId, +1).then(() => {
+      updateUserLikeQuestions('58f6e3b6-b61d-477f-b728-73816391ee0c', questionsId);
+    });
   };
 
   return (
@@ -56,7 +59,8 @@ export default function Question({ question }: QuestionProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                likeToggle(question.id, question.likes);
+                console.log(question);
+                likeToggle(question.id);
               }}
               className="w-fit"
               onMouseEnter={handleMouseEnter}

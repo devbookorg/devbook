@@ -23,6 +23,7 @@ interface IUser {
 }
 
 const usersCollection = collection(db, 'users');
+const questionsCollection = collection(db, 'questions');
 
 // 1. 유저를 db에 추가하는 함수
 export const addUser = async (userData: { name: string; email: string }) => {
@@ -71,9 +72,19 @@ export const updateUserLikeQuestions = async (
   questionId: string
 ): Promise<IUser | null> => {
   try {
-    const userRef = doc(usersCollection, userId);
-    const userSnapshot = await getDoc(userRef);
-    console.log(userSnapshot);
+    const usersQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    const firstUserDocumentId = usersQuery.docs[0].id;
+    const UserRef = doc(usersCollection, firstUserDocumentId);
+    const userSnapshot = await getDoc(UserRef);
+
+    const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
+    const firstQuestionDocumentId = questionsQuery.docs[0].id;
+    const QuestionRef = doc(usersCollection, firstQuestionDocumentId);
+    const questionSnapshot = await getDoc(QuestionRef);
+
+    console.log('userSnapshot : ', userSnapshot);
+    console.log('questionSnapshot : ', questionSnapshot);
+
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data() as IUser;
       let updatedLikeQuestions: string[];
@@ -93,10 +104,10 @@ export const updateUserLikeQuestions = async (
       }
 
       // 업데이트된 likeQuestions를 사용하여 유저 데이터 업데이트
-      await updateDoc(userRef, { likeQuestions: updatedLikeQuestions });
+      await updateDoc(UserRef, { likeQuestions: updatedLikeQuestions });
 
       // 업데이트 이후의 user 데이터를 가져오기
-      const updatedUserSnapshot = await getDoc(userRef);
+      const updatedUserSnapshot = await getDoc(UserRef);
       const updatedUser = updatedUserSnapshot.data() as IUser;
 
       return updatedUser;
