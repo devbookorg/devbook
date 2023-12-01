@@ -18,10 +18,10 @@ export default function Home() {
   }, []);
 
   return (
-    <Layout page="main">
+    <>
       <Main />
       전체 질문 수 : {numberOfQuestions}
       <QuestionsList questions={questions} />
-    </Layout>
+    </>
   );
 }
