@@ -7,7 +7,7 @@ const Modal = () => {
     <>
       {modalData.isOpen && (
         <div className="absolute h-screen w-full bg-black/70 ">
-          <div className="absolute flex h-full w-full items-center justify-center">
+          <div className="h-160 absolute bottom-0 flex w-full items-center justify-center">
             {modalData.content}
           </div>
         </div>

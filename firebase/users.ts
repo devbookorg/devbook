@@ -111,17 +111,19 @@ export const updateUserLikeQuestions = async (
 };
 
 // 4. 유저를 db에서 삭제하는 함수
-export const deleteUser = async (userId: string): Promise<IUser | null> => {
+export const deleteUser = async (userId: string) => {
   try {
-    const userRef = doc(usersCollection, userId);
-    const deletedUserSnapshot = await getDoc(userRef);
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
 
-    if (deletedUserSnapshot.exists()) {
-      const deletedUserData = deletedUserSnapshot.data() as IUser;
-      await deleteDoc(userRef);
-      return deletedUserData;
-    } else {
-      return null;
+    if (!userQuery.empty) {
+      const firstDocumentId = userQuery.docs[0].id;
+
+      const userRef = doc(usersCollection, firstDocumentId);
+      const deletedUserSnapshot = await getDoc(userRef);
+
+      if (deletedUserSnapshot.exists()) {
+        await deleteDoc(userRef);
+      }
     }
   } catch (error) {
     console.error('Failed to delete user:', error);

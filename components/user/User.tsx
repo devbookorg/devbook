@@ -16,18 +16,25 @@ const User = () => {
   if (!user) return <></>;
 
   const { name, id } = user;
+  console.log(id, '<<<<<<<<<');
 
   return (
     <article className="flex flex-col gap-6 ">
       <section className="flex items-center gap-2">
         <b className="text-lg">{name}</b>님
       </section>
-      <QuestionsList />
+      <QuestionsList user={user} />
       <section className="my-4 flex  gap-4">
         <Button
           btnStyle="btn-state-lg"
           styles="flex-1 border-gray text-gray hover:border-red hover:text-red"
-          handleClick={() => {}}
+          handleClick={() => {
+            deleteUser(id).then(() => {
+              signOut({ redirect: false }).then(() => {
+                router.push('/');
+              });
+            });
+          }}
         >
           탈퇴
         </Button>
