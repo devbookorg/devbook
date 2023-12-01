@@ -17,7 +17,7 @@ const EditQuestion = (props: Props) => {
     console.log(value);
   };
   return (
-    <article className="relative flex h-full max-h-[1000px]  w-screen max-w-[600px] flex-col gap-3 bg-white p-6">
+    <article className="relative flex h-full max-h-[1000px]  w-screen max-w-[36em] flex-col gap-3 bg-white p-6">
       <section className="text-center">
         <h1>질문 수정하기</h1>
         <Button btnStyle="btn-ghost" handleClick={closeModal} styles="absolute top-2 right-2">
