@@ -3,7 +3,7 @@ interface Props {
 }
 
 const Content = ({ children }: Props) => {
-  return <main className="flex-1 p-6">{children}</main>;
+  return <main className="flex-1 overflow-scroll p-6">{children}</main>;
 };
 
 export default Content;

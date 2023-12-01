@@ -1,8 +1,15 @@
-import ChevronDown from '@/assets/icons/chevronDown.svg';
-import ChevronUp from '@/assets/icons/chevronUp.svg';
-import Heart from '@/assets/icons/heart.svg';
-import HeartFill from '@/assets/icons/heartFill.svg';
-import Sun from '@/assets/icons/sun.svg';
+import {
+  User,
+  ChevronDown,
+  ChevronUp,
+  Heart,
+  HeartFill,
+  Sun,
+  ArrowLeft,
+  Bell,
+  Edit,
+  Trash,
+} from '@/assets/icons';
 
 // SVG 컴포넌트에 대한 인터페이스
 interface IconComponents {
@@ -14,6 +21,11 @@ const iconComponents: IconComponents = {
   heart: Heart,
   heartFill: HeartFill,
   sun: Sun,
+  user: User,
+  arrowLeft: ArrowLeft,
+  bell: Bell,
+  edit: Edit,
+  trash: Trash,
 };
 
 export default function Icon({
@@ -27,4 +39,4 @@ export default function Icon({
   return <IconComponent className={className} />;
 }
 
-export { ChevronDown, ChevronUp, Heart, HeartFill, Sun };
+export { ChevronDown, ChevronUp, Heart, HeartFill, Sun, ArrowLeft, User, Bell, Edit, Trash };

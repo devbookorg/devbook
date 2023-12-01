@@ -1,6 +1,7 @@
 interface Props {
   children: React.ReactNode;
   handleClick?: () => void;
+  styles?: string;
   btnStyle:
     | 'btn-primary'
     | 'btn-ghost'
@@ -11,13 +12,14 @@ interface Props {
     | 'btn-CSS'
     | 'btn-REACT'
     | 'btn-NEXT'
-    | 'btn-CS';
+    | 'btn-CS'
+    | 'btn-state';
   type?: 'button' | 'submit' | 'reset';
 }
 
-const Button = ({ children, handleClick, btnStyle, type }: Props) => {
+const Button = ({ children, handleClick, styles, btnStyle, type }: Props) => {
   return (
-    <button type={type ?? 'button'} className={btnStyle} onClick={handleClick}>
+    <button type={type ?? 'button'} className={`${styles || ''} ${btnStyle}`} onClick={handleClick}>
       {children}
     </button>
   );

@@ -1,5 +1,10 @@
 export { default as ChevronDown } from './chevronDown.svg';
-export { default as ChevronUp } from './ChevronUp.svg';
-export { default as Heart } from './Heart.svg';
-export { default as HeartFill } from './HeartFill.svg';
-export { default as Sun } from './Sun.svg';
+export { default as ChevronUp } from './chevronUp.svg';
+export { default as Heart } from './heart.svg';
+export { default as HeartFill } from './heartFill.svg';
+export { default as Sun } from './sun.svg';
+export { default as User } from './user.svg';
+export { default as ArrowLeft } from './arrowLeft.svg';
+export { default as Bell } from './bell.svg';
+export { default as Edit } from './edit.svg';
+export { default as Trash } from './trash.svg';

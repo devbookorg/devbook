@@ -1,18 +1,16 @@
-import { getUser } from '@/firebase/users';
-import { userState } from '@/recoil/user/atoms';
+import { userMailState } from '@/recoil/user/atoms';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 const Main = () => {
   const { data } = useSession();
-  const setUserState = useSetRecoilState(userState);
+  const setUserMailState = useSetRecoilState(userMailState);
   useEffect(() => {
     if (data) {
-      const user = getUser({ email: data.user!.email! });
-      setUserState(user);
+      setUserMailState(data.user!.email!);
     }
-  }, [data]);
+  }, [data, setUserMailState]);
 
   return <div>Main</div>;
 };
