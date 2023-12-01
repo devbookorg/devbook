@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../common/button/Button';
 
 const tabs = ['작성한 게시물', '좋아요'];

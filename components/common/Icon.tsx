@@ -10,6 +10,7 @@ import {
   Edit,
   Trash,
   Close,
+  Pen,
 } from '@/assets/icons';
 
 // SVG 컴포넌트에 대한 인터페이스
@@ -28,6 +29,7 @@ const iconComponents: IconComponents = {
   edit: Edit,
   trash: Trash,
   close: Close,
+  pen: Pen,
 };
 
 export default function Icon({
@@ -41,4 +43,17 @@ export default function Icon({
   return <IconComponent className={className} />;
 }
 
-export { ChevronDown, ChevronUp, Heart, HeartFill, Sun, ArrowLeft, User, Bell, Edit, Trash, Close };
+export {
+  ChevronDown,
+  ChevronUp,
+  Heart,
+  HeartFill,
+  Sun,
+  ArrowLeft,
+  User,
+  Bell,
+  Edit,
+  Trash,
+  Close,
+  Pen,
+};
