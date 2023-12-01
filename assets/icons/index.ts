@@ -6,3 +6,5 @@ export { default as Sun } from './sun.svg';
 export { default as User } from './user.svg';
 export { default as ArrowLeft } from './arrowLeft.svg';
 export { default as Bell } from './bell.svg';
+export { default as Edit } from './edit.svg';
+export { default as Trash } from './trash.svg';
