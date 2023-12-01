@@ -14,13 +14,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
-
-interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  likeQuestions: string[];
-}
+import IUser from '@/types/users';
 
 const usersCollection = collection(db, 'users');
 const questionsCollection = collection(db, 'questions');
@@ -67,10 +61,7 @@ export const getUser = async (userData: { email: string }): Promise<IUser | null
 };
 
 // 3. 유저의 데이터 중 likeQuestions 값을 수정하는 업데이트 함수
-export const updateUserLikeQuestions = async (
-  userId: string,
-  questionId: string
-): Promise<IUser | null> => {
+export const updateUserLikeQuestions = async (userId: string, questionId: string) => {
   try {
     const usersQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
     const firstUserDocumentId = usersQuery.docs[0].id;
@@ -105,15 +96,6 @@ export const updateUserLikeQuestions = async (
 
       // 업데이트된 likeQuestions를 사용하여 유저 데이터 업데이트
       await updateDoc(UserRef, { likeQuestions: updatedLikeQuestions });
-
-      // 업데이트 이후의 user 데이터를 가져오기
-      const updatedUserSnapshot = await getDoc(UserRef);
-      const updatedUser = updatedUserSnapshot.data() as IUser;
-
-      return updatedUser;
-    } else {
-      console.error('User not found.');
-      return null;
     }
   } catch (error) {
     console.error('Failed to update user likeQuestions:', error);

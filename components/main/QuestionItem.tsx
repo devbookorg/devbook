@@ -12,14 +12,17 @@ import { getUser, updateUserLikeQuestions } from '@/firebase/users';
 import IQuestion from '@/types/questions';
 import Icon from '../common/Icon';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
+import IUser from '@/types/users';
+import { useRecoilRefresher_UNSTABLE, useSetRecoilState } from 'recoil';
+import { userMailState, userStateQuery } from '@/recoil/user';
 
-interface Props {}
+interface Props {
+  user: IUser;
+}
 export default function Question(props: Props & IQuestion) {
-  const { dataCreated, id, likes } = props;
-
-  const date = new Date(dataCreated.seconds * 1000);
-
+  const { dataCreated, id, likes, user } = props;
   const [isHovered, setIsHovered] = useState(false);
+  const refresh = useRecoilRefresher_UNSTABLE(userStateQuery);
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -29,8 +32,12 @@ export default function Question(props: Props & IQuestion) {
   };
 
   const likeToggle = (questionsId: string) => {
-    updateQuestionLikes(questionsId, +1).then(() => {
-      updateUserLikeQuestions('58f6e3b6-b61d-477f-b728-73816391ee0c', questionsId);
+    const filterArr = user?.likeQuestions.find((question) => question === questionsId);
+
+    const increment = filterArr ? -1 : +1;
+    updateQuestionLikes(questionsId, increment).then(() => {
+      updateUserLikeQuestions(user?.id, questionsId);
+      refresh();
     });
   };
 
