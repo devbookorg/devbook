@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import QuestionsListTab from './QuestionsListTab';
 import IQuestion from '@/types/questions';
-import Question from './Question';
+import Question from '../common/Question';
+import QuestionItem from './QuestionItem';
 
 interface Props {
   questions: IQuestion[];
@@ -19,8 +20,10 @@ const QuestionsList = (props: Props) => {
     <>
       <QuestionsListTab handleTab={handleTab} tab={tab} />
       <ul>
-        {questions.map((q, idx) => (
-          <Question key={idx} {...q} />
+        {questions.map((q) => (
+          <Question key={q.id} {...q}>
+            <QuestionItem {...q} />
+          </Question>
         ))}
       </ul>
     </>

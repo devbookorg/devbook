@@ -1,11 +1,9 @@
 'use client';
 
-import Layout from '@/components/common/layout/Layout';
 import Main from '@/components/main/Main';
 import QuestionsList from '@/components/main/QuestionsList';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import IQuestion from '@/types/questions';
-import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
