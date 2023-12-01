@@ -20,8 +20,8 @@ const QuestionsList = () => {
     <>
       <QuestionsListTab handleTab={handleTab} tab={tab} />
       <ul>
-        {questions.map((q) => (
-          <Question key={q.id} {...q} />
+        {questions.map((q, idx) => (
+          <Question key={idx} {...q} />
         ))}
       </ul>
     </>

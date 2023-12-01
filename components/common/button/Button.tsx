@@ -13,7 +13,8 @@ interface Props {
     | 'btn-REACT'
     | 'btn-NEXT'
     | 'btn-CS'
-    | 'btn-state';
+    | 'btn-state-sm'
+    | 'btn-state-lg';
   type?: 'button' | 'submit' | 'reset';
 }
 

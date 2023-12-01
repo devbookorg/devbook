@@ -24,7 +24,7 @@ const Question = (props: Props & IQuestion) => {
             {approved === 0 ? (
               <>
                 <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
-                <Button btnStyle="btn-state" styles="text-deepGreen border-deepGreen">
+                <Button btnStyle="btn-state-sm" styles="text-deepGreen border-deepGreen">
                   대기
                 </Button>
               </>
@@ -35,9 +35,13 @@ const Question = (props: Props & IQuestion) => {
               </>
             )}
           </div>
-          <div className="flex gap-2">
-            <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
-            <Icon name="trash" className="h-5 w-5 fill-red" />
+          <div className="flex">
+            <Button btnStyle="btn-ghost">
+              <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
+            </Button>
+            <Button btnStyle="btn-ghost">
+              <Icon name="trash" className="h-5 w-5 fill-red" />
+            </Button>
           </div>
         </section>
       </li>
