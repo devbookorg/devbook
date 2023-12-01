@@ -6,8 +6,8 @@ const Modal = () => {
   return (
     <>
       {modalData.isOpen && (
-        <div className="absolute h-full w-full bg-black/70 ">
-          <div className="absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2">
+        <div className="absolute h-screen w-full bg-black/70 ">
+          <div className="absolute flex h-full w-full items-center justify-center">
             {modalData.content}
           </div>
         </div>
