@@ -12,7 +12,8 @@ interface Props {
     | 'btn-CSS'
     | 'btn-REACT'
     | 'btn-NEXT'
-    | 'btn-CS';
+    | 'btn-CS'
+    | 'btn-state';
   type?: 'button' | 'submit' | 'reset';
 }
 
