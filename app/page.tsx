@@ -1,6 +1,7 @@
 'use client';
 
-import QuestionsList from '@/components/main/QuestionsList';
+import Question from '@/components/common/Question';
+import MainQuestion from '@/components/main/QuestionItem';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import IQuestion from '@/types/questions';
 import { useSession } from 'next-auth/react';
@@ -28,7 +29,11 @@ export default function Home() {
   return (
     <>
       전체 질문 수 : {numberOfQuestions}
-      <QuestionsList questions={questions} loadQuestions={loadQuestions} />
+      {questions.map((question) => (
+        <Question key={question.id} {...question}>
+          <MainQuestion {...question} loadQuestions={loadQuestions} />
+        </Question>
+      ))}
     </>
   );
 }
