@@ -9,12 +9,12 @@ import { getUser } from '@/firebase/users';
 import { createQuestion } from '@/firebase/questions';
 import { questionCategory } from '@/utils/variable';
 import { useRecoilValue } from 'recoil';
-import { userStateQuery } from '@/recoil/user';
+import { userState } from '@/recoil/user';
 
 const initialQuestionValue = { category: '카테고리 선택', title: '', answer: '' };
 
 export default function QuestionForm() {
-  const user = useRecoilValue(userStateQuery);
+  const user = useRecoilValue(userState);
   const [questionValue, setQuestionValue] = useState(initialQuestionValue);
 
   const handleSubmit = () => {
