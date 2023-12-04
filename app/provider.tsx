@@ -4,14 +4,17 @@ import Modal from '@/components/common/Modal';
 import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
+import Wrapper from './wrapper';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <RecoilRoot>
         <React.Suspense fallback={<div>Loading...</div>}>
-          {/* <Modal /> */}
-          {children}
+          <Wrapper>
+            <Modal />
+            {children}
+          </Wrapper>
         </React.Suspense>
       </RecoilRoot>
     </SessionProvider>

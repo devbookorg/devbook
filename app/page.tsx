@@ -2,17 +2,12 @@
 
 import QuestionsList from '@/components/main/QuestionsList';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
-import { getUser } from '@/firebase/users';
-import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
-import IUser from '@/types/users';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
 
 export default function Home() {
   const { data: session } = useSession();
-  const [user, setUser] = useRecoilState<IUser>(userState);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
   const approvedQuestions = 0; //0:대기|1:승인|2:미승인
@@ -24,12 +19,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (session && session.user) {
+    if (session) {
       loadQuestions();
       getQuestionsCount({ approved: approvedQuestions }).then((res) => setNumberOfQuestions(res));
-      getUser({ email: session.user.email! }).then((res) => setUser(res as IUser));
     }
-  }, [session, user.likeQuestions.length, setUser]);
+  }, [session]);
 
   return (
     <>

@@ -6,12 +6,12 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Icon from '../Icon';
 import { useRecoilValue } from 'recoil';
-import { userStateQuery } from '@/recoil/user';
+import { userState } from '@/recoil/user';
 
 const Header = () => {
   const router = useRouter();
   const { data } = useSession();
-  const user = useRecoilValue(userStateQuery);
+  const user = useRecoilValue(userState);
   console.log(user, '<< user');
   return (
     <header className="flex items-center justify-between px-6 py-4 text-deepGreen">
