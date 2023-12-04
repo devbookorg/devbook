@@ -8,8 +8,9 @@ import { userState } from '@/recoil/user';
 interface QuestionsListProps {
   questions: IQuestion[];
   loadQuestions: () => void;
+  children: React.ReactNode;
 }
-export default function QuestionsList({ questions, loadQuestions }: QuestionsListProps) {
+export default function QuestionsList({ questions, loadQuestions, children }: QuestionsListProps) {
   const user = useRecoilValue(userState);
 
   return (
@@ -17,6 +18,7 @@ export default function QuestionsList({ questions, loadQuestions }: QuestionsLis
       {questions.map((question) => {
         return (
           <Question key={question.id} {...question}>
+            {children}
             <QuestionItem {...question} user={user} loadQuestions={loadQuestions} />
           </Question>
         );

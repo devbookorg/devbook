@@ -1,13 +1,14 @@
 import IQuestion from '@/types/questions';
 import React from 'react';
 import Button from './Button';
+import formatUnixTime from '@/utils/functions/formatUnixTime';
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const Question = (props: IQuestion & Props) => {
-  const { category, title, answer, children } = props;
+  const { category, title, answer, children, dataCreated } = props;
   return (
     <>
       <div className="flex justify-between p-3">
@@ -18,7 +19,10 @@ const Question = (props: IQuestion & Props) => {
           <h3>{title}</h3>
           <p className="text-xs text-gray">{answer}</p>
         </section>
-        {children}
+        <div>
+          <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
+          {children}
+        </div>
       </div>
       <hr className="border-lightGray" />
     </>

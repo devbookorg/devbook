@@ -10,7 +10,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <SessionProvider>
       <RecoilRoot>
         <React.Suspense fallback={<div>Loading...</div>}>
-          {/* <Modal /> */}
+          <Modal />
           {children}
         </React.Suspense>
       </RecoilRoot>

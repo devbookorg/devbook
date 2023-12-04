@@ -15,6 +15,7 @@ interface Props {
   user: IUser;
   loadQuestions: () => void;
 }
+userState;
 export default function Question(props: Props & IQuestion) {
   const { dataCreated, id, likes, user } = props;
   const [isHovered, setIsHovered] = useState(false);
