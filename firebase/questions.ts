@@ -149,14 +149,17 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 
 // 6. question을 불러오는 필터링이 가능한 로직
 export const getFilteredQuestions = async (filters: {
+  approved?: number;
   sortByLikes?: 'asc' | 'desc';
   sortByDate?: 'asc' | 'desc';
   category?: string;
   userId?: string;
 }): Promise<IQuestion[]> => {
   try {
-    const { sortByLikes, sortByDate, category, userId } = filters;
+    const { sortByLikes, sortByDate, category, userId, approved } = filters;
     let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
+
+    if (approved) filteredQuery = query(filteredQuery, where('approved', '==', approved));
 
     if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
@@ -175,9 +178,14 @@ export const getFilteredQuestions = async (filters: {
 };
 
 // 7. questions의 모든 데이터의 갯수를 가져오는 로직
-export const getQuestionsCount = async (): Promise<number> => {
+export const getQuestionsCount = async (filters: { approved?: number }): Promise<number> => {
   try {
-    const questionsSnapshot = await getDocs(questionsCollection);
+    const { approved } = filters;
+    let filteredQuery = query(questionsCollection);
+
+    if (approved) filteredQuery = query(filteredQuery, where('approved', '==', approved));
+
+    const questionsSnapshot = await getDocs(filteredQuery);
     const count: number = questionsSnapshot.size;
     return count;
   } catch (error) {

@@ -1,6 +1,5 @@
 'use client';
 
-import Main from '@/components/main/Main';
 import QuestionsList from '@/components/main/QuestionsList';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import { userMailState, userStateQuery } from '@/recoil/user';
@@ -11,30 +10,35 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 export default function Home() {
   const { data: session } = useSession();
-  const setUserMailState = useSetRecoilState(userMailState);
+  // const setUserMailState = useSetRecoilState(userMailState);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
+  const approvedQuestions = 0; //0:대기|1:승인|2:미승인
+
+  const user = useRecoilValue(userStateQuery);
+
+  console.log(user, '메인페이지에서');
 
   const loadQuestions = () => {
-    getFilteredQuestions({}).then((res) => {
+    getFilteredQuestions({ approved: approvedQuestions }).then((res) => {
       setQuestions(res);
     });
   };
   useEffect(() => {
     loadQuestions();
-    getQuestionsCount().then((res) => setNumberOfQuestions(res));
+    getQuestionsCount({ approved: approvedQuestions }).then((res) => setNumberOfQuestions(res));
   }, []);
 
   useEffect(() => {
     if (session) {
-      setUserMailState(session.user?.email!);
+      // setUserMailState(session.user?.email!);
     }
   }, [session, userMailState]);
 
   return (
     <>
       전체 질문 수 : {numberOfQuestions}
-      <QuestionsList questions={questions} loadQuestions={loadQuestions} />
+      {/* <QuestionsList questions={questions} loadQuestions={loadQuestions} /> */}
     </>
   );
 }

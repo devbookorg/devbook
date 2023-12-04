@@ -51,7 +51,6 @@ export const getUser = async (userData: { email: string }): Promise<IUser | null
       return null;
     } else {
       const user = userQuery.docs[0].data() as IUser;
-      console.log('user : ', user);
       return user;
     }
   } catch (error) {
