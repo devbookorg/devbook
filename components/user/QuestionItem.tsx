@@ -7,11 +7,13 @@ import { useModal } from '@/hooks/useModal';
 import EditQuestion from './EditQuestion';
 import QuestionForm from '../common/Form';
 
-interface Props {}
+interface Props {
+  tab: number;
+}
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { title, answer, dataCreated, category, approved } = props;
-  const { openModal } = useModal();
+  const { tab, title, answer, dataCreated, category, approved } = props;
+  const { openModal, closeModal } = useModal();
   return (
     <section className="flex flex-col items-end justify-between">
       <div className="flex items-center gap-2">
@@ -36,9 +38,18 @@ const QuestionItem = (props: Props & IQuestion) => {
               btnStyle="btn-ghost"
               handleClick={() => {
                 openModal({
-                  // children: <EditQuestion title={title} answer={answer} category={category} />,
                   children: (
-                    <div className="w-40 bg-white">
+                    <div className=" relative w-screen max-w-[36em] bg-white p-6">
+                      <section className=" text-center">
+                        <h1 className="my-4">질문 수정하기</h1>
+                        <Button
+                          btnStyle="btn-ghost"
+                          handleClick={closeModal}
+                          styles="absolute top-2 right-2"
+                        >
+                          <Icon name="close" className="h-8 w-8" />
+                        </Button>
+                      </section>
                       <QuestionForm />
                     </div>
                   ),
