@@ -14,6 +14,7 @@ import Likes from '../common/Likes';
 interface Props {
   loadQuestions: () => void;
 }
+userState;
 export default function Question(props: Props & IQuestion) {
   const { dataCreated, id, likes } = props;
 
