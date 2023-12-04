@@ -13,8 +13,6 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (data && data.user) {
       getUser({ email: data.user?.email as string }).then((res) => {
-        console.log('process.env.APP_ADMIN01_ID :', process.env.NEXT_PUBLIC_APP_ADMIN01_ID);
-        console.log('process.env.APP_ADMIN02_ID :', process.env.NEXT_PUBLIC_APP_ADMIN02_ID);
         if (!res) return;
         if (
           res?.id === process.env.NEXT_PUBLIC_APP_ADMIN01_ID ||

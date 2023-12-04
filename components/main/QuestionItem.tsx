@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { updateQuestionLikes } from '@/firebase/questions';
 import { updateUserLikeQuestions } from '@/firebase/users';
 import IQuestion from '@/types/questions';
-import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { useRecoilState } from 'recoil';
 import { userState } from '@/recoil/user';
 
@@ -16,7 +15,7 @@ interface Props {
 }
 userState;
 export default function Question(props: Props & IQuestion) {
-  const { dataCreated, id, likes } = props;
+  const { id, likes } = props;
 
   const [user, setUser] = useRecoilState(userState);
   const [countLikes, setCountLikes] = useState(likes);
@@ -37,8 +36,7 @@ export default function Question(props: Props & IQuestion) {
   };
 
   return (
-    <div className="flex flex-col items-end gap-5">
-      <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
+    <div className="flex flex-col items-end justify-end gap-5">
       <div className="flex items-center gap-2">
         <Likes handleClick={() => likeToggle(id)} condition={!user.likeQuestions?.includes(id)} />
         <div className="min-w-[40px] pb-0.5">{countLikes}</div>
