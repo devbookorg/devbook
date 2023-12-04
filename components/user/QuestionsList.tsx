@@ -23,6 +23,7 @@ const QuestionsList = (props: Props) => {
       <ul>
         {[...(tab === 0 ? userQuestions : likesQuestions)].map((q) => (
           <Question key={q.id} {...q}>
+            {q.id}
             <QuestionItem {...q} tab={tab} />
           </Question>
         ))}

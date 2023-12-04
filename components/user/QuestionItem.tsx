@@ -6,14 +6,20 @@ import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { useModal } from '@/hooks/useModal';
 import EditQuestion from './EditQuestion';
 import QuestionForm from '../common/Form';
+import { deleteQuestion } from '@/firebase/questions';
 
 interface Props {
   tab: number;
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { tab, title, answer, dataCreated, category, approved } = props;
+  const { id, tab, title, answer, dataCreated, category, approved } = props;
   const { openModal, closeModal } = useModal();
+  const removeQuestion = (questionId: string) => {
+    deleteQuestion(questionId);
+  };
+
+  console.log('문제', id);
   return (
     <section className="flex flex-col items-end justify-between">
       <div className="flex items-center gap-2">
@@ -61,7 +67,13 @@ const QuestionItem = (props: Props & IQuestion) => {
           )}
         </>
 
-        <Button btnStyle="btn-ghost">
+        <Button
+          btnStyle="btn-ghost"
+          handleClick={() => {
+            console.log('?????????????');
+            removeQuestion(id);
+          }}
+        >
           <Icon name="trash" className="h-5 w-5 fill-red" />
         </Button>
       </div>
