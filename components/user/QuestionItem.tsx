@@ -2,38 +2,49 @@ import IQuestion from '@/types/questions';
 import React from 'react';
 import Button from '../common/Button';
 import Icon from '../common/Icon';
-import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { useModal } from '@/hooks/useModal';
 import EditQuestion from './EditQuestion';
 import QuestionForm from '../common/Form';
+import Likes from '../common/Likes';
 
 interface Props {
-  tab: number;
+  user: string;
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { tab, title, answer, dataCreated, category, approved } = props;
+  const { user, userId, title, answer, dataCreated, category, approved } = props;
   const { openModal, closeModal } = useModal();
+
+  let questionState = <></>;
+  if (approved === 0) {
+    questionState = (
+      <Button btnStyle="btn-state-sm" styles="text-deepGreen border-deepGreen">
+        대기
+      </Button>
+    );
+  } else if (approved === 1) {
+    questionState = (
+      <>
+        <span className="text-xs">사유보기</span>
+        <Button btnStyle="btn-state-sm" styles="text-white bg-red">
+          거부
+        </Button>
+      </>
+    );
+  } else {
+    questionState = (
+      <Button btnStyle="btn-state-sm" styles="bg-deepGreen text-white">
+        승인
+      </Button>
+    );
+  }
+
   return (
     <section className="flex flex-col items-end justify-between">
-      <div className="flex items-center gap-2">
-        {approved === 0 ? (
-          <>
-            <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
-            <Button btnStyle="btn-state-sm" styles="text-deepGreen border-deepGreen">
-              대기
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button btnStyle="btn-ghost">사유보기</Button>
-            <Button btnStyle="btn-ghost">거부</Button>
-          </>
-        )}
-      </div>
+      <div className="flex items-center gap-2">{user === userId && questionState}</div>
       <div className="flex">
-        <>
-          {approved !== 1 && (
+        {approved !== 2 && userId === user ? (
+          <>
             <Button
               btnStyle="btn-ghost"
               handleClick={() => {
@@ -58,12 +69,13 @@ const QuestionItem = (props: Props & IQuestion) => {
             >
               <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
             </Button>
-          )}
-        </>
-
-        <Button btnStyle="btn-ghost">
-          <Icon name="trash" className="h-5 w-5 fill-red" />
-        </Button>
+            <Button btnStyle="btn-ghost">
+              <Icon name="trash" className="h-5 w-5 fill-red" />
+            </Button>
+          </>
+        ) : (
+          <Likes handleClick={() => {}} condition={true} />
+        )}
       </div>
     </section>
   );

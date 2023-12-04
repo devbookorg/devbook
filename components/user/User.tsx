@@ -21,7 +21,7 @@ const User = (props: Props) => {
       <section className="flex items-center gap-2">
         <b className="text-lg">{name}</b>님
       </section>
-      <QuestionsList userQuestions={userPost} likesQuestions={likesPost} />
+      <QuestionsList userQuestions={userPost} likesQuestions={likesPost} user={id} />
       <section className="my-4 flex gap-4">
         <Button
           btnStyle="btn-state-lg"

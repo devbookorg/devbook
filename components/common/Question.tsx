@@ -19,7 +19,7 @@ const Question = (props: IQuestion & Props) => {
           <h3>{title}</h3>
           <p className="text-xs text-gray">{answer}</p>
         </section>
-        <div>
+        <div className="flex flex-1 flex-col items-end justify-between gap-1">
           <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
           {children}
         </div>
