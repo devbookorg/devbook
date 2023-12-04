@@ -5,11 +5,12 @@ import Question from '../common/Question';
 import QuestionItem from './QuestionItem';
 
 interface Props {
-  questions: IQuestion[];
+  userQuestions: IQuestion[];
+  likesQuestions: IQuestion[];
 }
 
 const QuestionsList = (props: Props) => {
-  const { questions } = props;
+  const { userQuestions, likesQuestions } = props;
   const [tab, setTab] = useState<number>(0);
 
   const handleTab = (n: number) => {
@@ -20,9 +21,9 @@ const QuestionsList = (props: Props) => {
     <>
       <QuestionsListTab handleTab={handleTab} tab={tab} />
       <ul>
-        {questions.map((q) => (
+        {[...(tab === 0 ? userQuestions : likesQuestions)].map((q) => (
           <Question key={q.id} {...q}>
-            <QuestionItem {...q} />
+            <QuestionItem {...q} tab={tab} />
           </Question>
         ))}
       </ul>

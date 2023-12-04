@@ -1,6 +1,7 @@
 'use client';
 
-import QuestionsList from '@/components/main/QuestionsList';
+import Question from '@/components/common/Question';
+import MainQuestion from '@/components/main/QuestionItem';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import { getUser } from '@/firebase/users';
 import { userState } from '@/recoil/user';
@@ -8,11 +9,11 @@ import IQuestion from '@/types/questions';
 import IUser from '@/types/users';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 export default function Home() {
   const { data: session } = useSession();
-  const [user, setUser] = useRecoilState<IUser>(userState);
+  const setUser = useSetRecoilState<IUser>(userState);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
   const approvedQuestions = 1; //0:대기|1:승인|2:미승인
@@ -39,12 +40,16 @@ export default function Home() {
         }
       });
     }
-  }, [session, user.likeQuestions.length, setUser]);
+  }, [session]);
 
   return (
     <>
       전체 질문 수 : {numberOfQuestions}
-      <QuestionsList questions={questions} loadQuestions={loadQuestions} />
+      {questions.map((question) => (
+        <Question key={question.id} {...question}>
+          <MainQuestion {...question} loadQuestions={loadQuestions} />
+        </Question>
+      ))}
     </>
   );
 }

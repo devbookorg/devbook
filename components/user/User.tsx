@@ -9,10 +9,11 @@ interface Props {
   name: string;
   id: string;
   userPost: IQuestion[];
+  likesPost: IQuestion[];
 }
 
 const User = (props: Props) => {
-  const { id, name, userPost } = props;
+  const { id, name, userPost, likesPost } = props;
   const router = useRouter();
 
   return (
@@ -20,7 +21,7 @@ const User = (props: Props) => {
       <section className="flex items-center gap-2">
         <b className="text-lg">{name}</b>님
       </section>
-      <QuestionsList questions={userPost} />
+      <QuestionsList userQuestions={userPost} likesQuestions={likesPost} />
       <section className="my-4 flex gap-4">
         <Button
           btnStyle="btn-state-lg"
