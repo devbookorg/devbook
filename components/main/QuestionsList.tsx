@@ -1,16 +1,17 @@
 import IQuestion from '@/types/questions';
 import QuestionItem from './QuestionItem';
 import Question from '../common/Question';
-import IUser from '@/types/users';
+
 import { useRecoilValue } from 'recoil';
-import { userStateQuery } from '@/recoil/user';
+import { userState } from '@/recoil/user';
 
 interface QuestionsListProps {
   questions: IQuestion[];
   loadQuestions: () => void;
 }
 export default function QuestionsList({ questions, loadQuestions }: QuestionsListProps) {
-  const user = useRecoilValue(userStateQuery);
+  const user = useRecoilValue(userState);
+
   return (
     <div>
       {questions.map((question) => {

@@ -1,29 +1,25 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import {
-  createQuestion,
-  getFilteredQuestions,
-  getQuestionsCount,
-  updateQuestionLikes,
-} from '@/firebase/questions';
-import { getUser, updateUserLikeQuestions } from '@/firebase/users';
+import { useState } from 'react';
+
+import { updateQuestionLikes } from '@/firebase/questions';
+import { updateUserLikeQuestions } from '@/firebase/users';
 import IQuestion from '@/types/questions';
 import Icon from '../common/Icon';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import IUser from '@/types/users';
-import { useRecoilRefresher_UNSTABLE, useSetRecoilState } from 'recoil';
-import { userMailState, userStateQuery } from '@/recoil/user';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '@/recoil/user';
 
 interface Props {
   user: IUser;
   loadQuestions: () => void;
 }
 export default function Question(props: Props & IQuestion) {
-  const { dataCreated, id, likes, user, loadQuestions } = props;
+  const { dataCreated, id, likes, user } = props;
   const [isHovered, setIsHovered] = useState(false);
-  const refresh = useRecoilRefresher_UNSTABLE(userStateQuery);
+
+  const setUserState = useSetRecoilState(userState);
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -38,8 +34,7 @@ export default function Question(props: Props & IQuestion) {
 
     updateQuestionLikes(questionsId, increment).then(() => {
       updateUserLikeQuestions(user?.id, questionsId);
-      loadQuestions();
-      refresh();
+      setUserState((prev) => ({ ...prev, likeQuestions: [] }));
     });
   };
 
