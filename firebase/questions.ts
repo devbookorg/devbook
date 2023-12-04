@@ -126,14 +126,13 @@ export const updateQuestionApproved = async (
 };
 
 // 5. question을 삭제하는 로직
-export const deleteQuestion = async (questionId: string): Promise<IQuestion | null> => {
+export const deleteQuestion = async (questionId: string) => {
   try {
-    const questionRef = doc(questionsCollection, questionId);
-    const deletedQuestionSnapshot = await getDoc(questionRef);
-    const deletedQuestion: IQuestion = deletedQuestionSnapshot.data() as IQuestion;
+    const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
+    const firstQuestionDocumentId = questionsQuery.docs[0].id;
 
+    const questionRef = doc(questionsCollection, firstQuestionDocumentId);
     await deleteDoc(questionRef);
-    return deletedQuestion;
   } catch (error) {
     console.error('Failed to delete question:', error);
     throw error;

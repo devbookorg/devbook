@@ -2,17 +2,17 @@
 
 import Button from '@/components/common/Button';
 import Question from '@/components/common/Question';
-
-import QuestionsList from '@/components/main/QuestionsList';
 import {
   getFilteredQuestions,
   getQuestionsCount,
   updateQuestionApproved,
 } from '@/firebase/questions';
+import { useModal } from '@/hooks/useModal';
 import IQuestion from '@/types/questions';
 import { useEffect, useState } from 'react';
 
 export default function AdminPage() {
+  const { openModal, closeModal } = useModal();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
   const approvedQuestions = 0; //0:대기|1:승인|2:미승인
@@ -37,10 +37,21 @@ export default function AdminPage() {
 
   console.log(questions);
 
+  const modalOpen = () => {
+    {
+      openModal({
+        children: <div className=" relative w-screen max-w-[36em] bg-white p-6">모달열기</div>,
+      });
+    }
+    setTimeout(closeModal, 1000);
+  };
+
   return (
     <>
-      adminPage 1. approved = 0인것만 보이는 메인페이지같은 2. 버튼이 두개 (승인/거부) 3. 왼쪽에
-      승인
+      {/* {openModal({
+        children: <div className=" relative w-screen max-w-[36em] bg-white p-6">모달열기</div>,
+      })} */}
+      <button onClick={modalOpen}>체크</button>
       {questions.map((question) => {
         return (
           <Question key={question.id} {...question}>
@@ -50,6 +61,7 @@ export default function AdminPage() {
                 styles="bg-red"
                 handleClick={() => {
                   rejectQuestion(question.id);
+                  modalOpen();
                 }}
               >
                 거부
@@ -58,6 +70,7 @@ export default function AdminPage() {
                 btnStyle="btn-fill"
                 handleClick={() => {
                   approveQuestion(question.id);
+                  modalOpen();
                 }}
               >
                 승인
