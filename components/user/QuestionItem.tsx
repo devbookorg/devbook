@@ -6,13 +6,15 @@ import { useModal } from '@/hooks/useModal';
 import EditQuestion from './EditQuestion';
 import QuestionForm from '../common/Form';
 import Likes from '../common/Likes';
+import { deleteQuestion } from '@/firebase/questions';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface Props {
   user: string;
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { user, userId, title, answer, dataCreated, category, approved } = props;
+  const { id, user, userId, title, answer, dataCreated, category, approved } = props;
   const { openModal, closeModal } = useModal();
 
   let questionState = <></>;
@@ -69,7 +71,19 @@ const QuestionItem = (props: Props & IQuestion) => {
             >
               <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
             </Button>
-            <Button btnStyle="btn-ghost">
+            <Button
+              btnStyle="btn-ghost"
+              handleClick={() =>
+                openModal({
+                  children: (
+                    <ConfirmModal
+                      content="삭제하시겠습니까?"
+                      onSuccess={() => deleteQuestion(id)}
+                    />
+                  ),
+                })
+              }
+            >
               <Icon name="trash" className="h-5 w-5 fill-red" />
             </Button>
           </>
