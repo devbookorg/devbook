@@ -9,26 +9,22 @@ import Icon from '../common/Icon';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { useRecoilState } from 'recoil';
 import { userState } from '@/recoil/user';
+import { useToggle } from '@/hooks/useToggle';
 
 interface Props {
   loadQuestions: () => void;
 }
 export default function Question(props: Props & IQuestion) {
   const { dataCreated, id, likes } = props;
-  const [isHovered, setIsHovered] = useState(false);
+
   const [user, setUser] = useRecoilState(userState);
   const [countLikes, setCountLikes] = useState(likes);
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+  const { isOff, handleToggle } = useToggle();
 
   const likeToggle = (questionsId: string) => {
     const filterArr = user?.likeQuestions.find((question) => question === questionsId);
     const increment = filterArr ? -1 : +1;
+    handleToggle();
 
     updateQuestionLikes(questionsId, increment).then(() => {
       updateUserLikeQuestions(user?.id, questionsId);
@@ -51,10 +47,10 @@ export default function Question(props: Props & IQuestion) {
             likeToggle(id);
           }}
           className="w-fit"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => handleToggle(true)}
+          onMouseLeave={() => handleToggle(false)}
         >
-          {!isHovered && !user.likeQuestions.includes(id) ? (
+          {isOff && !user.likeQuestions.includes(id) ? (
             <Icon name="heart" className="h-6 w-6" />
           ) : (
             <Icon name="heartFill" className="h-6 w-6" />
