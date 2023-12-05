@@ -19,7 +19,6 @@ interface QuestionsFormProps {
 }
 
 export default function QuestionForm({ question, handleClick }: QuestionsFormProps) {
-  console.log(question, 'question');
   const user = useRecoilValue(userState);
   const [questionValue, setQuestionValue] = useState(question ?? initialQuestionValue);
 

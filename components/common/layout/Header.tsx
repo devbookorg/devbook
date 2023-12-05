@@ -12,7 +12,7 @@ const Header = () => {
   const router = useRouter();
   const { data } = useSession();
   const user = useRecoilValue(userState);
-  console.log(user, '<< user');
+
   return (
     <header className="flex items-center justify-between px-6 py-4 text-deepGreen ">
       <Button btnStyle="btn-ghost" styles="p-0" handleClick={() => router.push('/')}>

@@ -16,7 +16,6 @@ interface Props {
 const QuestionItem = (props: Props & IQuestion) => {
   const { id, user, userId, title, answer, dataCreated, category, approved } = props;
   const { openModal, closeModal } = useModal();
-  console.log(id, '??');
 
   let questionState = <></>;
   if (approved === 0) {

@@ -35,8 +35,6 @@ export default function AdminPage() {
     updateQuestionApproved(questionsId, { approved: 2 });
   };
 
-  console.log(questions);
-
   const modalOpen = () => {
     {
       openModal({
