@@ -14,9 +14,9 @@ const Header = () => {
   const user = useRecoilValue(userState);
   console.log(user, '<< user');
   return (
-    <header className="flex items-center justify-between px-6 py-4 text-deepGreen">
+    <header className="flex items-center justify-between px-6 py-4 text-deepGreen ">
       <Button btnStyle="btn-ghost" styles="p-0" handleClick={() => router.push('/')}>
-        <h1 className="text-2xl font-bold">DevBook</h1>
+        <h1 className="text-2xl font-bold hover:text-green">DevBook</h1>
       </Button>
       <section className="flex items-center gap-4">
         <Button btnStyle="btn-ghost" handleClick={() => {}}>
@@ -29,6 +29,7 @@ const Header = () => {
             </Button> */}
             {user?.admin && (
               <Button
+                styles="hover:text-green"
                 btnStyle="btn-ghost"
                 handleClick={() => {
                   router.push('/admin');
@@ -45,7 +46,11 @@ const Header = () => {
             </Button>
           </>
         ) : (
-          <Button handleClick={signIn} btnStyle="btn-primary">
+          <Button
+            handleClick={signIn}
+            btnStyle="btn-primary"
+            styles="hover:bg-deepGreen hover:text-white"
+          >
             로그인
           </Button>
         )}
