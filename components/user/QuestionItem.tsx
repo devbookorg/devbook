@@ -16,6 +16,7 @@ interface Props {
 const QuestionItem = (props: Props & IQuestion) => {
   const { id, user, userId, title, answer, dataCreated, category, approved } = props;
   const { openModal, closeModal } = useModal();
+  console.log(id, '??');
 
   let questionState = <></>;
   if (approved === 0) {
@@ -49,40 +50,39 @@ const QuestionItem = (props: Props & IQuestion) => {
           <>
             <Button
               btnStyle="btn-ghost"
-              handleClick={() => {
+              handleClick={(e) => {
+                e.stopPropagation();
                 openModal({
                   children: (
                     <div className=" relative w-screen max-w-[36em] bg-white p-6">
                       <section className=" text-center">
                         <h1 className="my-4">질문 수정하기</h1>
-                        <Button
-                          btnStyle="btn-ghost"
-                          handleClick={closeModal}
-                          styles="absolute top-2 right-2"
-                        >
-                          <Icon name="close" className="h-8 w-8" />
-                        </Button>
                       </section>
-                      <QuestionForm />
+                      <QuestionForm
+                        question={{ questionId: id, category, title, answer }}
+                        handleClick={closeModal}
+                      />
                     </div>
                   ),
                 });
               }}
             >
-              <Icon name="edit" className="h-5 w-5  fill-deepGreen" />
+              <Icon name="edit" className="h-5 w-5  fill-deepGreen " />
             </Button>
             <Button
               btnStyle="btn-ghost"
-              handleClick={() =>
+              handleClick={(e) => {
+                e.stopPropagation();
                 openModal({
+                  center: true,
                   children: (
                     <ConfirmModal
                       content="삭제하시겠습니까?"
                       onSuccess={() => deleteQuestion(id)}
                     />
                   ),
-                })
-              }
+                });
+              }}
             >
               <Icon name="trash" className="h-5 w-5 fill-red" />
             </Button>

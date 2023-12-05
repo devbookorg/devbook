@@ -72,9 +72,6 @@ export const updateUserLikeQuestions = async (userId: string, questionId: string
     const QuestionRef = doc(usersCollection, firstQuestionDocumentId);
     const questionSnapshot = await getDoc(QuestionRef);
 
-    console.log('userSnapshot : ', userSnapshot);
-    console.log('questionSnapshot : ', questionSnapshot);
-
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data() as IUser;
       let updatedLikeQuestions: string[];

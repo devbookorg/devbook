@@ -7,8 +7,8 @@ export const useModal = () => {
   const closeModal = () => {
     setModalData((prev) => ({ ...prev, isOpen: false }));
   };
-  const openModal = ({ children }: { children?: React.ReactNode }) => {
-    setModalData({ content: children, isOpen: true });
+  const openModal = ({ children, center }: { children?: React.ReactNode; center?: boolean }) => {
+    setModalData({ content: children, isOpen: true, center: center });
   };
 
   return { modalData, closeModal, openModal };

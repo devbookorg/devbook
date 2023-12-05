@@ -6,34 +6,46 @@ import DropDownBox from './DropDownBox';
 import { LabeledInput } from './Input';
 import { Labeled } from './layout/Layout';
 import { getUser } from '@/firebase/users';
-import { createQuestion } from '@/firebase/questions';
+import { createQuestion, updateQuestion } from '@/firebase/questions';
 import { questionCategory } from '@/utils/variable';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
 
 const initialQuestionValue = { category: '카테고리 선택', title: '', answer: '' };
 
-export default function QuestionForm() {
+interface QuestionsFormProps {
+  question?: { questionId: string; category: string; title: string; answer: string };
+  handleClick?: () => void;
+}
+
+export default function QuestionForm({ question, handleClick }: QuestionsFormProps) {
+  console.log(question, 'question');
   const user = useRecoilValue(userState);
-  const [questionValue, setQuestionValue] = useState(initialQuestionValue);
+  const [questionValue, setQuestionValue] = useState(question ?? initialQuestionValue);
 
   const handleSubmit = () => {
     if (questionValue.category === '카테고리 선택') {
       alert('카테고리를 선택해주세요.');
     } else {
-      getUser({ email: user?.email as string }).then((res) => {
-        if (res) {
-          const body = {
-            category: questionValue.category,
-            title: questionValue.title,
-            answer: questionValue.answer,
-            userId: res.id,
-          };
-          createQuestion(body).then(() => {
-            setQuestionValue(initialQuestionValue);
-          });
-        }
-      });
+      if (question) {
+        const body = {
+          category: questionValue.category,
+          title: questionValue.title,
+          answer: questionValue.answer,
+        };
+        updateQuestion(question.questionId, body);
+      } else {
+        const body = {
+          category: questionValue.category,
+          title: questionValue.title,
+          answer: questionValue.answer,
+          userId: user.id,
+        };
+        createQuestion(body).then(() => {
+          setQuestionValue(initialQuestionValue);
+        });
+      }
+      if (handleClick) handleClick();
     }
   };
 

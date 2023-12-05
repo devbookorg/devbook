@@ -14,7 +14,7 @@ interface Props {
   loadQuestions: () => void;
 }
 userState;
-export default function Question(props: Props & IQuestion) {
+export default function LikeQuestionPart(props: Props & IQuestion) {
   const { id, likes } = props;
 
   const [user, setUser] = useRecoilState(userState);

@@ -1,14 +1,13 @@
 'use client';
 
+import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 import Question from '@/components/common/Question';
-import MainQuestion from '@/components/main/QuestionItem';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import IQuestion from '@/types/questions';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const { data: session } = useSession();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
   const approvedQuestions = 1; //0:대기|1:승인|2:미승인
@@ -29,7 +28,7 @@ export default function Home() {
       전체 질문 수 : {numberOfQuestions}
       {questions.map((question) => (
         <Question key={question.id} {...question}>
-          <MainQuestion {...question} loadQuestions={loadQuestions} />
+          <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
         </Question>
       ))}
     </>

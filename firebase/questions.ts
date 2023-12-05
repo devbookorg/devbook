@@ -59,14 +59,18 @@ export const createQuestion = async (body: {
 // 2. question의 title, answer를 수정하는 로직
 export const updateQuestion = async (
   questionId: string,
-  body: { title?: string; answer?: string }
+  body: { category: string; title: string; answer: string }
 ): Promise<IQuestion | null> => {
   try {
-    const questionRef = doc(questionsCollection, questionId);
-    const updatedData: Record<string, any> = {};
+    const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
+    const firstQuestionDocumentId = questionsQuery.docs[0].id;
 
-    if (body.title) updatedData.title = body.title;
-    if (body.answer) updatedData.answer = body.answer;
+    const questionRef = doc(questionsCollection, firstQuestionDocumentId);
+    const updatedData: Record<string, any> = {
+      category: body.category,
+      title: body.title,
+      answer: body.answer,
+    };
 
     await updateDoc(questionRef, updatedData);
 
@@ -196,6 +200,30 @@ export const getQuestionsCount = async (filters: { approved?: 0 | 1 }): Promise<
     return count;
   } catch (error) {
     console.error('Failed to get question count:', error);
+    throw error;
+  }
+};
+
+// 8. likeQuestions[]의 모든 question을 불러오는 로직
+export const getLikesQuestions = async (questions: string[]): Promise<IQuestion[]> => {
+  try {
+    const result: IQuestion[] = [];
+
+    for (const questionId of questions) {
+      const q = query(questionsCollection, where('id', '==', questionId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          const data = doc.data();
+          result.push(data as IQuestion);
+        } else {
+          console.error(`No document found for questionId: ${questionId}`);
+        }
+      });
+    }
+    return result;
+  } catch (error) {
+    console.error('Failed to get questions', error);
     throw error;
   }
 };

@@ -41,6 +41,7 @@ export default function AdminPage() {
     {
       openModal({
         children: <div className=" relative w-screen max-w-[36em] bg-white p-6">모달열기</div>,
+        center: true,
       });
     }
     setTimeout(closeModal, 1000);
@@ -48,9 +49,6 @@ export default function AdminPage() {
 
   return (
     <>
-      {/* {openModal({
-        children: <div className=" relative w-screen max-w-[36em] bg-white p-6">모달열기</div>,
-      })} */}
       <button onClick={modalOpen}>체크</button>
       {questions.map((question) => {
         return (

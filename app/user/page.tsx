@@ -1,40 +1,75 @@
 'use client';
 
-import User from '@/components/user/User';
-import { getFilteredQuestions } from '@/firebase/questions';
+import React, { useEffect, useState } from 'react';
+import Button from '@/components/common/Button';
+import { getFilteredQuestions, getLikesQuestions } from '@/firebase/questions';
 import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
-import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import Question from '@/components/common/Question';
+import QuestionItem from '@/components/user/QuestionItem';
+import { DeleteUserAndLogout } from '@/components/user/DeleteUserAndLogout';
+import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 
 const UserPage = () => {
   const user = useRecoilValue(userState);
-  const [userData, setUserData] = useState<IQuestion[]>([]);
-  const [likesData, setLikesData] = useState<IQuestion[]>([]);
+  const { id, name } = user;
+  const [myWroteQuestions, setMyWroteQuestions] = useState<IQuestion[]>([]);
+  const [myLikeQuestions, setMyLikeQuestions] = useState<IQuestion[]>([]);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const viewQuestions = selectedTab === 0 ? myWroteQuestions : myLikeQuestions;
+  const tabs = ['작성한 게시물', '좋아요'];
 
   useEffect(() => {
-    getFilteredQuestions({}).then((res) => {
-      const users = [];
-      const likes = [];
-
-      for (let i = 0; i < res.length; i++) {
-        if (res[i].userId === user!.id) {
-          users.push(res[i]);
-        }
-        if (user!.likeQuestions.includes(res[i].id)) {
-          likes.push(res[i]);
-        }
-      }
-      setUserData(users);
-      setLikesData(likes);
-    });
+    loadWroteQuestions();
+    loadMyLikesQuestions();
   }, [user]);
 
-  if (!user) {
-    return <h1>?</h1>;
-  }
+  const loadWroteQuestions = () => {
+    getFilteredQuestions({ userId: user.id }).then((res) => setMyWroteQuestions(res));
+  };
+  const loadMyLikesQuestions = () => {
+    getLikesQuestions(user.likeQuestions).then((res) => setMyLikeQuestions(res));
+  };
 
-  return <User name={user.name} userPost={userData} likesPost={likesData} id={user.id} />;
+  return (
+    <article className="flex flex-col gap-6 ">
+      <section className="flex items-center gap-2">
+        <b className="text-lg">{name}</b>님
+      </section>
+      <div className="flex">
+        {tabs.map((e, i) => (
+          <div
+            key={e}
+            className={
+              selectedTab === i
+                ? 'flex-1 border-b-2 border-deepGreen'
+                : 'flex-1 border-b-2 border-lightGray'
+            }
+          >
+            <Button
+              type="button"
+              btnStyle="btn-ghost"
+              styles="w-full text-sm"
+              handleClick={() => setSelectedTab(i)}
+            >
+              {e}
+            </Button>
+          </div>
+        ))}
+      </div>
+      {viewQuestions.map((question) => (
+        <Question key={question.id} {...question}>
+          {selectedTab === 0 ? (
+            <QuestionItem user={user.id} {...question} />
+          ) : (
+            <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
+          )}
+        </Question>
+      ))}
+      <DeleteUserAndLogout userId={id} />
+    </article>
+  );
 };
 
 export default UserPage;
