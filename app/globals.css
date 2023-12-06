@@ -5,8 +5,21 @@
 @layer base {
   html {
     font-family: 'Noto Sans KR';
-
     @apply text-black;
+  }
+
+  :root {
+    --default-bg: 255 255 255;
+    --default-text: 28 28 28;
+    --primary-color: 49 133 77;
+    --background: 228 242 233;
+  }
+
+  :root[data-theme='dark'] {
+    --default-bg: 28 28 28;
+    --default-text: 255 255 255;
+    --primary-color: 167 214 183;
+    --background: 170 169 169;
   }
 }
 

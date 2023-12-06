@@ -10,10 +10,12 @@ export const useDarkMode = () => {
       setIsDarkMode(true);
       localStorage.theme = 'dark';
       document.documentElement.classList.add('dark');
+      document.documentElement.dataset.theme = 'dark';
     } else {
       setIsDarkMode(false);
       localStorage.theme = 'light';
       document.documentElement.classList.remove('dark');
+      document.documentElement.dataset.theme = '';
     }
   };
 
