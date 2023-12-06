@@ -25,7 +25,7 @@ const Header = () => {
         <h1 className="text-xl font-bold hover:text-green">DevBook</h1>
       </Button>
       <section className="flex gap-3">
-        <Icon name="sun" className="h-8 w-8 fill-deepGreen" />
+        <Icon name="sun" className="z-50 h-7 w-7 fill-deepGreen" />
         <HamburgerButton isOff={isOff} handleToggle={handleToggle} />
         {!isOff && <Nav handleClose={() => handleToggle(true)} />}
       </section>

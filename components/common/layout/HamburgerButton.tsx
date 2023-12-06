@@ -11,18 +11,18 @@ const HamburgerButton = (props: Props) => {
 
   return (
     <Button btnStyle="btn-ghost" styles="z-50" handleClick={() => handleToggle()}>
-      <div className="flex flex-col items-center justify-center gap-1 ">
+      <div className="flex flex-col items-center justify-center  ">
         <span
-          className={`block h-0.5 w-8 rounded-sm bg-deepGreen 
-transition-all duration-300 ease-out ${!isOff ? 'translate-y-2 rotate-45' : '-translate-y-1'}`}
+          className={`block h-0.5 w-6 rounded-sm bg-deepGreen 
+transition-all duration-300 ease-out ${!isOff ? 'translate-y-1 rotate-45' : '-translate-y-1'}`}
         />
         <span
-          className={`my-0.5 block h-0.5 w-8 rounded-sm 
+          className={`my-0.5 block h-0.5 w-6 rounded-sm 
 bg-deepGreen transition-all duration-300 ease-out ${!isOff ? 'opacity-0' : 'opacity-100'}`}
         />
         <span
-          className={`block h-0.5 w-8 rounded-sm bg-deepGreen 
-transition-all duration-300 ease-out ${!isOff ? '-translate-y-2 -rotate-45 ' : 'translate-y-1'}`}
+          className={`block h-0.5 w-6 rounded-sm bg-deepGreen 
+transition-all duration-300 ease-out ${!isOff ? '-translate-y-1 -rotate-45 ' : 'translate-y-1'}`}
         />
       </div>
     </Button>
