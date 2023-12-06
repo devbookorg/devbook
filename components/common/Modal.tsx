@@ -5,6 +5,7 @@ import Icon from '../common/Icon';
 
 const Modal = () => {
   const { modalData, closeModal } = useModal();
+  console.log(modalData, 'modalData');
   return (
     <>
       {modalData.isOpen && (
@@ -19,13 +20,15 @@ const Modal = () => {
                 modalData.center ? 'rounded-lg p-6' : 'rounded-t-lg'
               }`}
             >
-              <Button
-                btnStyle="btn-ghost"
-                handleClick={closeModal}
-                styles="absolute top-2 right-2  z-10"
-              >
-                <Icon name="close" className="h-8 w-8" />
-              </Button>
+              {!modalData.closeBtnNone && (
+                <Button
+                  btnStyle="btn-ghost"
+                  handleClick={closeModal}
+                  styles="absolute top-2 right-2  z-10"
+                >
+                  <Icon name="close" className="h-8 w-8" />
+                </Button>
+              )}
               {modalData.content}
             </div>
           </div>

@@ -32,7 +32,7 @@ const Question = (props: IQuestion & Props) => {
         }}
         className="flex  justify-between border-b-[1px] border-lightGray  p-3 hover:bg-gray hover:bg-opacity-10"
       >
-        <section className="flex max-w-[calc(100%-100px)] flex-col gap-1">
+        <section className="flex w-[calc(100%-100px)] flex-col gap-1">
           <Button btnStyle={`btn-${category}`} styles="btn-categoryBtn">
             {category}
           </Button>
@@ -41,7 +41,13 @@ const Question = (props: IQuestion & Props) => {
             {answer}
           </p>
         </section>
-        <div className="flex flex-1 flex-col items-end justify-between gap-1">
+        <div
+          className="flex flex-1 flex-col items-end justify-between gap-1"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
           <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
           {children}
         </div>

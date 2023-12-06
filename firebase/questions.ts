@@ -1,4 +1,4 @@
-import IQuestion from '@/types/questions';
+import IQuestion, { getQuestionType } from '@/types/questions';
 import { db, storage } from '.';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -129,6 +129,27 @@ export const updateQuestionApproved = async (
   }
 };
 
+// 4-1. question의 message를 수정하는 로직
+export const updateQuestionMessage = async (
+  questionId: string,
+  body: { message: string }
+): Promise<IQuestion | null> => {
+  try {
+    const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
+    const firstQuestionDocumentId = questionsQuery.docs[0].id;
+
+    const questionRef = doc(questionsCollection, firstQuestionDocumentId);
+    await updateDoc(questionRef, { message: body.message });
+
+    const updatedQuestionSnapshot = await getDoc(questionRef);
+    const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
+    return updatedQuestion;
+  } catch (error) {
+    console.error('Failed to update question message:', error);
+    throw error;
+  }
+};
+
 // 5. question을 삭제하는 로직
 export const deleteQuestion = async (questionId: string) => {
   try {
@@ -154,16 +175,12 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 };
 
 // 6. question을 불러오는 필터링이 가능한 로직
-export const getFilteredQuestions = async (filters: {
-  approved?: 0 | 1;
-  sortByLikes?: 'asc' | 'desc';
-  sortByDate?: 'asc' | 'desc';
-  category?: string;
-  userId?: string;
-}): Promise<IQuestion[]> => {
+export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQuestion[]> => {
   try {
-    const { sortByLikes, sortByDate, category, userId, approved } = filters;
-    let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
+    const { sortByLikes, category, userId, approved } = filters;
+    // let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
+    let filteredQuery = query(questionsCollection);
+    // let filteredQuery = query(questionsCollection, orderBy('likes'));
 
     if (approved !== null && approved !== undefined) {
       filteredQuery = query(filteredQuery, where('approved', 'in', [approved]));
@@ -173,11 +190,12 @@ export const getFilteredQuestions = async (filters: {
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
 
     if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
-    if (sortByDate) filteredQuery = query(filteredQuery, orderBy('dataCreated', sortByDate));
 
     const questionsSnapshot = await getDocs(filteredQuery);
+
     const questions = questionsSnapshot.docs.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
 
+    console.log('filteredQuery :', filteredQuery);
     return questions;
   } catch (error) {
     console.error('Failed to get filtered questions:', error);
@@ -186,14 +204,18 @@ export const getFilteredQuestions = async (filters: {
 };
 
 // 7. questions의 모든 데이터의 갯수를 가져오는 로직
-export const getQuestionsCount = async (filters: { approved?: 0 | 1 }): Promise<number> => {
+export const getQuestionsCount = async (filters: getQuestionType): Promise<number> => {
   try {
-    const { approved } = filters;
+    const { sortByLikes, category, userId, approved } = filters;
     let filteredQuery = query(questionsCollection);
 
     if (approved !== null && approved !== undefined) {
       filteredQuery = query(filteredQuery, where('approved', 'in', [approved]));
     }
+    if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
+    if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
+
+    if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
 
     const questionsSnapshot = await getDocs(filteredQuery);
     const count: number = questionsSnapshot.size;

@@ -11,10 +11,22 @@ import ConfirmModal from '../common/ConfirmModal';
 
 interface Props {
   user: string;
+  loadWroteQuestions: () => void;
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { id, user, userId, title, answer, dataCreated, category, approved } = props;
+  const {
+    id,
+    user,
+    userId,
+    title,
+    answer,
+    dataCreated,
+    message,
+    category,
+    approved,
+    loadWroteQuestions,
+  } = props;
   const { openModal, closeModal } = useModal();
 
   let questionState = <></>;
@@ -26,18 +38,29 @@ const QuestionItem = (props: Props & IQuestion) => {
     );
   } else if (approved === 1) {
     questionState = (
+      <Button btnStyle="btn-state-sm" styles="bg-deepGreen text-white">
+        승인
+      </Button>
+    );
+  } else {
+    questionState = (
       <>
-        <span className="text-xs">사유보기</span>
+        <Button
+          btnStyle="btn-primary"
+          styles="text-xs whitespace-nowrap"
+          handleClick={() => {
+            openModal({
+              center: true,
+              children: <div className="p-6">사유 : {message}</div>,
+            });
+          }}
+        >
+          사유보기
+        </Button>
         <Button btnStyle="btn-state-sm" styles="text-white bg-red">
           거부
         </Button>
       </>
-    );
-  } else {
-    questionState = (
-      <Button btnStyle="btn-state-sm" styles="bg-deepGreen text-white">
-        승인
-      </Button>
     );
   }
 
@@ -45,7 +68,7 @@ const QuestionItem = (props: Props & IQuestion) => {
     <section className="flex flex-col items-end justify-between">
       <div className="flex items-center gap-2">{user === userId && questionState}</div>
       <div className="flex">
-        {approved !== 2 && userId === user ? (
+        {approved !== 1 && userId === user ? (
           <>
             <Button
               btnStyle="btn-ghost"
@@ -59,7 +82,10 @@ const QuestionItem = (props: Props & IQuestion) => {
                       </section>
                       <QuestionForm
                         question={{ questionId: id, category, title, answer }}
-                        handleClick={closeModal}
+                        handleClick={() => {
+                          closeModal();
+                          loadWroteQuestions();
+                        }}
                       />
                     </div>
                   ),
@@ -77,7 +103,9 @@ const QuestionItem = (props: Props & IQuestion) => {
                   children: (
                     <ConfirmModal
                       content="삭제하시겠습니까?"
-                      onSuccess={() => deleteQuestion(id)}
+                      onSuccess={() => {
+                        deleteQuestion(id).then(loadWroteQuestions);
+                      }}
                     />
                   ),
                 });

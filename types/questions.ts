@@ -11,3 +11,10 @@ export default interface IQuestion {
   approved: 0 | 1 | 2;
   dataCreated: Timestamp;
 }
+
+export interface getQuestionType {
+  approved?: 0 | 1;
+  sortByLikes?: 'asc' | 'desc';
+  category?: string;
+  userId?: string;
+}
