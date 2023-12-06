@@ -8,7 +8,7 @@ const Modal = () => {
   return (
     <>
       {modalData.isOpen && (
-        <div className="absolute h-screen w-full bg-black/70 ">
+        <div className="absolute z-[100] h-screen w-full bg-black/70">
           <div
             className={`absolute flex h-full w-full ${
               modalData.center ? 'items-center' : 'items-end'
@@ -22,7 +22,7 @@ const Modal = () => {
               <Button
                 btnStyle="btn-ghost"
                 handleClick={closeModal}
-                styles="absolute top-2 right-2  z-10"
+                styles="absolute top-2 right-2  z-[110]"
               >
                 <Icon name="close" className="h-8 w-8" />
               </Button>
