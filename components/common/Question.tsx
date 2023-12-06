@@ -14,9 +14,7 @@ const Question = (props: IQuestion & Props) => {
   return (
     <>
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
+        onClick={() => {
           openModal({
             center: true,
             children: (
@@ -41,7 +39,10 @@ const Question = (props: IQuestion & Props) => {
             {answer}
           </p>
         </section>
-        <div className="flex flex-1 flex-col items-end justify-between gap-1">
+        <div
+          className="flex flex-1 flex-col items-end justify-between gap-1"
+          onClick={(e) => e.stopPropagation()}
+        >
           <span className="text-xs text-gray">{formatUnixTime(dataCreated.seconds)}</span>
           {children}
         </div>
