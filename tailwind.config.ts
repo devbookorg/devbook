@@ -9,17 +9,18 @@ const config: Config = {
   ],
   theme: {
     colors: {
-      white: '#fff',
+      white: 'rgb(var(--default-bg) / <alpha-value>)',
       lightGray: '#D6D6D6',
       gray: '#878484',
-      black: '#1C1C1C',
+      black: 'rgb(var(--default-text) / <alpha-value>)',
       green: '#A7D6B7',
-      deepGreen: '#31854D',
+      deepGreen: 'rgb(var(--primary-color) / <alpha-value>)',
       red: '#E34646',
       yellow: '#FFF04D',
       sky: '#45B8CC',
       orange: '#DD4B25',
       blue: '#2862E9',
+      bgc: 'rgb(var(--background) / <alpha-value>)',
     },
     fontSize: {
       xs: '0.75rem' /* 12px */,
@@ -35,6 +36,6 @@ const config: Config = {
   variants: {
     scrollbar: ['rounded'],
   },
-  darkMode: 'class',
+  darkMode: ['class', 'data-theme="dark"'],
 };
 export default config;
