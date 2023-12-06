@@ -14,9 +14,7 @@ const Question = (props: IQuestion & Props) => {
   return (
     <>
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
+        onClick={() => {
           openModal({
             center: true,
             children: (

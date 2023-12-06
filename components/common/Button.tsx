@@ -1,6 +1,6 @@
 interface Props {
   children: React.ReactNode;
-  handleClick?: (e?: any) => void;
+  handleClick?: () => void;
   styles?: string;
   btnStyle:
     | 'btn-primary'
