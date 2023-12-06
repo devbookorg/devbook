@@ -6,6 +6,8 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 import { useModal } from '@/hooks/useModal';
 import { deleteUser } from '@/firebase/users';
 import Button from '../common/Button';
+import { useResetRecoilState } from 'recoil';
+import { userState } from '@/recoil/user';
 
 interface DeleteUserAndLogoutProps {
   userId: string;
@@ -14,6 +16,14 @@ interface DeleteUserAndLogoutProps {
 export function DeleteUserAndLogout({ userId }: DeleteUserAndLogoutProps) {
   const router = useRouter();
   const { openModal } = useModal();
+  const resetState = useResetRecoilState(userState);
+
+  const handleSignOut = () => {
+    signOut({ redirect: false }).then(() => {
+      resetState();
+      router.push('/');
+    });
+  };
   return (
     <section className="my-4 flex gap-4">
       <Button
@@ -26,11 +36,7 @@ export function DeleteUserAndLogout({ userId }: DeleteUserAndLogoutProps) {
               <ConfirmModal
                 content="탈퇴하시겠습니까?"
                 onSuccess={() => {
-                  deleteUser(userId).then(() => {
-                    signOut({ redirect: false }).then(() => {
-                      router.push('/');
-                    });
-                  });
+                  deleteUser(userId).then(handleSignOut);
                 }}
               />
             ),
@@ -42,11 +48,7 @@ export function DeleteUserAndLogout({ userId }: DeleteUserAndLogoutProps) {
       <Button
         btnStyle="btn-state-lg"
         styles="flex-1 border-deepGreen text-deepGreen hover:bg-deepGreen hover:text-white"
-        handleClick={() => {
-          signOut({ redirect: false }).then(() => {
-            router.push('/');
-          });
-        }}
+        handleClick={handleSignOut}
       >
         로그아웃
       </Button>
