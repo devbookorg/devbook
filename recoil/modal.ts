@@ -4,6 +4,7 @@ export type ModalType = {
   isOpen: boolean;
   content: React.ReactNode | React.JSX.Element;
   center?: boolean;
+  closeBtnNone?: boolean;
   callBack?: () => void;
 };
 
@@ -13,5 +14,6 @@ export const modalState = atom<ModalType>({
     isOpen: false,
     content: null,
     center: false,
+    closeBtnNone: false,
   },
 });

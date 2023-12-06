@@ -19,7 +19,7 @@ const UserPage = () => {
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const viewQuestions = selectedTab === 0 ? myWroteQuestions : myLikeQuestions;
   const tabs = ['작성한 게시물', '좋아요'];
-
+  console.log(myWroteQuestions, 'myWroteQuestions');
   useEffect(() => {
     loadWroteQuestions();
     loadMyLikesQuestions();
@@ -61,7 +61,7 @@ const UserPage = () => {
       {viewQuestions.map((question) => (
         <Question key={question.id} {...question}>
           {selectedTab === 0 ? (
-            <QuestionItem user={user.id} {...question} />
+            <QuestionItem user={user.id} {...question} loadWroteQuestions={loadWroteQuestions} />
           ) : (
             <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
           )}
