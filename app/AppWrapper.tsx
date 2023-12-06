@@ -3,6 +3,7 @@
 import { getUser } from '@/firebase/users';
 import { userState } from '@/recoil/user';
 import { useSession } from 'next-auth/react';
+import React from 'react';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
@@ -26,7 +27,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
     }
   }, [data]);
 
-  return <>{children}</>;
+  return <React.Fragment>{children}</React.Fragment>;
 };
 
 export default Wrapper;
