@@ -35,5 +35,6 @@ const config: Config = {
   variants: {
     scrollbar: ['rounded'],
   },
+  darkMode: 'class',
 };
 export default config;
