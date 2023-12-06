@@ -17,8 +17,8 @@ const Likes = (props: Props) => {
         handleClick();
         handleToggle();
       }}
-      onMouseEnter={() => handleToggle(true)}
-      onMouseLeave={() => handleToggle(false)}
+      onMouseEnter={() => handleToggle(false)}
+      onMouseLeave={() => handleToggle(true)}
     >
       {isOff && condition ? (
         <Icon name="heart" className="h-6 w-6" />
