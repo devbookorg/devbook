@@ -17,4 +17,5 @@ export interface getQuestionType {
   sortByLikes?: 'asc' | 'desc';
   category?: string;
   userId?: string;
+  page?: number;
 }

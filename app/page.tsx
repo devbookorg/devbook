@@ -2,8 +2,11 @@
 
 import Button from '@/components/common/Button';
 import LikeQuestionPart from '@/components/common/LikeQuestionPart';
+import Pagination from '@/components/common/Pagination';
 import Question from '@/components/common/Question';
 import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
+import { usePagination } from '@/hooks/usePagination';
+
 import IQuestion, { getQuestionType } from '@/types/questions';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -15,6 +18,8 @@ export default function Home() {
   const [questionsFilter, setQuestionsFilter] = useState<getQuestionType>({
     approved: approvedQuestions,
   });
+
+  const pagination = usePagination(numberOfQuestions);
 
   useEffect(() => {
     loadQuestions();
@@ -51,6 +56,13 @@ export default function Home() {
           <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
         </Question>
       ))}
+      <Pagination
+        {...pagination}
+        handleChangePage={(page) => {
+          setQuestionsFilter((prev) => ({ ...prev, page }));
+          pagination.handleChangePage(page);
+        }}
+      />
     </>
   );
 }

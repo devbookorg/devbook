@@ -16,11 +16,17 @@ interface Props {
     | 'btn-state-sm'
     | 'btn-state-lg';
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
-const Button = ({ children, handleClick, styles, btnStyle, type }: Props) => {
+const Button = ({ children, handleClick, styles, btnStyle, type, disabled }: Props) => {
   return (
-    <button type={type ?? 'button'} className={`${styles || ''} ${btnStyle}`} onClick={handleClick}>
+    <button
+      type={type ?? 'button'}
+      className={`${styles || ''} ${btnStyle}`}
+      onClick={handleClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

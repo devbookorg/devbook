@@ -2,6 +2,7 @@
 
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
+import Pagination from '@/components/common/Pagination';
 import Question from '@/components/common/Question';
 import {
   getFilteredQuestions,
@@ -10,6 +11,7 @@ import {
   updateQuestionMessage,
 } from '@/firebase/questions';
 import { useModal } from '@/hooks/useModal';
+import { usePagination } from '@/hooks/usePagination';
 import IQuestion from '@/types/questions';
 import { useEffect, useRef, useState } from 'react';
 
@@ -19,7 +21,7 @@ export default function AdminPage() {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
   const approvedQuestions = 0; //0:대기|1:승인|2:미승인
-
+  const pagination = usePagination(numberOfQuestions);
   useEffect(() => {
     loadQuestions();
     getQuestionsCount({ approved: approvedQuestions }).then((res) => setNumberOfQuestions(res));
@@ -37,6 +39,13 @@ export default function AdminPage() {
   const rejectQuestion = async (questionsId: string, message: string) => {
     updateQuestionApproved(questionsId, { approved: 2 });
     updateQuestionMessage(questionsId, { message });
+  };
+
+  const loadPageQuestions = (page: number) => {
+    getFilteredQuestions({ approved: approvedQuestions, page }).then((res) => {
+      setQuestions(res);
+    });
+    pagination.handleChangePage(page);
   };
 
   const modalOpen = ({
@@ -110,6 +119,7 @@ export default function AdminPage() {
           </Question>
         );
       })}
+      <Pagination {...pagination} handleChangePage={loadPageQuestions} />
     </>
   );
 }

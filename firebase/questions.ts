@@ -177,7 +177,7 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 // 6. question을 불러오는 필터링이 가능한 로직
 export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQuestion[]> => {
   try {
-    const { sortByLikes, category, userId, approved } = filters;
+    const { sortByLikes, category, userId, approved, page = 1 } = filters;
     // let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
     let filteredQuery = query(questionsCollection);
     // let filteredQuery = query(questionsCollection, orderBy('likes'));
@@ -192,10 +192,10 @@ export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQ
     if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
 
     const questionsSnapshot = await getDocs(filteredQuery);
+    const pageQuestions = questionsSnapshot.docs.slice((page - 1) * 10, page * 10);
 
-    const questions = questionsSnapshot.docs.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
+    const questions = pageQuestions.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
 
-    console.log('filteredQuery :', filteredQuery);
     return questions;
   } catch (error) {
     console.error('Failed to get filtered questions:', error);
@@ -227,7 +227,10 @@ export const getQuestionsCount = async (filters: getQuestionType): Promise<numbe
 };
 
 // 8. likeQuestions[]의 모든 question을 불러오는 로직
-export const getLikesQuestions = async (questions: string[]): Promise<IQuestion[]> => {
+export const getLikesQuestions = async (
+  questions: string[],
+  page = 1
+): Promise<{ questions: IQuestion[]; total: number }> => {
   try {
     const result: IQuestion[] = [];
 
@@ -243,7 +246,7 @@ export const getLikesQuestions = async (questions: string[]): Promise<IQuestion[
         }
       });
     }
-    return result;
+    return { questions: result.slice((page - 1) * 10, page * 10), total: result.length };
   } catch (error) {
     console.error('Failed to get questions', error);
     throw error;
