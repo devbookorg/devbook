@@ -10,3 +10,5 @@ export { default as Edit } from './edit.svg';
 export { default as Trash } from './trash.svg';
 export { default as Close } from './close.svg';
 export { default as Pen } from './pen.svg';
+export { default as ChevronLeft } from './chevronLeft.svg';
+export { default as ChevronRight } from './chevronRight.svg';

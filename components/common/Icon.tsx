@@ -11,6 +11,8 @@ import {
   Trash,
   Close,
   Pen,
+  ChevronLeft,
+  ChevronRight,
 } from '@/assets/icons';
 
 // SVG 컴포넌트에 대한 인터페이스
@@ -30,6 +32,8 @@ const iconComponents: IconComponents = {
   trash: Trash,
   close: Close,
   pen: Pen,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
 };
 
 export default function Icon({
@@ -56,4 +60,6 @@ export {
   Trash,
   Close,
   Pen,
+  ChevronLeft,
+  ChevronRight,
 };
