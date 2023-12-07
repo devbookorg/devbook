@@ -192,7 +192,7 @@ export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQ
     if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
 
     const questionsSnapshot = await getDocs(filteredQuery);
-    const pageQuestions = questionsSnapshot.docs.slice((page - 1) * 3, page * 3);
+    const pageQuestions = questionsSnapshot.docs.slice((page - 1) * 10, page * 10);
 
     const questions = pageQuestions.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
 
@@ -246,7 +246,7 @@ export const getLikesQuestions = async (
         }
       });
     }
-    return { questions: result.slice((page - 1) * 3, page * 3), total: result.length };
+    return { questions: result.slice((page - 1) * 10, page * 10), total: result.length };
   } catch (error) {
     console.error('Failed to get questions', error);
     throw error;

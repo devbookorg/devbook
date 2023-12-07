@@ -5,7 +5,7 @@ export const usePagination = (total: number) => {
   const [startPage, setStartPage] = useState<number>(1);
   const [endPage, setEndPage] = useState<number>(1);
   const pageRange = 5;
-  const totalPages = Math.ceil(total / 3);
+  const totalPages = Math.ceil(total / 10);
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
