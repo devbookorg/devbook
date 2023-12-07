@@ -227,7 +227,10 @@ export const getQuestionsCount = async (filters: getQuestionType): Promise<numbe
 };
 
 // 8. likeQuestions[]의 모든 question을 불러오는 로직
-export const getLikesQuestions = async (questions: string[]): Promise<IQuestion[]> => {
+export const getLikesQuestions = async (
+  questions: string[],
+  page = 1
+): Promise<{ questions: IQuestion[]; total: number }> => {
   try {
     const result: IQuestion[] = [];
 
@@ -243,7 +246,7 @@ export const getLikesQuestions = async (questions: string[]): Promise<IQuestion[
         }
       });
     }
-    return result;
+    return { questions: result.slice((page - 1) * 3, page * 3), total: result.length };
   } catch (error) {
     console.error('Failed to get questions', error);
     throw error;

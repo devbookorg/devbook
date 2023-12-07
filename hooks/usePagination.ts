@@ -24,9 +24,7 @@ export const usePagination = (total: number) => {
   };
 
   useEffect(() => {
-    if (totalPages > Math.floor(pageRange / 2)) {
-      setEndPage(totalPages > pageRange ? pageRange : totalPages);
-    }
+    setEndPage(totalPages > pageRange ? pageRange : totalPages);
   }, [total, totalPages]);
 
   return { currentPage, startPage, endPage, totalPages, handleChangePage };
