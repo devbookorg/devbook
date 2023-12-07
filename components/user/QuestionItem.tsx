@@ -71,7 +71,7 @@ const QuestionItem = (props: Props & IQuestion) => {
         {approved !== 1 && userId === user ? (
           <>
             <Button
-              btnStyle="btn-ghost"
+              btnStyle="btn-sm"
               handleClick={(e) => {
                 e.stopPropagation();
                 openModal({
@@ -95,7 +95,7 @@ const QuestionItem = (props: Props & IQuestion) => {
               <Icon name="edit" className="h-5 w-5  fill-deepGreen " />
             </Button>
             <Button
-              btnStyle="btn-ghost"
+              btnStyle="btn-sm"
               handleClick={(e) => {
                 e.stopPropagation();
                 openModal({

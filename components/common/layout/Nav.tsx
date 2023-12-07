@@ -23,7 +23,7 @@ const Nav = (props: Props) => {
           {user?.admin && (
             <Button
               styles="hover:text-green"
-              btnStyle="btn-ghost"
+              btnStyle="btn-sm"
               handleClick={() => {
                 handleClose();
                 router.push('/admin');
@@ -33,7 +33,7 @@ const Nav = (props: Props) => {
             </Button>
           )}
           <Button
-            btnStyle="btn-ghost"
+            btnStyle="btn-sm"
             styles="flex items-center gap-3"
             handleClick={() => {
               router.push('/write');
@@ -44,7 +44,7 @@ const Nav = (props: Props) => {
             작성하기
           </Button>
           <Button
-            btnStyle="btn-ghost"
+            btnStyle="btn-sm"
             styles="flex items-center gap-3"
             handleClick={() => {
               router.push('/user');

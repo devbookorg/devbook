@@ -27,9 +27,7 @@
   .btn-primary {
     @apply rounded-3xl border border-solid border-deepGreen px-4 py-2 hover:bg-deepGreen hover:text-white;
   }
-  .btn-ghost {
-    @apply border-none p-2;
-  }
+
   .btn-fill {
     @apply flex h-16 w-full items-center justify-center  rounded-lg border  border-deepGreen bg-deepGreen p-4 text-xl leading-tight text-white
     hover:bg-green;
@@ -38,10 +36,10 @@
     @apply h-16
     w-full  rounded-lg border border-gray p-4 text-lg outline-deepGreen;
   }
-  .btn-state-sm {
-    @apply rounded-lg border px-2 py-1 text-xs;
+  .btn-sm {
+    @apply rounded-lg px-2 py-1.5;
   }
-  .btn-state-lg {
-    @apply rounded-lg border p-3 text-sm;
+  .btn-lg {
+    @apply rounded-lg p-3 text-sm;
   }
 }

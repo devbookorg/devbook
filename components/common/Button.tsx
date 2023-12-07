@@ -2,19 +2,7 @@ interface Props {
   children: React.ReactNode;
   handleClick?: () => void;
   styles?: string;
-  btnStyle:
-    | 'btn-primary'
-    | 'btn-ghost'
-    | 'btn-fill'
-    | 'btn-JS'
-    | 'btn-TS'
-    | 'btn-HTML'
-    | 'btn-CSS'
-    | 'btn-REACT'
-    | 'btn-NEXT'
-    | 'btn-CS'
-    | 'btn-state-sm'
-    | 'btn-state-lg';
+  btnStyle: 'btn-primary' | 'btn-sm' | 'btn-fill' | 'btn-state-lg';
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
 }

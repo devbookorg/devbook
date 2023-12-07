@@ -22,7 +22,7 @@ const Modal = () => {
             >
               {!modalData.closeBtnNone && (
                 <Button
-                  btnStyle="btn-ghost"
+                  btnStyle="btn-sm"
                   handleClick={closeModal}
                   styles="absolute top-2 right-2  z-[110]"
                 >
