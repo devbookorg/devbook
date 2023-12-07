@@ -17,6 +17,7 @@ export default function Home() {
   const approvedQuestions = 1; //0:대기|1:승인|2:미승인
   const [questionsFilter, setQuestionsFilter] = useState<getQuestionType>({
     approved: approvedQuestions,
+    page: 1,
   });
 
   const pagination = usePagination(numberOfQuestions);
@@ -39,12 +40,14 @@ export default function Home() {
       setQuestionsFilter({ ...questionsFilter, sortByLikes: 'desc' });
     }
   };
-  console.log('questions :', questions);
+  console.log('questionsFilter :', questionsFilter);
+  console.log(questionsFilter.sortByLikes);
   return (
     <>
       전체 질문 수 : {numberOfQuestions}
       <Button
         btnStyle="btn-primary"
+        styles={`${questionsFilter.sortByLikes && 'bg-deepGreen text-white'}`}
         handleClick={() => {
           loadQuestionsSortByPopularity();
         }}

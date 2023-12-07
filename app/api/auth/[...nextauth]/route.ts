@@ -9,6 +9,18 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  callbacks: {
+    async signIn({ user }: { user: DefaultUser }) {
+      if (user.name && user.email) {
+        const customUser = {
+          name: user.name,
+          email: user.email,
+        };
+        addUser(customUser);
+      }
+      return true;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

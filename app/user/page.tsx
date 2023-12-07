@@ -2,7 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
-import { getFilteredQuestions, getLikesQuestions, getQuestionsCount } from '@/firebase/questions';
+import {
+  getFilteredQuestions,
+  getLikesQuestions,
+  getQuestionsCount,
+  updateQuestionsNotification,
+} from '@/firebase/questions';
 import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
 import { useRecoilValue } from 'recoil';
@@ -27,7 +32,9 @@ const UserPage = () => {
   useEffect(() => {
     loadWroteQuestions();
     loadMyLikesQuestions();
+    updateQuestionsNotification(user.id);
   }, [user]);
+  console.log(myWroteQuestions);
 
   const loadWroteQuestions = () => {
     getFilteredQuestions({ userId: user.id }).then((res) => setMyWroteQuestions(res));

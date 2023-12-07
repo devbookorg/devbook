@@ -16,6 +16,7 @@ const Pagination = (props: Props) => {
   for (let i = startPage; i <= endPage; i++) {
     range.push(i);
   }
+
   return (
     <section className="flex items-center  justify-center">
       <Button
