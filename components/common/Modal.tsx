@@ -26,7 +26,7 @@ const Modal = () => {
                   handleClick={closeModal}
                   styles="absolute top-2 right-2  z-[110]"
                 >
-                  <Icon name="close" className="h-8 w-8" />
+                  <Icon name="close" className="h-7 w-7" />
                 </Button>
               )}
               {modalData.content}
