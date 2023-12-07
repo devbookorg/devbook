@@ -57,7 +57,7 @@ const UserPage = () => {
   };
 
   return (
-    <article className="flex flex-col gap-6 ">
+    <article className="flex flex-col ">
       <section className="flex items-center gap-2">
         <b className="text-lg">{name}</b>님
       </section>
@@ -82,15 +82,17 @@ const UserPage = () => {
           </div>
         ))}
       </div>
-      {viewQuestions.map((question) => (
-        <Question key={question.id} {...question}>
-          {selectedTab === 0 ? (
-            <QuestionItem user={user.id} {...question} loadWroteQuestions={loadWroteQuestions} />
-          ) : (
-            <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
-          )}
-        </Question>
-      ))}
+      <div>
+        {viewQuestions.map((question) => (
+          <Question key={question.id} {...question}>
+            {selectedTab === 0 ? (
+              <QuestionItem user={user.id} {...question} loadWroteQuestions={loadWroteQuestions} />
+            ) : (
+              <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
+            )}
+          </Question>
+        ))}
+      </div>
       <Pagination {...pagination} handleChangePage={onChangePage} />
       <DeleteUserAndLogout userId={id} />
     </article>

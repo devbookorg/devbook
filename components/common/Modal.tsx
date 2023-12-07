@@ -5,7 +5,7 @@ import Icon from '../common/Icon';
 
 const Modal = () => {
   const { modalData, closeModal } = useModal();
-  console.log(modalData, 'modalData');
+
   return (
     <>
       {modalData.isOpen && (

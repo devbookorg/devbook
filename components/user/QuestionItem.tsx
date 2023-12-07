@@ -47,7 +47,7 @@ const QuestionItem = (props: Props & IQuestion) => {
       <>
         <Button
           btnStyle="btn-primary"
-          styles="text-xs whitespace-nowrap"
+          styles="text-xs whitespace-nowrap p-1"
           handleClick={() => {
             openModal({
               center: true,
@@ -55,9 +55,9 @@ const QuestionItem = (props: Props & IQuestion) => {
             });
           }}
         >
-          사유보기
+          사유
         </Button>
-        <Button btnStyle="btn-state-sm" styles="text-white bg-red">
+        <Button btnStyle="btn-state-sm" styles="text-white bg-red whitespace-nowrap">
           거부
         </Button>
       </>
@@ -72,11 +72,11 @@ const QuestionItem = (props: Props & IQuestion) => {
           <>
             <Button
               btnStyle="btn-ghost"
-              handleClick={(e) => {
-                e.stopPropagation();
+              handleClick={() => {
+                // e.stopPropagation();
                 openModal({
                   children: (
-                    <div className=" relative w-screen max-w-[36em] bg-white p-6">
+                    <div className=" relative max-h-[80vh] w-screen max-w-[36em] overflow-y-scroll bg-white p-6">
                       <section className=" text-center">
                         <h1 className="my-4">질문 수정하기</h1>
                       </section>
@@ -96,8 +96,7 @@ const QuestionItem = (props: Props & IQuestion) => {
             </Button>
             <Button
               btnStyle="btn-ghost"
-              handleClick={(e) => {
-                e.stopPropagation();
+              handleClick={() => {
                 openModal({
                   center: true,
                   children: (

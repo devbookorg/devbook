@@ -8,7 +8,6 @@ import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import { usePagination } from '@/hooks/usePagination';
 
 import IQuestion, { getQuestionType } from '@/types/questions';
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -44,16 +43,24 @@ export default function Home() {
   console.log(questionsFilter.sortByLikes);
   return (
     <>
-      전체 질문 수 : {numberOfQuestions}
-      <Button
-        btnStyle="btn-primary"
-        styles={`${questionsFilter.sortByLikes && 'bg-deepGreen text-white'}`}
-        handleClick={() => {
-          loadQuestionsSortByPopularity();
+      <div
+        className="flex justify-end"
+        onClick={(e) => {
+          e.stopPropagation();
         }}
       >
-        인기순
-      </Button>
+        <Button
+          btnStyle="btn-primary"
+          styles={`${
+            questionsFilter.sortByLikes && 'bg-deepGreen text-white'
+          }  right-[20px] top-[0]`}
+          handleClick={() => {
+            loadQuestionsSortByPopularity();
+          }}
+        >
+          인기순
+        </Button>
+      </div>
       {questions.map((question) => (
         <Question key={question.id} {...question}>
           <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
