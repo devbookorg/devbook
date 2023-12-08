@@ -8,7 +8,6 @@ import { getFilteredQuestions, getQuestionsCount } from '@/firebase/questions';
 import { usePagination } from '@/hooks/usePagination';
 
 import IQuestion, { getQuestionType } from '@/types/questions';
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -17,6 +16,7 @@ export default function Home() {
   const approvedQuestions = 1; //0:대기|1:승인|2:미승인
   const [questionsFilter, setQuestionsFilter] = useState<getQuestionType>({
     approved: approvedQuestions,
+    page: 1,
   });
 
   const pagination = usePagination(numberOfQuestions);
@@ -39,23 +39,35 @@ export default function Home() {
       setQuestionsFilter({ ...questionsFilter, sortByLikes: 'desc' });
     }
   };
-  console.log('questions :', questions);
+  console.log('questionsFilter :', questionsFilter);
+  console.log(questionsFilter.sortByLikes);
   return (
     <>
-      전체 질문 수 : {numberOfQuestions}
-      <Button
-        btnStyle="sm-line-deepGreen"
-        handleClick={() => {
-          loadQuestionsSortByPopularity();
+      <div
+        className="flex justify-end"
+        onClick={(e) => {
+          e.stopPropagation();
         }}
       >
-        인기순
-      </Button>
-      {questions.map((question) => (
-        <Question key={question.id} {...question}>
-          <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
-        </Question>
-      ))}
+        <Button
+          btnStyle="sm-line-deepGreen"
+          styles={`${
+            questionsFilter.sortByLikes && 'bg-deepGreen text-white'
+          }  right-[20px] top-[0]`}
+          handleClick={() => {
+            loadQuestionsSortByPopularity();
+          }}
+        >
+          인기순
+        </Button>
+      </div>
+      <div className="mt-4">
+        {questions.map((question) => (
+          <Question key={question.id} {...question}>
+            <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
+          </Question>
+        ))}
+      </div>
       <Pagination
         {...pagination}
         handleChangePage={(page) => {

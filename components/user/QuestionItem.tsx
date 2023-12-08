@@ -7,6 +7,7 @@ import QuestionForm from '../common/Form';
 import Likes from '../common/Likes';
 import { deleteQuestion } from '@/firebase/questions';
 import ConfirmModal from '../common/ConfirmModal';
+import LikeQuestionPart from '../common/LikeQuestionPart';
 
 interface Props {
   user: string;
@@ -28,7 +29,7 @@ const QuestionItem = (props: Props & IQuestion) => {
       <>
         <Button
           btnStyle="sm-line-deepGreen"
-          styles="text-xs whitespace-nowrap"
+          styles="text-xs whitespace-nowrap p-1"
           handleClick={() => {
             openModal({
               center: true,
@@ -36,9 +37,9 @@ const QuestionItem = (props: Props & IQuestion) => {
             });
           }}
         >
-          사유보기
+          사유
         </Button>
-        <Button btnStyle="sm-fill-red">거부</Button>
+        <Button btnStyle="sm-fill-red whitespace-nowrap">거부</Button>
       </>
     );
   }
@@ -54,7 +55,7 @@ const QuestionItem = (props: Props & IQuestion) => {
               handleClick={() => {
                 openModal({
                   children: (
-                    <div className=" relative w-screen max-w-[36em] bg-white p-6">
+                    <div className=" relative max-h-[80vh] w-screen max-w-[36em] overflow-y-scroll bg-white p-6">
                       <section className=" text-center">
                         <h1 className="my-4">질문 수정하기</h1>
                       </section>
@@ -92,7 +93,7 @@ const QuestionItem = (props: Props & IQuestion) => {
             </Button>
           </>
         ) : (
-          <Likes handleClick={() => {}} condition={true} />
+          <LikeQuestionPart {...props} loadQuestions={props.loadWroteQuestions} />
         )}
       </div>
     </section>

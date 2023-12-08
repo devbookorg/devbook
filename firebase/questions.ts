@@ -19,7 +19,10 @@ import {
   QuerySnapshot,
   updateDoc,
   where,
+  limit,
   FirestoreDataConverter as FirestoreDataConverterType,
+  startAt,
+  startAfter,
 } from 'firebase/firestore';
 
 interface FirestoreDataConverter<T> {
@@ -49,6 +52,7 @@ export const createQuestion = async (body: {
       message: '',
       approved: 0,
       dataCreated: new Date(),
+      notification: true,
     });
   } catch (error) {
     console.error('Failed to create a new question:', error);
@@ -149,6 +153,34 @@ export const updateQuestionMessage = async (
     throw error;
   }
 };
+// 유저의 알람 모두 읽기
+export const updateQuestionsNotification = async (userId: string) => {
+  try {
+    const questionsCollection = collection(db, 'questions');
+
+    // userId가 특정 값과 같은 문서를 찾기 위한 쿼리 생성
+    const querySnapshot = await getDocs(query(questionsCollection, where('userId', '==', userId)));
+
+    // 모든 문서에 대해 notification을 false로 업데이트
+    const updatePromises = querySnapshot.docs.map(async (docSnapshot) => {
+      const questionRef = doc(questionsCollection, docSnapshot.id);
+      await updateDoc(questionRef, { notification: false });
+
+      // 업데이트된 문서의 스냅샷을 가져오기
+      const updatedQuestionSnapshot = await getDoc(questionRef);
+      const updatedQuestion = updatedQuestionSnapshot.data() as IQuestion;
+      return updatedQuestion;
+    });
+
+    // 모든 문서의 업데이트가 완료될 때까지 기다림
+    const updatedQuestions = await Promise.all(updatePromises);
+
+    console.log('Updated questions:', updatedQuestions);
+  } catch (error) {
+    console.error('Failed to update question messages:', error);
+    throw error;
+  }
+};
 
 // 5. question을 삭제하는 로직
 export const deleteQuestion = async (questionId: string) => {
@@ -177,8 +209,10 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 // 6. question을 불러오는 필터링이 가능한 로직
 export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQuestion[]> => {
   try {
-    const { sortByLikes, category, userId, approved, page = 1 } = filters;
+    const { sortByLikes, category, userId, approved, page } = filters;
     // let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
+
+    // let filteredQuery = query(questionsCollection, limit(10));
     let filteredQuery = query(questionsCollection);
     // let filteredQuery = query(questionsCollection, orderBy('likes'));
 
@@ -189,12 +223,31 @@ export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQ
     if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
 
-    if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
+    if (sortByLikes) {
+      filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
+    } else {
+      filteredQuery = query(filteredQuery, orderBy('dataCreated'));
+    }
+
+    // 최대 10개의 문서만 가져옵니다.
+    const pageSize = 10;
+    filteredQuery = query(filteredQuery, limit(pageSize));
+    // startAfter를 사용하여 특정 값(여기서는 13) 이후의 문서를 가져옵니다.
+
+    // 페이지가 1보다 클 때에만 시작점을 계산하여 설정합니다.
+    if (page > 1) {
+      const startAfterDoc = await getDocs(query(filteredQuery, limit((page - 1) * pageSize))).then(
+        (snapshot) => snapshot.docs[snapshot.docs.length - 1]
+      );
+      if (startAfterDoc) {
+        filteredQuery = query(filteredQuery, startAfter(startAfterDoc));
+      }
+    }
 
     const questionsSnapshot = await getDocs(filteredQuery);
-    const pageQuestions = questionsSnapshot.docs.slice((page - 1) * 10, page * 10);
+    // const pageQuestions = questionsSnapshot.docs.slice((page - 1) * 10, page * 10);
 
-    const questions = pageQuestions.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
+    const questions = questionsSnapshot.docs.map((doc) => doc.data() as IQuestion); // 타입 어설션 추가
 
     return questions;
   } catch (error) {
@@ -202,6 +255,7 @@ export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQ
     throw error;
   }
 };
+// approved가 0=> 1|2  quetions{state:false}
 
 // 7. questions의 모든 데이터의 갯수를 가져오는 로직
 export const getQuestionsCount = async (filters: getQuestionType): Promise<number> => {

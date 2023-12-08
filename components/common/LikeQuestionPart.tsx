@@ -43,7 +43,7 @@ export default function LikeQuestionPart(props: Props & IQuestion) {
     <div className="flex flex-col items-end justify-end gap-5">
       <div className="flex items-center gap-2">
         <Likes handleClick={() => likeToggle(id)} condition={!user.likeQuestions?.includes(id)} />
-        <div className="min-w-[40px] pb-0.5">{countLikes}</div>
+        <div className="max-w-[40px] pb-0.5">{countLikes}</div>
       </div>
     </div>
   );

@@ -2,7 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import Button from '@/components/common/Button';
-import { getFilteredQuestions, getLikesQuestions, getQuestionsCount } from '@/firebase/questions';
+import {
+  getFilteredQuestions,
+  getLikesQuestions,
+  getQuestionsCount,
+  updateQuestionsNotification,
+} from '@/firebase/questions';
 import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
 import { useRecoilValue } from 'recoil';
@@ -27,7 +32,9 @@ const UserPage = () => {
   useEffect(() => {
     loadWroteQuestions();
     loadMyLikesQuestions();
+    updateQuestionsNotification(user.id);
   }, [user]);
+  console.log(myWroteQuestions);
 
   const loadWroteQuestions = () => {
     getFilteredQuestions({ userId: user.id }).then((res) => setMyWroteQuestions(res));
@@ -50,7 +57,7 @@ const UserPage = () => {
   };
 
   return (
-    <article className="flex flex-col gap-6 ">
+    <article className="flex flex-col ">
       <section className="flex items-center gap-2">
         <b className="text-lg">{name}</b>님
       </section>
@@ -75,15 +82,17 @@ const UserPage = () => {
           </div>
         ))}
       </div>
-      {viewQuestions.map((question) => (
-        <Question key={question.id} {...question}>
-          {selectedTab === 0 ? (
-            <QuestionItem user={user.id} {...question} loadWroteQuestions={loadWroteQuestions} />
-          ) : (
-            <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
-          )}
-        </Question>
-      ))}
+      <div>
+        {viewQuestions.map((question) => (
+          <Question key={question.id} {...question}>
+            {selectedTab === 0 ? (
+              <QuestionItem user={user.id} {...question} loadWroteQuestions={loadWroteQuestions} />
+            ) : (
+              <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
+            )}
+          </Question>
+        ))}
+      </div>
       <Pagination {...pagination} handleChangePage={onChangePage} />
       <DeleteUserAndLogout userId={id} />
     </article>

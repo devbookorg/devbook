@@ -18,25 +18,29 @@ const Question = (props: IQuestion & Props) => {
           openModal({
             center: true,
             children: (
-              <div className="flex w-60 flex-col gap-6">
-                <Badge value={category} />
-                <div>{title}</div>
-                <div className="max-w-full break-words">{answer}</div>
+              <div className="flex w-60 flex-col gap-4">
+                <div className="flex items-center gap-1">
+                  <Badge value={category} />
+                  <h4 className="max-w-[calc(100%-50px)] overflow-hidden text-ellipsis whitespace-nowrap">
+                    {title}
+                  </h4>
+                </div>
+                <div className="max-w-full break-all">{answer}</div>
               </div>
             ),
           });
         }}
         className="flex justify-between border-b-[1px] border-lightGray  p-3 hover:bg-gray hover:bg-opacity-10"
       >
-        <section className="flex w-[calc(100%-100px)] flex-col gap-1">
+        <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
           <Badge value={category} />
-          <h3>{title}</h3>
+          <h3 className="overflow-hidden text-ellipsis">{title}</h3>
           <p className=" max-h-5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray">
             {answer}
           </p>
         </section>
         <div
-          className="flex flex-1 flex-col items-end justify-between gap-1"
+          className="flex max-h-[74px] max-w-[100px] flex-1 flex-col items-end justify-between gap-1"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
