@@ -12,3 +12,6 @@ export { default as Close } from './close.svg';
 export { default as Pen } from './pen.svg';
 export { default as ChevronLeft } from './chevronLeft.svg';
 export { default as ChevronRight } from './chevronRight.svg';
+export { default as BellUpdate } from './bellUpdate.svg';
+export { default as Moon } from './moon.svg';
+export { default as Settings } from './settings.svg';

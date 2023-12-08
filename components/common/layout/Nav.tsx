@@ -22,19 +22,20 @@ const Nav = (props: Props) => {
         <>
           {user?.admin && (
             <Button
-              styles="hover:text-green"
               btnStyle="lg-ghost"
+              styles="flex items-center gap-3 text-base hover:text-green"
               handleClick={() => {
                 handleClose();
                 router.push('/admin');
               }}
             >
+              <Icon name="settings" className="h-8 w-8 stroke-deepGreen" />
               관리페이지
             </Button>
           )}
           <Button
             btnStyle="lg-ghost"
-            styles="flex items-center gap-3"
+            styles="flex items-center gap-3 text-base "
             handleClick={() => {
               router.push('/write');
               handleClose();
@@ -45,7 +46,7 @@ const Nav = (props: Props) => {
           </Button>
           <Button
             btnStyle="lg-ghost"
-            styles="flex items-center gap-3"
+            styles="flex items-center gap-3 text-base"
             handleClick={() => {
               router.push('/user');
               handleClose();
