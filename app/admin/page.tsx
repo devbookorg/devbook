@@ -76,8 +76,7 @@ export default function AdminPage() {
           <Question key={question.id} {...question}>
             <div className="flex min-w-fit flex-row">
               <Button
-                btnStyle="btn-fill"
-                styles="bg-red"
+                btnStyle="sm-fill-red"
                 handleClick={() => {
                   modalOpen({
                     children: (
@@ -89,7 +88,7 @@ export default function AdminPage() {
                           placeholder="거부 사유를 작성해주세요."
                         />
                         <Button
-                          btnStyle="btn-fill"
+                          btnStyle="lg-fill-deepGreen"
                           handleClick={() => {
                             rejectQuestion(question.id, rejectionMessage.current.value).then(
                               loadQuestions
@@ -107,7 +106,7 @@ export default function AdminPage() {
                 거부
               </Button>
               <Button
-                btnStyle="btn-fill"
+                btnStyle="sm-fill-deepGreen"
                 handleClick={() => {
                   approveQuestion(question.id).then(loadQuestions);
                   modalOpen({ children: '승인되었습니다.', closeBtnNone: true, autoClose: true });

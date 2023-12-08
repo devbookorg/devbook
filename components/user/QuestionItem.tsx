@@ -3,7 +3,6 @@ import React from 'react';
 import Button from '../common/Button';
 import Icon from '../common/Icon';
 import { useModal } from '@/hooks/useModal';
-import EditQuestion from './EditQuestion';
 import QuestionForm from '../common/Form';
 import Likes from '../common/Likes';
 import { deleteQuestion } from '@/firebase/questions';
@@ -15,38 +14,20 @@ interface Props {
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const {
-    id,
-    user,
-    userId,
-    title,
-    answer,
-    dataCreated,
-    message,
-    category,
-    approved,
-    loadWroteQuestions,
-  } = props;
+  const { id, user, userId, title, answer, message, category, approved, loadWroteQuestions } =
+    props;
   const { openModal, closeModal } = useModal();
 
   let questionState = <></>;
   if (approved === 0) {
-    questionState = (
-      <Button btnStyle="btn-state-sm" styles="text-deepGreen border-deepGreen">
-        대기
-      </Button>
-    );
+    questionState = <Button btnStyle="sm-line-deepGreen">대기</Button>;
   } else if (approved === 1) {
-    questionState = (
-      <Button btnStyle="btn-state-sm" styles="bg-deepGreen text-white">
-        승인
-      </Button>
-    );
+    questionState = <Button btnStyle="sm-fill-deepGreen">승인</Button>;
   } else {
     questionState = (
       <>
         <Button
-          btnStyle="btn-primary"
+          btnStyle="sm-line-deepGreen"
           styles="text-xs whitespace-nowrap"
           handleClick={() => {
             openModal({
@@ -57,9 +38,7 @@ const QuestionItem = (props: Props & IQuestion) => {
         >
           사유보기
         </Button>
-        <Button btnStyle="btn-state-sm" styles="text-white bg-red">
-          거부
-        </Button>
+        <Button btnStyle="sm-fill-red">거부</Button>
       </>
     );
   }
@@ -71,9 +50,8 @@ const QuestionItem = (props: Props & IQuestion) => {
         {approved !== 1 && userId === user ? (
           <>
             <Button
-              btnStyle="btn-sm"
-              handleClick={(e) => {
-                e.stopPropagation();
+              btnStyle="sm-ghost"
+              handleClick={() => {
                 openModal({
                   children: (
                     <div className=" relative w-screen max-w-[36em] bg-white p-6">
@@ -95,9 +73,8 @@ const QuestionItem = (props: Props & IQuestion) => {
               <Icon name="edit" className="h-5 w-5  fill-deepGreen " />
             </Button>
             <Button
-              btnStyle="btn-sm"
-              handleClick={(e) => {
-                e.stopPropagation();
+              btnStyle="sm-ghost"
+              handleClick={() => {
                 openModal({
                   center: true,
                   children: (

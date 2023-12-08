@@ -1,17 +1,20 @@
+import { ButtonStyle, getbuttonClass } from '@/types/buttons';
+
 interface Props {
   children: React.ReactNode;
   handleClick?: () => void;
   styles?: string;
-  btnStyle: 'btn-primary' | 'btn-sm' | 'btn-fill' | 'btn-state-lg';
+  btnStyle: ButtonStyle;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
 }
 
 const Button = ({ children, handleClick, styles, btnStyle, type, disabled }: Props) => {
+  const buttonStyles = `${styles || ''} ${getbuttonClass(btnStyle)}`;
   return (
     <button
       type={type ?? 'button'}
-      className={`${styles || ''} ${btnStyle}`}
+      className={buttonStyles}
       onClick={handleClick}
       disabled={disabled}
     >

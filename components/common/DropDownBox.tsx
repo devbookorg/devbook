@@ -49,7 +49,7 @@ export default function DropDownBox<T>({
           {dropDownList.map((item, index) => (
             <Button
               key={`dropDown_${item}_${index}`}
-              btnStyle="btn-fill"
+              btnStyle="sm-fill-deepGreen"
               styles="text-base h-8 w-fit leading-5 py-1 px-2 content-center"
               handleClick={() => {
                 dropDownToggle();

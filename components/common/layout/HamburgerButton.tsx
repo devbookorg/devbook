@@ -10,7 +10,7 @@ const HamburgerButton = (props: Props) => {
   const { isOff, handleToggle } = props;
 
   return (
-    <Button btnStyle="btn-sm" styles="z-50" handleClick={() => handleToggle()}>
+    <Button btnStyle="sm-ghost" styles="z-50" handleClick={() => handleToggle()}>
       <div className="flex flex-col items-center justify-center  ">
         <span
           className={`block h-0.5 w-6 rounded-sm bg-deepGreen 

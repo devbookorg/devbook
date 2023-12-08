@@ -19,7 +19,7 @@ const Pagination = (props: Props) => {
   return (
     <section className="flex items-center  justify-center">
       <Button
-        btnStyle="btn-sm"
+        btnStyle="lg-ghost"
         handleClick={() => handleChangePage(currentPage - 1)}
         disabled={currentPage <= 1}
       >
@@ -27,16 +27,16 @@ const Pagination = (props: Props) => {
       </Button>
       {range.map((page) => (
         <Button
-          btnStyle="btn-sm"
+          btnStyle="sm-ghost"
           key={page}
-          styles={page === currentPage ? 'text-deepGreen' : ''}
+          styles={page === currentPage ? 'text-deepGreen text-base' : ''}
           handleClick={() => handleChangePage(page)}
         >
           {page}
         </Button>
       ))}
       <Button
-        btnStyle="btn-sm"
+        btnStyle="lg-ghost"
         handleClick={() => handleChangePage(currentPage + 1)}
         disabled={currentPage >= totalPages}
       >

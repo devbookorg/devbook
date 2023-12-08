@@ -44,7 +44,7 @@ export default function Home() {
     <>
       전체 질문 수 : {numberOfQuestions}
       <Button
-        btnStyle="btn-primary"
+        btnStyle="sm-line-deepGreen"
         handleClick={() => {
           loadQuestionsSortByPopularity();
         }}
