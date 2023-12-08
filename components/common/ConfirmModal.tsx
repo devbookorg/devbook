@@ -19,8 +19,7 @@ const ConfirmModal = (props: Props) => {
       <h2>{content}</h2>
       <div className="mt-4 flex w-full gap-4 ">
         <Button
-          btnStyle="btn-state-lg"
-          styles="text-red border-red flex-1 hover:bg-red hover:text-white"
+          btnStyle="lg-line-red"
           handleClick={() => {
             onCancel?.();
             closeModal();
@@ -29,8 +28,7 @@ const ConfirmModal = (props: Props) => {
           {cancelMessage}
         </Button>
         <Button
-          btnStyle="btn-state-lg"
-          styles="text-deepGreen border-deepGreen flex-1 hover:bg-deepGreen hover:text-white"
+          btnStyle="lg-line-deepGreen"
           handleClick={() => {
             onSuccess?.();
             closeModal();

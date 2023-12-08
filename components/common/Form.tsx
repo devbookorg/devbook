@@ -84,7 +84,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           required
         />
       </Labeled>
-      <Button type="submit" btnStyle="btn-fill">
+      <Button type="submit" btnStyle="lg-fill-deepGreen">
         작성
       </Button>
     </form>
