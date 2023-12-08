@@ -27,8 +27,8 @@ export function DeleteUserAndLogout({ userId }: DeleteUserAndLogoutProps) {
   return (
     <section className="my-4 flex gap-4">
       <Button
-        btnStyle="btn-state-lg"
-        styles="flex-1 border-red text-red hover:bg-red hover:text-white"
+        btnStyle="lg-line-red"
+        styles="flex-1"
         handleClick={() => {
           openModal({
             center: true,
@@ -45,11 +45,7 @@ export function DeleteUserAndLogout({ userId }: DeleteUserAndLogoutProps) {
       >
         회원탈퇴
       </Button>
-      <Button
-        btnStyle="btn-state-lg"
-        styles="flex-1 border-deepGreen text-deepGreen hover:bg-deepGreen hover:text-white"
-        handleClick={handleSignOut}
-      >
+      <Button btnStyle="lg-line-deepGreen" styles="flex-1" handleClick={handleSignOut}>
         로그아웃
       </Button>
     </section>

@@ -17,8 +17,8 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between px-6 py-4 text-deepGreen ">
       <Button
-        btnStyle="btn-ghost"
-        styles="p-0 z-50 "
+        btnStyle="sm-ghost"
+        styles="z-50 "
         handleClick={() => {
           router.push('/');
           handleToggle(true);
@@ -27,7 +27,7 @@ const Header = () => {
         <h1 className="text-xl font-bold hover:text-green">DevBook</h1>
       </Button>
       <section className="flex items-center gap-1">
-        <Button type="button" btnStyle="btn-ghost" styles="z-50" handleClick={handleDarkMode}>
+        <Button type="button" btnStyle="sm-ghost" styles="z-50" handleClick={handleDarkMode}>
           <Icon name="sun" className=" h-7 w-7 fill-deepGreen dark:fill-green" />
         </Button>
         <HamburgerButton isOff={isOff} handleToggle={handleToggle} />

@@ -73,8 +73,8 @@ const UserPage = () => {
           >
             <Button
               type="button"
-              btnStyle="btn-ghost"
-              styles="w-full text-sm"
+              btnStyle="lg-ghost"
+              styles="w-full"
               handleClick={() => setSelectedTab(i)}
             >
               {e}

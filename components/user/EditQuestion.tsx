@@ -20,7 +20,7 @@ const EditQuestion = (props: Props) => {
     <article className="relative flex h-full max-h-[1000px]  w-screen max-w-[36em] flex-col gap-3 bg-white p-6">
       <section className="text-center">
         <h1>질문 수정하기</h1>
-        <Button btnStyle="btn-ghost" handleClick={closeModal} styles="absolute top-2 right-2">
+        <Button btnStyle="sm-ghost" handleClick={closeModal} styles="absolute top-2 right-2">
           <Icon name="close" className="h-8 w-8" />
         </Button>
       </section>
@@ -51,11 +51,7 @@ const EditQuestion = (props: Props) => {
               onChange={(e) => setValue((prev) => ({ ...prev, answer: e.target.value }))}
             />
           </label>
-          <Button
-            type="submit"
-            btnStyle="btn-state-lg"
-            styles="w-full bg-deepGreen text-white border-deepGreen"
-          >
+          <Button type="submit" btnStyle="lg-fill-deepGreen" styles="w-full">
             수정하기
           </Button>
         </form>

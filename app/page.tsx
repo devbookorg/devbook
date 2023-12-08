@@ -50,7 +50,7 @@ export default function Home() {
         }}
       >
         <Button
-          btnStyle="btn-primary"
+          btnStyle="sm-line-deepGreen"
           styles={`${
             questionsFilter.sortByLikes && 'bg-deepGreen text-white'
           }  right-[20px] top-[0]`}
