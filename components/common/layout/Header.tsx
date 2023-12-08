@@ -12,7 +12,7 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 const Header = () => {
   const router = useRouter();
   const { isOff, handleToggle } = useToggle();
-  const { handleDarkMode } = useDarkMode();
+  const { isDarkMode, handleDarkMode } = useDarkMode();
 
   return (
     <header className="flex items-center justify-between px-6 py-4 text-deepGreen ">
@@ -28,7 +28,10 @@ const Header = () => {
       </Button>
       <section className="flex items-center gap-1">
         <Button type="button" btnStyle="sm-ghost" styles="z-50" handleClick={handleDarkMode}>
-          <Icon name="sun" className=" h-7 w-7 fill-deepGreen dark:fill-green" />
+          <Icon
+            name={isDarkMode ? 'moon' : 'sun'}
+            className=" h-7 w-7 stroke-deepGreen dark:stroke-green"
+          />
         </Button>
         <HamburgerButton isOff={isOff} handleToggle={handleToggle} />
         {!isOff && <Nav handleClose={() => handleToggle(true)} />}
