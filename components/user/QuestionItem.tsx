@@ -8,6 +8,7 @@ import QuestionForm from '../common/Form';
 import Likes from '../common/Likes';
 import { deleteQuestion } from '@/firebase/questions';
 import ConfirmModal from '../common/ConfirmModal';
+import LikeQuestionPart from '../common/LikeQuestionPart';
 
 interface Props {
   user: string;
@@ -114,7 +115,8 @@ const QuestionItem = (props: Props & IQuestion) => {
             </Button>
           </>
         ) : (
-          <Likes handleClick={() => {}} condition={true} />
+          <LikeQuestionPart {...props} loadQuestions={props.loadWroteQuestions} />
+          // <Likes handleClick={() => {}} condition={true} />
         )}
       </div>
     </section>

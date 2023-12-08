@@ -19,30 +19,38 @@ const Pagination = (props: Props) => {
 
   return (
     <section className="flex items-center  justify-center">
-      <Button
-        btnStyle="btn-ghost"
-        handleClick={() => handleChangePage(currentPage - 1)}
-        disabled={currentPage <= 1}
-      >
-        <Icon name="chevronLeft" className="h-5 w-5 stroke-deepGreen" />
-      </Button>
-      {range.map((page) => (
-        <Button
-          btnStyle="btn-ghost"
-          key={page}
-          styles={page === currentPage ? 'text-deepGreen' : ''}
-          handleClick={() => handleChangePage(page)}
-        >
-          {page}
-        </Button>
-      ))}
-      <Button
-        btnStyle="btn-ghost"
-        handleClick={() => handleChangePage(currentPage + 1)}
-        disabled={currentPage >= totalPages}
-      >
-        <Icon name="chevronRight" className="h-5 w-5 stroke-deepGreen" />
-      </Button>
+      <div className="relative flex items-center">
+        {currentPage !== startPage && (
+          <Button
+            btnStyle="btn-ghost"
+            styles="absolute left-[-50%] translate-y-[2px]"
+            handleClick={() => handleChangePage(currentPage - 1)}
+            disabled={currentPage <= 1}
+          >
+            <Icon name="chevronLeft" className="h-5 w-5 stroke-deepGreen" />
+          </Button>
+        )}
+        {range.map((page) => (
+          <Button
+            btnStyle="btn-ghost"
+            key={page}
+            styles={page === currentPage ? 'text-deepGreen' : ''}
+            handleClick={() => handleChangePage(page)}
+          >
+            {page}
+          </Button>
+        ))}
+        {currentPage !== endPage && (
+          <Button
+            btnStyle="btn-ghost"
+            styles="absolute right-[-50%] translate-y-[2px]"
+            handleClick={() => handleChangePage(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+          >
+            <Icon name="chevronRight" className="h-5 w-5 stroke-deepGreen" />
+          </Button>
+        )}
+      </div>
     </section>
   );
 };

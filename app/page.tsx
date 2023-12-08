@@ -61,11 +61,13 @@ export default function Home() {
           인기순
         </Button>
       </div>
-      {questions.map((question) => (
-        <Question key={question.id} {...question}>
-          <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
-        </Question>
-      ))}
+      <div className="mt-4">
+        {questions.map((question) => (
+          <Question key={question.id} {...question}>
+            <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
+          </Question>
+        ))}
+      </div>
       <Pagination
         {...pagination}
         handleChangePage={(page) => {
