@@ -1,8 +1,8 @@
 import { themeState } from '@/recoil/theme';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 export const useDarkMode = () => {
-  const setIsDarkMode = useSetRecoilState(themeState);
+  const [isDarkMode, setIsDarkMode] = useRecoilState(themeState);
 
   const handleDarkMode = () => {
     const currentTheme = localStorage.theme;
@@ -19,5 +19,5 @@ export const useDarkMode = () => {
     }
   };
 
-  return { handleDarkMode };
+  return { isDarkMode, handleDarkMode };
 };
