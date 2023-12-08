@@ -116,7 +116,6 @@ const QuestionItem = (props: Props & IQuestion) => {
           </>
         ) : (
           <LikeQuestionPart {...props} loadQuestions={props.loadWroteQuestions} />
-          // <Likes handleClick={() => {}} condition={true} />
         )}
       </div>
     </section>

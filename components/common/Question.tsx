@@ -34,7 +34,7 @@ const Question = (props: IQuestion & Props) => {
       >
         <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
           <Badge value={category} />
-          <h3 className="overflow-hidden text-ellipsis">{title}</h3>
+          <h3 className="overflow-hidden text-ellipsis whitespace-nowrap">{title}</h3>
           <p className=" max-h-5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray">
             {answer}
           </p>

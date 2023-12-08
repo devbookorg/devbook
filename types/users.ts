@@ -3,5 +3,6 @@ export default interface IUser {
   name: string;
   email: string;
   likeQuestions: string[];
+  notification: boolean;
   admin?: boolean;
 }

@@ -18,4 +18,5 @@ export interface getQuestionType {
   category?: string;
   userId?: string;
   page?: number;
+  noLimit?: boolean;
 }
