@@ -15,9 +15,9 @@ const ConfirmModal = (props: Props) => {
   const { closeModal } = useModal();
 
   return (
-    <section className="flex w-1/2 min-w-[16em] max-w-[24em] flex-col items-center rounded-lg bg-white p-6">
+    <section className="flex w-full  max-w-[24em] flex-col items-center rounded-lg bg-white p-6">
       <h2>{content}</h2>
-      <div className="mt-4 flex w-full gap-4 ">
+      <div className="mt-4 flex w-fit gap-4 ">
         <Button
           btnStyle="lg-line-red"
           handleClick={() => {

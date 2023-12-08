@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../Button';
-import Icon from '../Icon';
+import { ButtonIcon } from '../Icon';
 import { signIn, useSession } from 'next-auth/react';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
@@ -21,40 +21,41 @@ const Nav = (props: Props) => {
       {data !== null ? (
         <>
           {user?.admin && (
-            <Button
+            <ButtonIcon
               btnStyle="lg-ghost"
-              styles="flex items-center gap-3 text-base hover:text-green"
+              iconName="settings"
+              buttonStyles="flex items-center gap-3 text-base hover:text-green"
+              svgStyles="h-8 w-8 stroke-deepGreen"
               handleClick={() => {
                 handleClose();
                 router.push('/admin');
               }}
-            >
-              <Icon name="settings" className="h-8 w-8 stroke-deepGreen" />
-              관리페이지
-            </Button>
+              text="관리페이지"
+            />
           )}
-          <Button
+          <ButtonIcon
             btnStyle="lg-ghost"
-            styles="flex items-center gap-3 text-base "
+            iconName="pen"
+            buttonStyles="flex items-center gap-3 text-base"
+            svgStyles="h-8 w-8 fill-deepGreen"
             handleClick={() => {
               router.push('/write');
               handleClose();
             }}
-          >
-            <Icon name="pen" className="h-8 w-8 fill-deepGreen" />
-            작성하기
-          </Button>
-          <Button
+            text="작성하기"
+          />
+
+          <ButtonIcon
             btnStyle="lg-ghost"
-            styles="flex items-center gap-3 text-base"
+            iconName="user"
+            buttonStyles="flex items-center gap-3 text-base"
+            svgStyles="h-8 w-8 fill-deepGreen"
             handleClick={() => {
               router.push('/user');
               handleClose();
             }}
-          >
-            <Icon name="user" className="h-8 w-8 fill-deepGreen" />
-            나의 정보
-          </Button>
+            text="나의 정보"
+          />
         </>
       ) : (
         <Button

@@ -12,10 +12,13 @@ import {
 } from '@/firebase/questions';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
+import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
 import { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 export default function AdminPage() {
+  const user = useRecoilValue(userState);
   const rejectionMessage = useRef(null);
   const { openModal, closeModal } = useModal();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
@@ -33,12 +36,12 @@ export default function AdminPage() {
     });
   };
 
-  const approveQuestion = async (questionsId: string) => {
-    updateQuestionApproved(questionsId, { approved: 1 });
+  const approveQuestion = async (questionId: string) => {
+    updateQuestionApproved({ questionId, userId: user.id, approved: 1 });
   };
-  const rejectQuestion = async (questionsId: string, message: string) => {
-    updateQuestionApproved(questionsId, { approved: 2 });
-    updateQuestionMessage(questionsId, { message });
+  const rejectQuestion = async (questionId: string, message: string) => {
+    updateQuestionApproved({ questionId, userId: user.id, approved: 2 });
+    updateQuestionMessage(questionId, { message });
   };
 
   const loadPageQuestions = (page: number) => {

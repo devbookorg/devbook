@@ -30,6 +30,7 @@ interface FirestoreDataConverter<T> {
   fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>): T;
 }
 
+const usersCollection = collection(db, 'users');
 const questionsCollection = collection(db, 'questions');
 
 // 1. question을 생성하는 로직
@@ -52,7 +53,6 @@ export const createQuestion = async (body: {
       message: '',
       approved: 0,
       dataCreated: new Date(),
-      notification: true,
     });
   } catch (error) {
     console.error('Failed to create a new question:', error);
@@ -113,20 +113,28 @@ export const updateQuestionLikes = async (questionId: string, increment: number)
 };
 
 // 4. question의 approved를 수정하는 로직
-export const updateQuestionApproved = async (
-  questionId: string,
-  body: { approved: number }
-): Promise<IQuestion | null> => {
+export const updateQuestionApproved = async (body: {
+  questionId: string;
+  userId: string;
+  approved: number;
+}) => {
+  const { questionId, userId, approved } = body;
   try {
     const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
     const firstQuestionDocumentId = questionsQuery.docs[0].id;
 
     const questionRef = doc(questionsCollection, firstQuestionDocumentId);
-    await updateDoc(questionRef, { approved: body.approved });
+    await updateDoc(questionRef, { approved });
 
-    const updatedQuestionSnapshot = await getDoc(questionRef);
-    const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
-    return updatedQuestion;
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    const firstUserDocumentId = userQuery.docs[0].id;
+
+    const userRef = doc(questionsCollection, firstUserDocumentId);
+    await updateDoc(userRef, { notification: true });
+
+    // const updatedQuestionSnapshot = await getDoc(questionRef);
+    // const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
+    // return updatedQuestion;
   } catch (error) {
     console.error('Failed to update question approved status:', error);
     throw error;
@@ -156,26 +164,11 @@ export const updateQuestionMessage = async (
 // 유저의 알람 모두 읽기
 export const updateQuestionsNotification = async (userId: string) => {
   try {
-    const questionsCollection = collection(db, 'questions');
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    const firstUserDocumentId = userQuery.docs[0].id;
 
-    // userId가 특정 값과 같은 문서를 찾기 위한 쿼리 생성
-    const querySnapshot = await getDocs(query(questionsCollection, where('userId', '==', userId)));
-
-    // 모든 문서에 대해 notification을 false로 업데이트
-    const updatePromises = querySnapshot.docs.map(async (docSnapshot) => {
-      const questionRef = doc(questionsCollection, docSnapshot.id);
-      await updateDoc(questionRef, { notification: false });
-
-      // 업데이트된 문서의 스냅샷을 가져오기
-      const updatedQuestionSnapshot = await getDoc(questionRef);
-      const updatedQuestion = updatedQuestionSnapshot.data() as IQuestion;
-      return updatedQuestion;
-    });
-
-    // 모든 문서의 업데이트가 완료될 때까지 기다림
-    const updatedQuestions = await Promise.all(updatePromises);
-
-    console.log('Updated questions:', updatedQuestions);
+    const userRef = doc(usersCollection, firstUserDocumentId);
+    await updateDoc(userRef, { notification: false });
   } catch (error) {
     console.error('Failed to update question messages:', error);
     throw error;

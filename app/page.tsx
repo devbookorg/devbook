@@ -39,8 +39,7 @@ export default function Home() {
       setQuestionsFilter({ ...questionsFilter, sortByLikes: 'desc' });
     }
   };
-  console.log('questionsFilter :', questionsFilter);
-  console.log(questionsFilter.sortByLikes);
+
   return (
     <>
       <div

@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from './Button';
-import Icon from './Icon';
+import { ButtonIcon } from './Icon';
 
 interface Props {
   currentPage: number;
@@ -16,19 +16,18 @@ const Pagination = (props: Props) => {
   for (let i = startPage; i <= endPage; i++) {
     range.push(i);
   }
-
   return (
     <section className="flex items-center  justify-center">
       <div className="relative flex items-center">
         {currentPage !== startPage && (
-          <Button
+          <ButtonIcon
             btnStyle="lg-ghost"
-            styles="absolute left-[-50%] translate-y-[2px]"
+            iconName="chevronLeft"
+            svgStyles="h-5 w-5 stroke-deepGreen"
+            buttonStyles="p-0 absolute left-[-50%]"
             handleClick={() => handleChangePage(currentPage - 1)}
             disabled={currentPage <= 1}
-          >
-            <Icon name="chevronLeft" className="h-5 w-5 stroke-deepGreen" />
-          </Button>
+          />
         )}
         {range.map((page) => (
           <Button
@@ -41,14 +40,14 @@ const Pagination = (props: Props) => {
           </Button>
         ))}
         {currentPage !== endPage && (
-          <Button
+          <ButtonIcon
             btnStyle="lg-ghost"
-            styles="absolute right-[-50%] translate-y-[2px]"
+            iconName="chevronRight"
+            svgStyles="h-5 w-5 stroke-deepGreen"
+            buttonStyles="p-0 absolute right-[-50%]"
             handleClick={() => handleChangePage(currentPage + 1)}
             disabled={currentPage >= totalPages}
-          >
-            <Icon name="chevronRight" className="h-5 w-5 stroke-deepGreen" />
-          </Button>
+          />
         )}
       </div>
     </section>

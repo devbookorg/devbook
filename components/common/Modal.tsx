@@ -1,7 +1,6 @@
 import { useModal } from '@/hooks/useModal';
 import React from 'react';
-import Button from './Button';
-import Icon from '../common/Icon';
+import { ButtonIcon } from '../common/Icon';
 
 const Modal = () => {
   const { modalData, closeModal } = useModal();
@@ -21,13 +20,12 @@ const Modal = () => {
               }`}
             >
               {!modalData.closeBtnNone && (
-                <Button
-                  btnStyle="sm-ghost"
+                <ButtonIcon
+                  iconName="close"
+                  svgStyles="h-7 w-7"
+                  buttonStyles="absolute top-2 right-2  z-[110]"
                   handleClick={closeModal}
-                  styles="absolute top-2 right-2  z-[110]"
-                >
-                  <Icon name="close" className="h-7 w-7" />
-                </Button>
+                />
               )}
               {modalData.content}
             </div>

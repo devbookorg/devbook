@@ -17,6 +17,8 @@ import {
   Moon,
   BellUpdate,
 } from '@/assets/icons';
+import Button from './Button';
+import { ButtonStyle } from '@/types/buttons';
 
 // SVG 컴포넌트에 대한 인터페이스
 interface IconComponents {
@@ -42,33 +44,57 @@ const iconComponents: IconComponents = {
   bellUpdate: BellUpdate,
 };
 
-export default function Icon({
-  name,
-  className,
-}: {
-  name: keyof IconComponents;
-  className?: string;
-}) {
+type IconName =
+  | 'chevronDown'
+  | 'chevronUp'
+  | 'heart'
+  | 'heartFill'
+  | 'sun'
+  | 'user'
+  | 'arrowLeft'
+  | 'bell'
+  | 'edit'
+  | 'trash'
+  | 'close'
+  | 'pen'
+  | 'chevronLeft'
+  | 'chevronRight'
+  | 'settings'
+  | 'moon'
+  | 'bellUpdate';
+
+export default function Icon({ name, className }: { name: IconName; className?: string }) {
   const IconComponent = iconComponents[name];
   return <IconComponent className={className} />;
 }
 
-export {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  HeartFill,
-  Sun,
-  ArrowLeft,
-  User,
-  Bell,
-  Edit,
-  Trash,
-  Close,
-  Pen,
-  ChevronLeft,
-  ChevronRight,
-  Moon,
-  BellUpdate,
-  Settings,
-};
+export function ButtonIcon({
+  iconName,
+  btnStyle,
+  svgStyles,
+  buttonStyles,
+  text,
+  handleClick,
+  disabled,
+}: {
+  btnStyle?: ButtonStyle;
+  iconName: IconName;
+  svgStyles?: string;
+  buttonStyles?: string;
+  text?: string;
+  handleClick?: () => void;
+  disabled?: boolean;
+}) {
+  const IconComponent = iconComponents[iconName];
+  return (
+    <Button
+      btnStyle={btnStyle ?? 'sm-ghost'}
+      styles={buttonStyles}
+      handleClick={handleClick}
+      disabled={disabled}
+    >
+      <IconComponent className={svgStyles} />
+      {text}
+    </Button>
+  );
+}

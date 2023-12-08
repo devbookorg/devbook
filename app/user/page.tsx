@@ -30,11 +30,12 @@ const UserPage = () => {
   const tabs = ['작성한 게시물', '좋아요'];
   const pagination = usePagination(selectedTab === 0 ? wroteQuestionsCount : likeQuestionsCount);
   useEffect(() => {
-    loadWroteQuestions();
-    loadMyLikesQuestions();
-    updateQuestionsNotification(user.id);
+    if (user.email !== '') {
+      loadWroteQuestions();
+      loadMyLikesQuestions();
+      updateQuestionsNotification(user.id);
+    }
   }, [user]);
-  console.log(myWroteQuestions);
 
   const loadWroteQuestions = () => {
     getFilteredQuestions({ userId: user.id }).then((res) => setMyWroteQuestions(res));

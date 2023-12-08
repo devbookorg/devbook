@@ -1,6 +1,6 @@
 import { useModal } from '@/hooks/useModal';
 import React, { useState } from 'react';
-import Icon from '../common/Icon';
+import { ButtonIcon } from '../common/Icon';
 import Button from '../common/Button';
 
 interface Props {
@@ -20,9 +20,12 @@ const EditQuestion = (props: Props) => {
     <article className="relative flex h-full max-h-[1000px]  w-screen max-w-[36em] flex-col gap-3 bg-white p-6">
       <section className="text-center">
         <h1>질문 수정하기</h1>
-        <Button btnStyle="sm-ghost" handleClick={closeModal} styles="absolute top-2 right-2">
-          <Icon name="close" className="h-8 w-8" />
-        </Button>
+        <ButtonIcon
+          iconName="close"
+          svgStyles="h-8 w-8"
+          buttonStyles="absolute top-2 right-2"
+          handleClick={closeModal}
+        />
       </section>
       <section className="py-4">
         <form

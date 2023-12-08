@@ -1,7 +1,7 @@
 import IQuestion from '@/types/questions';
 import React from 'react';
 import Button from '../common/Button';
-import Icon from '../common/Icon';
+import { ButtonIcon } from '../common/Icon';
 import { useModal } from '@/hooks/useModal';
 import QuestionForm from '../common/Form';
 import Likes from '../common/Likes';
@@ -39,7 +39,9 @@ const QuestionItem = (props: Props & IQuestion) => {
         >
           사유
         </Button>
-        <Button btnStyle="sm-fill-red whitespace-nowrap">거부</Button>
+        <Button btnStyle="sm-fill-red" styles="whitespace-nowrap">
+          거부
+        </Button>
       </>
     );
   }
@@ -47,11 +49,12 @@ const QuestionItem = (props: Props & IQuestion) => {
   return (
     <section className="flex flex-col items-end justify-between">
       <div className="flex items-center gap-2">{user === userId && questionState}</div>
-      <div className="flex">
+      <div className="flex ">
         {approved !== 1 && userId === user ? (
           <>
-            <Button
-              btnStyle="sm-ghost"
+            <ButtonIcon
+              iconName="edit"
+              svgStyles="h-5 w-5  fill-deepGreen"
               handleClick={() => {
                 openModal({
                   children: (
@@ -70,11 +73,11 @@ const QuestionItem = (props: Props & IQuestion) => {
                   ),
                 });
               }}
-            >
-              <Icon name="edit" className="h-5 w-5  fill-deepGreen " />
-            </Button>
-            <Button
-              btnStyle="sm-ghost"
+            />
+
+            <ButtonIcon
+              iconName="trash"
+              svgStyles="h-5 w-5 fill-red"
               handleClick={() => {
                 openModal({
                   center: true,
@@ -88,9 +91,7 @@ const QuestionItem = (props: Props & IQuestion) => {
                   ),
                 });
               }}
-            >
-              <Icon name="trash" className="h-5 w-5 fill-red" />
-            </Button>
+            />
           </>
         ) : (
           <LikeQuestionPart {...props} loadQuestions={props.loadWroteQuestions} />

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import HamburgerButton from './HamburgerButton';
 import Nav from './Nav';
 import { useToggle } from '@/hooks/useToggle';
-import Icon from '../Icon';
+import { ButtonIcon } from '../Icon';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
 const Header = () => {
@@ -27,12 +27,18 @@ const Header = () => {
         <h1 className="text-xl font-bold hover:text-green">DevBook</h1>
       </Button>
       <section className="flex items-center gap-1">
-        <Button type="button" btnStyle="sm-ghost" styles="z-50" handleClick={handleDarkMode}>
-          <Icon
-            name={isDarkMode ? 'moon' : 'sun'}
-            className=" h-7 w-7 stroke-deepGreen dark:stroke-green"
-          />
-        </Button>
+        <ButtonIcon
+          iconName={isDarkMode ? 'moon' : 'sun'}
+          buttonStyles="z-50"
+          svgStyles="h-7 w-7 stroke-deepGreen dark:stroke-green"
+          handleClick={handleDarkMode}
+        />
+        <ButtonIcon
+          iconName="bellUpdate"
+          buttonStyles="z-50"
+          svgStyles="h-7 w-7 stroke-deepGreen dark:stroke-green"
+          handleClick={handleDarkMode}
+        />
         <HamburgerButton isOff={isOff} handleToggle={handleToggle} />
         {!isOff && <Nav handleClose={() => handleToggle(true)} />}
       </section>

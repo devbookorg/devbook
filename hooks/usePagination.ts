@@ -14,12 +14,14 @@ export const usePagination = (total: number) => {
     if (page <= half) {
       setStartPage(1);
       setEndPage(totalPages > pageRange ? pageRange : totalPages);
-    } else if (totalPages - page < half) {
+    } else if (totalPages - page < half && totalPages > pageRange) {
       setStartPage(totalPages - pageRange + 1);
       setEndPage(totalPages);
     } else {
       setStartPage(page - half);
-      setEndPage(page + half);
+      if (totalPages > endPage) {
+        setEndPage(page + half);
+      }
     }
   };
 
