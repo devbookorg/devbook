@@ -13,6 +13,9 @@ import {
   Pen,
   ChevronLeft,
   ChevronRight,
+  Settings,
+  Moon,
+  BellUpdate,
 } from '@/assets/icons';
 
 // SVG 컴포넌트에 대한 인터페이스
@@ -34,6 +37,9 @@ const iconComponents: IconComponents = {
   pen: Pen,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
+  settings: Settings,
+  moon: Moon,
+  bellUpdate: BellUpdate,
 };
 
 export default function Icon({
@@ -62,4 +68,7 @@ export {
   Pen,
   ChevronLeft,
   ChevronRight,
+  Moon,
+  BellUpdate,
+  Settings,
 };
