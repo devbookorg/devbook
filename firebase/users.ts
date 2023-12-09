@@ -14,7 +14,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
-import IUser from '@/types/users';
+import IUser, { NotificationMessage } from '@/types/users';
 
 const usersCollection = collection(db, 'users');
 const questionsCollection = collection(db, 'questions');
@@ -30,6 +30,7 @@ export const addUser = async (userData: { name: string; email: string }) => {
         ...userData,
         id,
         likeQuestions: [],
+        notificationMessages: [],
       });
     }
   } catch (error) {
@@ -116,6 +117,38 @@ export const deleteUser = async (userId: string) => {
     }
   } catch (error) {
     console.error('Failed to delete user:', error);
+    throw error;
+  }
+};
+
+// user데이터에 notificationMessage값을 업데이트하는 로직
+export const updateUserNotificationMessage = async (body: {
+  userId: string;
+  notificationMessage: NotificationMessage;
+}) => {
+  const { userId, notificationMessage } = body;
+  try {
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    const firstUserDocumentId = userQuery.docs[0].id;
+
+    const userRef = doc(usersCollection, firstUserDocumentId);
+    const userSnapshot = await getDoc(userRef);
+
+    if (userSnapshot.exists()) {
+      console.log(userSnapshot, 'userSnapshot');
+      const userData = userSnapshot.data() as IUser;
+      let updateNotificationMessages: NotificationMessage[];
+
+      updateNotificationMessages = [
+        ...userData.notificationMessages,
+        { ...notificationMessage, approvedDate: new Date() },
+      ];
+      await updateDoc(userRef, {
+        notification: true,
+        notificationMessages: updateNotificationMessages,
+      });
+    }
+  } catch (error) {
     throw error;
   }
 };

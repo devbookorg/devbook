@@ -9,19 +9,14 @@ import {
   collection,
   doc,
   DocumentData,
-  CollectionReference,
-  DocumentReference,
-  DocumentSnapshot,
   getDocs,
   orderBy,
   query,
   QueryDocumentSnapshot,
-  QuerySnapshot,
   updateDoc,
   where,
   limit,
   FirestoreDataConverter as FirestoreDataConverterType,
-  startAt,
   startAfter,
 } from 'firebase/firestore';
 
@@ -113,28 +108,14 @@ export const updateQuestionLikes = async (questionId: string, increment: number)
 };
 
 // 4. question의 approved를 수정하는 로직
-export const updateQuestionApproved = async (body: {
-  questionId: string;
-  userId: string;
-  approved: number;
-}) => {
-  const { questionId, userId, approved } = body;
+export const updateQuestionApproved = async (body: { questionId: string; approved: number }) => {
+  const { questionId, approved } = body;
   try {
     const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
     const firstQuestionDocumentId = questionsQuery.docs[0].id;
 
     const questionRef = doc(questionsCollection, firstQuestionDocumentId);
     await updateDoc(questionRef, { approved });
-
-    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
-    const firstUserDocumentId = userQuery.docs[0].id;
-
-    const userRef = doc(questionsCollection, firstUserDocumentId);
-    await updateDoc(userRef, { notification: true });
-
-    // const updatedQuestionSnapshot = await getDoc(questionRef);
-    // const updatedQuestion: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
-    // return updatedQuestion;
   } catch (error) {
     console.error('Failed to update question approved status:', error);
     throw error;

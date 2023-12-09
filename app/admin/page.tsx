@@ -10,6 +10,7 @@ import {
   updateQuestionApproved,
   updateQuestionMessage,
 } from '@/firebase/questions';
+import { updateUserNotificationMessage } from '@/firebase/users';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { userState } from '@/recoil/user';
@@ -36,12 +37,31 @@ export default function AdminPage() {
     });
   };
 
-  const approveQuestion = async (questionId: string) => {
-    updateQuestionApproved({ questionId, userId: user.id, approved: 1 });
+  const approveQuestion = async (question: IQuestion) => {
+    const approved = 1;
+    updateQuestionApproved({ questionId: question.id, approved }).then(() => {
+      updateNotificationMessage(question, approved);
+    });
   };
-  const rejectQuestion = async (questionId: string, message: string) => {
-    updateQuestionApproved({ questionId, userId: user.id, approved: 2 });
-    updateQuestionMessage(questionId, { message });
+  const rejectQuestion = async (question: IQuestion, message: string) => {
+    const approved = 2;
+    updateQuestionApproved({ questionId: question.id, approved }).then(() => {
+      updateNotificationMessage(question, approved, message);
+      updateQuestionMessage(question.id, { message });
+    });
+  };
+
+  const updateNotificationMessage = (question: IQuestion, approved: 1 | 2, message?: string) => {
+    const body = {
+      userId: user.id,
+      notificationMessage: {
+        approved,
+        questionTitle: question.title,
+        rejectionMessage: message ?? '',
+      },
+    };
+    updateUserNotificationMessage(body);
+    rejectionMessage.current = null;
   };
 
   const loadPageQuestions = (page: number) => {
@@ -93,7 +113,7 @@ export default function AdminPage() {
                         <Button
                           btnStyle="lg-fill-deepGreen"
                           handleClick={() => {
-                            rejectQuestion(question.id, rejectionMessage.current.value).then(
+                            rejectQuestion(question, rejectionMessage.current.value).then(
                               loadQuestions
                             );
                             closeModal();
@@ -111,7 +131,7 @@ export default function AdminPage() {
               <Button
                 btnStyle="sm-fill-deepGreen"
                 handleClick={() => {
-                  approveQuestion(question.id).then(loadQuestions);
+                  approveQuestion(question).then(loadQuestions);
                   modalOpen({ children: '승인되었습니다.', closeBtnNone: true, autoClose: true });
                 }}
               >
