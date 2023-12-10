@@ -25,8 +25,7 @@ export default function Home() {
 
   useEffect(() => {
     loadQuestions();
-    // getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(res));
-    getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(70));
+    getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(res));
   }, [questionsFilter]);
 
   const loadQuestions = () => {
