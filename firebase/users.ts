@@ -136,7 +136,6 @@ export const updateUserNotificationMessage = async (body: {
     const userSnapshot = await getDoc(userRef);
 
     if (userSnapshot.exists()) {
-      console.log(userSnapshot, 'userSnapshot');
       const userData = userSnapshot.data() as IUser;
       let updateNotificationMessages: NotificationMessage[];
 

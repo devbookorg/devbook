@@ -25,7 +25,8 @@ export default function Home() {
 
   useEffect(() => {
     loadQuestions();
-    getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(res));
+    // getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(res));
+    getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(70));
   }, [questionsFilter]);
 
   const loadQuestions = () => {
@@ -47,16 +48,13 @@ export default function Home() {
     if (category === '미적용') {
       const { category, ...newQuestionsFilter } = questionsFilter;
       setQuestionsFilter({ ...newQuestionsFilter });
-      console.log({ ...newQuestionsFilter });
     } else {
       setQuestionsFilter({ ...questionsFilter, category });
-      console.log({ ...questionsFilter, category });
     }
   };
 
   const filterBySearchKeyword = (inputValue: string) => {
     setQuestionsFilter({ ...questionsFilter, searchKeyword: inputValue });
-    console.log({ ...questionsFilter, searchKeyword: inputValue });
   };
 
   return (
@@ -67,7 +65,7 @@ export default function Home() {
           e.stopPropagation();
         }}
       >
-        <div className="flex  gap-1">
+        <div className="mr-1 flex gap-1">
           <DropDownBox
             boxStyles={`px-2 py-1.5 text-xs items-center border-deepGreen text-deepGreen ${
               questionsFilter.category && 'bg-deepGreen text-white '
@@ -85,7 +83,7 @@ export default function Home() {
             btnStyle="sm-line-deepGreen"
             styles={`${
               questionsFilter.sortByLikes && 'bg-deepGreen text-white'
-            }  right-[20px] top-[0]`}
+            }  right-[20px] top-[0]  whitespace-nowrap`}
             handleClick={() => {
               filterByPopularity();
             }}
@@ -95,29 +93,42 @@ export default function Home() {
         </div>
 
         <form
+          className="relative flex w-full justify-end"
           onSubmit={(e) => {
             e.preventDefault();
             const inputValue = e.target[0].value;
             filterBySearchKeyword(inputValue);
           }}
         >
-          <input className="input-primary w-20 p-0" placeholder="검색하고" />
+          <input
+            className="input-primary h-full w-[100px]  max-w-[250px] rounded-lg border-deepGreen px-2 py-1.5 text-xs duration-100 focus:w-full"
+            placeholder="검색"
+          />
+          <button className="absolute right-2 top-2/4 translate-y-[-50%] bg-red" type="submit">
+            검색
+          </button>
         </form>
       </div>
-      <div className="mt-4">
-        {questions.map((question) => (
-          <Question key={question.id} {...question}>
-            <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
-          </Question>
-        ))}
-      </div>
-      <Pagination
-        {...pagination}
-        handleChangePage={(page) => {
-          setQuestionsFilter((prev) => ({ ...prev, page }));
-          pagination.handleChangePage(page);
-        }}
-      />
+      {questions.length === 0 ? (
+        <div className="mt-4">검색조건과 일치하는 데이터가 없습니다.</div>
+      ) : (
+        <>
+          <div className="mt-4">
+            {questions.map((question) => (
+              <Question key={question.id} {...question}>
+                <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
+              </Question>
+            ))}
+          </div>
+          <Pagination
+            {...pagination}
+            handleChangePage={(page) => {
+              setQuestionsFilter((prev) => ({ ...prev, page }));
+              pagination.handleChangePage(page);
+            }}
+          />
+        </>
+      )}
     </>
   );
 }

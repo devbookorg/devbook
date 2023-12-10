@@ -19,7 +19,7 @@ export const getbuttonClass = (style: ButtonStyle) => {
       return `${size} border 
       ${color === 'red' ? 'border-red' : 'border-deepGreen'} 
       ${color === 'red' ? 'text-red' : 'text-deepGreen'} 
-      ${color === 'red' ? 'hover:bg-red' : 'hover:bg-deepGreen'} hover:text-white`;
+      ${color === 'red' ? 'lg:hover:bg-red' : 'lg:hover:bg-deepGreen'} lg:hover:text-white`;
     case 'ghost':
       return `${size}`;
   }

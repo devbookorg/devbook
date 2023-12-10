@@ -59,18 +59,18 @@ const UserPage = () => {
 
   return (
     <article className="flex flex-col ">
-      <section className="flex items-center gap-2">
+      <section className="flex items-center gap-2 pl-2 ">
         <b className="text-lg">{name}</b>님
       </section>
       <div className="flex">
         {tabs.map((e, i) => (
           <div
             key={e}
-            className={
+            className={` relative w-full before:absolute before:bottom-0 before:left-0 before:w-full before:border-b-2 before:border-deepGreen  before:content-[''] ${
               selectedTab === i
-                ? 'flex-1 border-b-2 border-deepGreen'
-                : 'flex-1 border-b-2 border-lightGray'
-            }
+                ? 'before:w-full before:duration-300'
+                : 'before:w-0 before:duration-0'
+            }`}
           >
             <Button
               type="button"
@@ -83,18 +83,30 @@ const UserPage = () => {
           </div>
         ))}
       </div>
-      <div>
-        {viewQuestions.map((question) => (
-          <Question key={question.id} {...question}>
-            {selectedTab === 0 ? (
-              <QuestionItem user={user.id} {...question} loadWroteQuestions={loadWroteQuestions} />
-            ) : (
-              <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
-            )}
-          </Question>
-        ))}
-      </div>
-      <Pagination {...pagination} handleChangePage={onChangePage} />
+      {viewQuestions.length > 0 ? (
+        <>
+          <div>
+            {viewQuestions.map((question) => (
+              <Question key={question.id} {...question}>
+                {selectedTab === 0 ? (
+                  <QuestionItem
+                    user={user.id}
+                    {...question}
+                    loadWroteQuestions={loadWroteQuestions}
+                  />
+                ) : (
+                  <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
+                )}
+              </Question>
+            ))}
+          </div>
+          <Pagination {...pagination} handleChangePage={onChangePage} />
+        </>
+      ) : (
+        <div className="p-4 pb-0">
+          {selectedTab === 0 ? '작성한 게시물이 없습니다.' : "'좋아요'한 게시물이 없습니다."}
+        </div>
+      )}
       <DeleteUserAndLogout userId={id} />
     </article>
   );

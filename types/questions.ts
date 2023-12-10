@@ -4,6 +4,7 @@ export default interface IQuestion {
   id: string;
   category: IQuestionCategory[];
   title: string;
+  lowercaseTitle: string;
   answer: string;
   userId: string;
   likes: number;

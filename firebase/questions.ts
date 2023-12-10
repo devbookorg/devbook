@@ -45,6 +45,7 @@ export const createQuestion = async (body: {
       id,
       category,
       title,
+      lowercaseTitle: title.toLowerCase(),
       answer,
       userId,
       likes: 0,
@@ -71,6 +72,7 @@ export const updateQuestion = async (
     const updatedData: Record<string, any> = {
       category: body.category,
       title: body.title,
+      lowercaseTitle: body.title.toLowerCase(),
       answer: body.answer,
     };
 
@@ -187,26 +189,25 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQuestion[]> => {
   try {
     const { sortByLikes, category, userId, approved, searchKeyword, page } = filters;
-    // let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
 
-    // let filteredQuery = query(questionsCollection, limit(10));
     let filteredQuery = query(questionsCollection);
-    // let filteredQuery = query(questionsCollection, orderBy('likes'));
 
     if (approved !== null && approved !== undefined) {
       filteredQuery = query(filteredQuery, where('approved', 'in', [approved]));
     }
 
-    if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
+    if (category)
+      filteredQuery = query(filteredQuery, where('category', 'array-contains', category));
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
 
     if (searchKeyword) {
-      // title
+      const lowercaseSearchKeyword = searchKeyword.toLowerCase();
+
       filteredQuery = query(
         filteredQuery,
-        where('title', '>=', searchKeyword),
-        where('title', '<=', searchKeyword + '\uf8ff'),
-        orderBy('title')
+        where('lowercaseTitle', '>=', lowercaseSearchKeyword),
+        where('lowercaseTitle', '<=', lowercaseSearchKeyword + '\uf8ff'),
+        orderBy('lowercaseTitle')
       );
     }
 
@@ -253,16 +254,18 @@ export const getQuestionsCount = async (filters: getQuestionType): Promise<numbe
     if (approved !== null && approved !== undefined) {
       filteredQuery = query(filteredQuery, where('approved', 'in', [approved]));
     }
-    if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
+    if (category)
+      filteredQuery = query(filteredQuery, where('category', 'array-contains', category));
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
 
     if (searchKeyword) {
-      // title
+      const lowercaseSearchKeyword = searchKeyword.toLowerCase();
+
       filteredQuery = query(
         filteredQuery,
-        where('title', '>=', searchKeyword),
-        where('title', '<=', searchKeyword + '\uf8ff'),
-        orderBy('title')
+        where('lowercaseTitle', '>=', lowercaseSearchKeyword),
+        where('lowercaseTitle', '<=', lowercaseSearchKeyword + '\uf8ff'),
+        orderBy('lowercaseTitle')
       );
     }
 

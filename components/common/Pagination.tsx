@@ -18,7 +18,7 @@ const Pagination = (props: Props) => {
   }
   return (
     <section className="flex items-center  justify-center">
-      <div className="relative flex items-center">
+      <div className="relative mt-1 flex items-center gap-2">
         {currentPage !== startPage && (
           <ButtonIcon
             btnStyle="lg-ghost"
@@ -33,7 +33,9 @@ const Pagination = (props: Props) => {
           <Button
             btnStyle="sm-ghost"
             key={page}
-            styles={page === currentPage ? 'text-deepGreen text-base' : ''}
+            styles={`${
+              page === currentPage ? 'text-deepGreen text-base underline underline-offset-4' : ''
+            } `}
             handleClick={() => handleChangePage(page)}
           >
             {page}

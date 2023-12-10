@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Button from '../Button';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import HamburgerButton from './HamburgerButton';
 import Nav from './Nav';
 import { useToggle } from '@/hooks/useToggle';
@@ -11,17 +11,22 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { isOff, handleToggle } = useToggle();
   const { isDarkMode, handleDarkMode } = useDarkMode();
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 text-deepGreen ">
+    <header className="flex items-center justify-between px-2 py-4  text-deepGreen sm:px-6 ">
       <Button
         btnStyle="sm-ghost"
         styles="z-50 "
         handleClick={() => {
-          router.push('/');
-          handleToggle(true);
+          if (pathname === '/') {
+            history.go(0);
+          } else {
+            router.push('/');
+            handleToggle(true);
+          }
         }}
       >
         <h1 className="text-xl font-bold hover:text-green">DevBook</h1>

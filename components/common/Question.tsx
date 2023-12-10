@@ -21,8 +21,8 @@ const Question = (props: IQuestion & Props) => {
             children: (
               <div className="flex w-60 flex-col gap-4">
                 <div className="flex items-center gap-1">
-                  {category.map((item) => (
-                    <Badge value={item} />
+                  {category.map((item, index) => (
+                    <Badge key={`${item}_modal_${index}`} value={item} />
                   ))}
                   <h4 className="max-w-[calc(100%-50px)] overflow-hidden text-ellipsis whitespace-nowrap">
                     {title}
@@ -37,8 +37,8 @@ const Question = (props: IQuestion & Props) => {
       >
         <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
           <div className="flex gap-1">
-            {category.map((item) => (
-              <Badge value={item} />
+            {category.map((item, index) => (
+              <Badge key={`${item}_${index}`} value={item} />
             ))}
           </div>
           <h3 className="overflow-hidden text-ellipsis whitespace-nowrap">{title}</h3>

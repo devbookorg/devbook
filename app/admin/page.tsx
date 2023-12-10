@@ -94,54 +94,64 @@ export default function AdminPage() {
 
   return (
     <>
-      {questions.map((question) => {
-        return (
-          <Question key={question.id} {...question}>
-            <div className="flex min-w-fit flex-row">
-              <Button
-                btnStyle="sm-fill-red"
-                handleClick={() => {
-                  modalOpen({
-                    children: (
-                      <div className="flex flex-col gap-8">
-                        <h6>거부사유</h6>
-                        <input
-                          className="input-primary"
-                          ref={rejectionMessage}
-                          placeholder="거부 사유를 작성해주세요."
-                        />
-                        <Button
-                          btnStyle="lg-fill-deepGreen"
-                          handleClick={() => {
-                            rejectQuestion(question, rejectionMessage.current.value).then(
-                              loadQuestions
-                            );
-                            closeModal();
-                          }}
-                        >
-                          확인
-                        </Button>
-                      </div>
-                    ),
-                  });
-                }}
-              >
-                거부
-              </Button>
-              <Button
-                btnStyle="sm-fill-deepGreen"
-                handleClick={() => {
-                  approveQuestion(question).then(loadQuestions);
-                  modalOpen({ children: '승인되었습니다.', closeBtnNone: true, autoClose: true });
-                }}
-              >
-                승인
-              </Button>
-            </div>
-          </Question>
-        );
-      })}
-      <Pagination {...pagination} handleChangePage={loadPageQuestions} />
+      {questions.length > 0 ? (
+        <>
+          {questions.map((question) => {
+            return (
+              <Question key={question.id} {...question}>
+                <div className="flex min-w-fit flex-row">
+                  <Button
+                    btnStyle="sm-fill-red"
+                    handleClick={() => {
+                      modalOpen({
+                        children: (
+                          <div className="flex flex-col gap-8">
+                            <h6>거부사유</h6>
+                            <input
+                              className="input-primary"
+                              ref={rejectionMessage}
+                              placeholder="거부 사유를 작성해주세요."
+                            />
+                            <Button
+                              btnStyle="lg-fill-deepGreen"
+                              handleClick={() => {
+                                rejectQuestion(question, rejectionMessage.current.value).then(
+                                  loadQuestions
+                                );
+                                closeModal();
+                              }}
+                            >
+                              확인
+                            </Button>
+                          </div>
+                        ),
+                      });
+                    }}
+                  >
+                    거부
+                  </Button>
+                  <Button
+                    btnStyle="sm-fill-deepGreen"
+                    handleClick={() => {
+                      approveQuestion(question).then(loadQuestions);
+                      modalOpen({
+                        children: '승인되었습니다.',
+                        closeBtnNone: true,
+                        autoClose: true,
+                      });
+                    }}
+                  >
+                    승인
+                  </Button>
+                </div>
+              </Question>
+            );
+          })}
+          <Pagination {...pagination} handleChangePage={loadPageQuestions} />
+        </>
+      ) : (
+        <div className="p-4">검증할 게시물이 없습니다.</div>
+      )}
     </>
   );
 }
