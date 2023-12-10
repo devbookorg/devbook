@@ -18,6 +18,9 @@ import {
   limit,
   FirestoreDataConverter as FirestoreDataConverterType,
   startAfter,
+  or,
+  and,
+  Timestamp,
 } from 'firebase/firestore';
 
 interface FirestoreDataConverter<T> {
@@ -30,7 +33,7 @@ const questionsCollection = collection(db, 'questions');
 
 // 1. question을 생성하는 로직
 export const createQuestion = async (body: {
-  category: string;
+  category: string[];
   title: string;
   answer: string;
   userId: string;
@@ -47,7 +50,7 @@ export const createQuestion = async (body: {
       likes: 0,
       message: '',
       approved: 0,
-      dataCreated: new Date(),
+      dataCreated: Timestamp.now(),
     });
   } catch (error) {
     console.error('Failed to create a new question:', error);
@@ -58,7 +61,7 @@ export const createQuestion = async (body: {
 // 2. question의 title, answer를 수정하는 로직
 export const updateQuestion = async (
   questionId: string,
-  body: { category: string; title: string; answer: string }
+  body: { category: string[]; title: string; answer: string }
 ): Promise<IQuestion | null> => {
   try {
     const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
@@ -183,7 +186,7 @@ const questionConverter: FirestoreDataConverter<IQuestion> = {
 // 6. question을 불러오는 필터링이 가능한 로직
 export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQuestion[]> => {
   try {
-    const { sortByLikes, category, userId, approved, page } = filters;
+    const { sortByLikes, category, userId, approved, searchKeyword, page } = filters;
     // let filteredQuery = query(questionsCollection, orderBy('dataCreated'));
 
     // let filteredQuery = query(questionsCollection, limit(10));
@@ -197,10 +200,20 @@ export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQ
     if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
 
+    if (searchKeyword) {
+      // title
+      filteredQuery = query(
+        filteredQuery,
+        where('title', '>=', searchKeyword),
+        where('title', '<=', searchKeyword + '\uf8ff'),
+        orderBy('title')
+      );
+    }
+
     if (sortByLikes) {
       filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
     } else {
-      filteredQuery = query(filteredQuery, orderBy('dataCreated'));
+      filteredQuery = query(filteredQuery, orderBy('dataCreated', 'desc'));
     }
 
     // 최대 10개의 문서만 가져옵니다.
@@ -234,7 +247,7 @@ export const getFilteredQuestions = async (filters: getQuestionType): Promise<IQ
 // 7. questions의 모든 데이터의 갯수를 가져오는 로직
 export const getQuestionsCount = async (filters: getQuestionType): Promise<number> => {
   try {
-    const { sortByLikes, category, userId, approved } = filters;
+    const { sortByLikes, category, userId, approved, searchKeyword } = filters;
     let filteredQuery = query(questionsCollection);
 
     if (approved !== null && approved !== undefined) {
@@ -242,6 +255,16 @@ export const getQuestionsCount = async (filters: getQuestionType): Promise<numbe
     }
     if (category) filteredQuery = query(filteredQuery, where('category', '==', category));
     if (userId) filteredQuery = query(filteredQuery, where('userId', '==', userId));
+
+    if (searchKeyword) {
+      // title
+      filteredQuery = query(
+        filteredQuery,
+        where('title', '>=', searchKeyword),
+        where('title', '<=', searchKeyword + '\uf8ff'),
+        orderBy('title')
+      );
+    }
 
     if (sortByLikes) filteredQuery = query(filteredQuery, orderBy('likes', sortByLikes));
 

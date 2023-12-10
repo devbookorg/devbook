@@ -13,6 +13,7 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  Timestamp,
 } from 'firebase/firestore';
 import IUser, { NotificationMessage } from '@/types/users';
 
@@ -141,7 +142,7 @@ export const updateUserNotificationMessage = async (body: {
 
       updateNotificationMessages = [
         ...userData.notificationMessages,
-        { ...notificationMessage, approvedDate: new Date() },
+        { ...notificationMessage, approvedDate: Timestamp.now() },
       ];
       await updateDoc(userRef, {
         notification: true,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Button from './Button';
 import DropDownBox from './DropDownBox';
 import { LabeledInput } from './Input';
@@ -11,10 +11,10 @@ import { questionCategory } from '@/utils/variable';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
 
-const initialQuestionValue = { category: '카테고리 선택', title: '', answer: '' };
+const initialQuestionValue = { category: [], title: '', answer: '' };
 
 interface QuestionsFormProps {
-  question?: { questionId: string; category: string; title: string; answer: string };
+  question?: { questionId: string; category: string[]; title: string; answer: string };
   handleClick?: () => void;
 }
 
@@ -23,7 +23,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
   const [questionValue, setQuestionValue] = useState(question ?? initialQuestionValue);
 
   const handleSubmit = () => {
-    if (questionValue.category === '카테고리 선택') {
+    if (questionValue.category.length === 0) {
       alert('카테고리를 선택해주세요.');
     } else {
       if (question) {
@@ -48,10 +48,26 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
     }
   };
 
-  const changeValue = (key: 'category' | 'title' | 'answer', value: string) => {
+  const changeValue = (key: 'category' | 'title' | 'answer', value: string | string[]) => {
     setQuestionValue({ ...questionValue, [key]: value });
   };
-
+  const dragItem = useRef(null);
+  const dragOverItem = useRef(null);
+  const dragStart = (index: number) => {
+    dragItem.current = index;
+  };
+  const dragEnter = (index: number) => {
+    dragOverItem.current = index;
+  };
+  const drop = (e) => {
+    const newList = [...questionValue.category];
+    const dragItemValue = newList[dragItem.current];
+    newList.splice(dragItem.current, 1);
+    newList.splice(dragOverItem.current, 0, dragItemValue);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    changeValue('category', newList);
+  };
   return (
     <form
       className="grid gap-6"
@@ -61,10 +77,40 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
       }}
     >
       <DropDownBox
-        defaultValue={questionValue.category}
+        defaultValue={'카테고리 선택'}
         dropDownList={questionCategory}
-        onChange={(value) => changeValue('category', value)}
+        onChange={(value) => {
+          if (questionValue.category.includes(value)) {
+            alert('이미 추가된 카테고리입니다.');
+          } else if (questionValue.category.length < 3) {
+            changeValue('category', [...questionValue.category, value]);
+          }
+        }}
       />
+      {questionValue.category.length > 0 && (
+        <div className="input-primary flex gap-2 border p-2">
+          {questionValue.category.map((item, index) => (
+            <div
+              draggable
+              onDragStart={() => dragStart(index)}
+              onDragEnter={() => dragEnter(index)}
+              onDragEnd={drop}
+              onDragOver={(e) => e.preventDefault()}
+            >
+              <Button
+                btnStyle="sm-line-deepGreen"
+                styles={`${index === 0 && 'bg-red'}`}
+                handleClick={() => {
+                  const newArr = questionValue.category.filter((g) => g !== item);
+                  changeValue('category', newArr);
+                }}
+              >
+                {item}
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
       <LabeledInput
         label="문제"
         value={questionValue.title}

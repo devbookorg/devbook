@@ -11,6 +11,7 @@ interface Props {
 const Question = (props: IQuestion & Props) => {
   const { openModal } = useModal();
   const { category, title, answer, children, dataCreated } = props;
+
   return (
     <>
       <div
@@ -20,7 +21,9 @@ const Question = (props: IQuestion & Props) => {
             children: (
               <div className="flex w-60 flex-col gap-4">
                 <div className="flex items-center gap-1">
-                  <Badge value={category} />
+                  {category.map((item) => (
+                    <Badge value={item} />
+                  ))}
                   <h4 className="max-w-[calc(100%-50px)] overflow-hidden text-ellipsis whitespace-nowrap">
                     {title}
                   </h4>
@@ -33,7 +36,11 @@ const Question = (props: IQuestion & Props) => {
         className="flex justify-between border-b-[1px] border-lightGray  p-3 hover:bg-gray hover:bg-opacity-10"
       >
         <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
-          <Badge value={category} />
+          <div className="flex gap-1">
+            {category.map((item) => (
+              <Badge value={item} />
+            ))}
+          </div>
           <h3 className="overflow-hidden text-ellipsis whitespace-nowrap">{title}</h3>
           <p className=" max-h-5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray">
             {answer}

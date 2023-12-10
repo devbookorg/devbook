@@ -12,11 +12,17 @@ interface DropDownBoxType<T> {
   defaultValue: string;
   dropDownList: ArrayWrapper<T>;
   onChange: (value: string) => void;
+  boxStyles?: string;
+  dropBoxStyles?: string;
+  arrowColor?: string;
 }
 export default function DropDownBox<T>({
   defaultValue,
   dropDownList,
   onChange,
+  boxStyles,
+  dropBoxStyles,
+  arrowColor,
 }: DropDownBoxType<T>) {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -31,20 +37,20 @@ export default function DropDownBox<T>({
     <div className="relative">
       <div
         onClick={dropDownToggle}
-        className="input-primary -middle flex cursor-pointer justify-between"
+        className={`input-primary -middle flex min-w-[88px] cursor-pointer justify-between  ${boxStyles}`}
       >
         {selectedValue}
         <div>
           {dropDownVisible ? (
-            <Icon name="chevronUp" className="stroke-deepGreen" />
+            <Icon name="chevronUp" className={`stroke-${arrowColor ?? 'deepGreen'}`} />
           ) : (
-            <Icon name="chevronDown" className="stroke-deepGreen" />
+            <Icon name="chevronDown" className={`stroke-${arrowColor ?? 'deepGreen'}`} />
           )}
         </div>
       </div>
       {dropDownVisible && (
         <div
-          className={`${'absolute right-0 top-full flex h-fit translate-y-1 flex-row flex-wrap gap-2 bg-white'}  input-primary`}
+          className={`${'absolute left-0 top-full flex h-fit   translate-y-1 flex-row flex-wrap gap-2 bg-white'}  input-primary ${dropBoxStyles}`}
         >
           {dropDownList.map((item, index) => (
             <Button

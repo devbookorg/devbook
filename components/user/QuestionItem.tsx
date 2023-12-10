@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../common/Button';
 import { ButtonIcon } from '../common/Icon';
 import { useModal } from '@/hooks/useModal';
-import QuestionForm from '../common/Form';
+import QuestionForm from '../common/QuestionForm';
 import Likes from '../common/Likes';
 import { deleteQuestion } from '@/firebase/questions';
 import ConfirmModal from '../common/ConfirmModal';

@@ -1,14 +1,18 @@
+import { Timestamp } from 'firebase/firestore';
+
 export default interface IQuestion {
   id: string;
-  category: 'JS' | 'TS' | 'HTML' | 'CSS' | 'REACT' | 'NEXT' | 'CS';
+  category: IQuestionCategory[];
   title: string;
   answer: string;
   userId: string;
   likes: number;
   message: string;
   approved: 0 | 1 | 2;
-  dataCreated: Date;
+  dataCreated: Timestamp;
 }
+
+export type IQuestionCategory = 'JS' | 'TS' | 'HTML' | 'CSS' | 'REACT' | 'NEXT' | 'CS';
 
 export interface getQuestionType {
   approved?: 0 | 1;
@@ -17,4 +21,5 @@ export interface getQuestionType {
   userId?: string;
   page?: number;
   noLimit?: boolean;
+  searchKeyword?: string;
 }
