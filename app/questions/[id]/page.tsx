@@ -31,25 +31,29 @@ const Page = () => {
 
   useEffect(() => {
     getQuestion(params.id as string).then((res) => setData(res));
-  }, []);
+  }, [params.id]);
 
   if (data)
     return (
       <article className="flex h-full flex-col justify-between gap-4">
-        <div className="flex flex-col gap-5 py-4">
+        <div className="flex flex-col gap-4">
           {userId === data.userId && (
             <section className="flex flex-col justify-center gap-1">
               <div className="flex items-center gap-1.5">
                 <Icon
                   name="alert"
-                  className={`h-5 w-5 ${data.approved === 0 ? 'stroke-deepGreen' : 'stroke-red'}`}
+                  className={`h-5 w-5 ${data.approved === 2 ? 'stroke-red' : 'stroke-deepGreen'}`}
                 />
-                {data.approved !== 1 && (
+                {data.approved === 1 ? (
+                  <span className="text-sm">승인</span>
+                ) : (
                   <span className="text-sm">{data.approved === 0 ? '대기' : '거부'}</span>
                 )}
               </div>
-              <p className="mb-2 text-xs text-gray">관리자의 승인후에 게시됩니다.</p>
-              <hr className="w-full border-lightGray" />
+              {data.approved !== 1 && (
+                <p className="text-xs text-gray">관리자의 승인후에 게시됩니다.</p>
+              )}
+              <hr className="mt-2 w-full border-lightGray" />
             </section>
           )}
           <section>
@@ -77,7 +81,7 @@ const Page = () => {
             <LikeQuestionPart {...data} />
           </section>
           <hr className="border-lightGray" />
-          {userId === data.userId && (
+          {userId === data.userId && data.approved !== 1 && (
             <section className="flex gap-4">
               <Button btnStyle="lg-line-red" styles="flex-1">
                 삭제

@@ -28,9 +28,12 @@ const Header = () => {
     <header className="flex items-center justify-between border-b-[1px]   px-2 py-2 text-deepGreen sm:px-6">
       {pathname.includes('questions') ? (
         <>
-          <Button btnStyle="sm-ghost" handleClick={() => router.back()}>
-            <div className="text-xl font-bold">←</div>
-          </Button>
+          <ButtonIcon
+            iconName="arrowLeft"
+            svgStyles="h-6 w-6 stroke-deepGreen"
+            buttonStyles="z-50"
+            handleClick={() => router.back()}
+          />
         </>
       ) : (
         <>
