@@ -38,8 +38,8 @@ const NotificationItem = (props: NotificationMessage) => {
 const Notification = () => {
   const { notificationMessages } = useRecoilValue(userState);
   return (
-    <section className="absolute bottom-0 right-0 z-40 flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white p-4 pt-16">
-      <ul className=" w-full overflow-scroll">
+    <section className="absolute right-0 top-0 z-[40] flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white p-4 pt-16">
+      <ul className="top-0 h-full w-full overflow-scroll">
         {[...notificationMessages].reverse().map((e, i) => (
           <NotificationItem key={e.approvedDate.toString() + i} {...e} />
         ))}
