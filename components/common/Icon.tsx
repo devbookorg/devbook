@@ -19,6 +19,7 @@ import {
   CheckCircle,
   XCircle,
   Search,
+  Alert,
 } from '@/assets/icons';
 import Button, { ButtonPropertyType } from './Button';
 import { ButtonStyle } from '@/types/buttons';
@@ -48,6 +49,7 @@ const iconComponents: IconComponents = {
   checkCircle: CheckCircle,
   xCircle: XCircle,
   search: Search,
+  alert: Alert,
 };
 
 type IconName =
@@ -70,7 +72,8 @@ type IconName =
   | 'bellUpdate'
   | 'checkCircle'
   | 'xCircle'
-  | 'search';
+  | 'search'
+  | 'alert';
 
 export default function Icon({ name, className }: { name: IconName; className?: string }) {
   const IconComponent = iconComponents[name];
