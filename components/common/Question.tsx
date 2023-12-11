@@ -1,42 +1,25 @@
 import IQuestion from '@/types/questions';
 import React from 'react';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
-import { useModal } from '@/hooks/useModal';
 import Badge from './Badge';
 import Icon from './Icon';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const Question = (props: IQuestion & Props) => {
-  const { openModal } = useModal();
-  const { category, title, answer, children, dataCreated, approved } = props;
+  const { category, title, answer, children, dataCreated, approved, id } = props;
+  const router = useRouter();
 
   return (
     <>
       <div
-        onClick={() => {
-          openModal({
-            center: true,
-            children: (
-              <div className="flex w-60 flex-col gap-4">
-                <div className="flex items-center gap-1">
-                  {category.map((item, index) => (
-                    <Badge key={`${item}_modal_${index}`} value={item} />
-                  ))}
-                  <h4 className="max-w-[calc(100%-50px)] overflow-hidden text-ellipsis whitespace-nowrap">
-                    {title}
-                  </h4>
-                </div>
-                <div className="max-w-full break-all">{answer}</div>
-              </div>
-            ),
-          });
-        }}
+        onClick={() => router.push(`/questions/${id}`)}
         className={`${
           approved === 0 ? 'bg-lightGray' : approved === 2 ? 'bg-pink' : ''
-        } flex justify-between border-b-[1px] border-lightGray  p-3  hover:bg-opacity-40`}
+        } flex justify-between border-b-[1px] border-lightGray  px-2 py-3  hover:bg-opacity-40`}
       >
         <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
           <div className="flex gap-1">

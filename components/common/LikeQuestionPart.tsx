@@ -10,9 +10,7 @@ import { userState } from '@/recoil/user';
 
 import Likes from '../common/Likes';
 
-interface Props {
-  loadQuestions: () => void;
-}
+interface Props {}
 userState;
 export default function LikeQuestionPart(props: Props & IQuestion) {
   const { id, likes } = props;
