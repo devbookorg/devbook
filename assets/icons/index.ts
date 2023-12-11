@@ -17,3 +17,4 @@ export { default as Moon } from './moon.svg';
 export { default as Settings } from './settings.svg';
 export { default as CheckCircle } from './checkCircle.svg';
 export { default as XCircle } from './xCircle.svg';
+export { default as Search } from './search.svg';

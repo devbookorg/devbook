@@ -10,6 +10,7 @@ import { usePagination } from '@/hooks/usePagination';
 import { questionCategory } from '@/utils/variable';
 import IQuestion, { IQuestionCategory, getQuestionType } from '@/types/questions';
 import { useEffect, useState } from 'react';
+import { ButtonIcon } from '@/components/common/Icon';
 
 export default function Home() {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
@@ -100,12 +101,15 @@ export default function Home() {
           }}
         >
           <input
-            className="input-primary h-full w-[100px]  max-w-[250px] rounded-lg border-deepGreen px-2 py-1.5 text-xs duration-100 focus:w-full"
+            className="input-primary h-full w-[100px] max-w-[250px] rounded-lg border-deepGreen bg-white px-2 py-1.5 text-xs outline-none duration-100 focus:w-full   "
             placeholder="검색"
           />
-          <button className="absolute right-2 top-2/4 translate-y-[-50%] bg-red" type="submit">
-            검색
-          </button>
+          <ButtonIcon
+            iconName="search"
+            btnType="submit"
+            svgStyles="h-6 w-6 fill-deepGreen"
+            buttonStyles="absolute right-1 top-2/4 translate-y-[-50%] p-0"
+          />
         </form>
       </div>
       {questions.length === 0 ? (

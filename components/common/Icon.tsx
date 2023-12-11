@@ -18,8 +18,9 @@ import {
   BellUpdate,
   CheckCircle,
   XCircle,
+  Search,
 } from '@/assets/icons';
-import Button from './Button';
+import Button, { ButtonPropertyType } from './Button';
 import { ButtonStyle } from '@/types/buttons';
 
 // SVG 컴포넌트에 대한 인터페이스
@@ -46,6 +47,7 @@ const iconComponents: IconComponents = {
   bellUpdate: BellUpdate,
   checkCircle: CheckCircle,
   xCircle: XCircle,
+  search: Search,
 };
 
 type IconName =
@@ -67,7 +69,8 @@ type IconName =
   | 'moon'
   | 'bellUpdate'
   | 'checkCircle'
-  | 'xCircle';
+  | 'xCircle'
+  | 'search';
 
 export default function Icon({ name, className }: { name: IconName; className?: string }) {
   const IconComponent = iconComponents[name];
@@ -82,6 +85,7 @@ export function ButtonIcon({
   text,
   handleClick,
   disabled,
+  btnType,
 }: {
   btnStyle?: ButtonStyle;
   iconName: IconName;
@@ -90,6 +94,7 @@ export function ButtonIcon({
   text?: string;
   handleClick?: () => void;
   disabled?: boolean;
+  btnType?: ButtonPropertyType;
 }) {
   const IconComponent = iconComponents[iconName];
   return (
@@ -98,6 +103,7 @@ export function ButtonIcon({
       styles={buttonStyles}
       handleClick={handleClick}
       disabled={disabled}
+      type={btnType}
     >
       <IconComponent className={svgStyles} />
       {text}

@@ -5,9 +5,10 @@ interface Props {
   handleClick?: () => void;
   styles?: string;
   btnStyle: ButtonStyle;
-  type?: 'button' | 'submit' | 'reset';
+  type?: ButtonPropertyType;
   disabled?: boolean;
 }
+export type ButtonPropertyType = 'button' | 'submit' | 'reset';
 
 export const getbuttonClass = (style: ButtonStyle) => {
   const [buttonSize, type, color] = style.split('-');
