@@ -71,7 +71,7 @@ const Header = () => {
           }}
         />
         {!isOff && <Nav handleClose={() => handleToggle(true)} />}
-        {modalOpen && <Notification />}
+        {modalOpen && <Notification closeModal={() => handleNotificationModal(false)} />}
       </section>
     </header>
   );
