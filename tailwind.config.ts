@@ -21,6 +21,7 @@ const config: Config = {
       orange: '#DD4B25',
       blue: '#2862E9',
       bgc: 'rgb(var(--background))',
+      pink: '#ffe7e7',
     },
     fontSize: {
       xs: '0.75rem' /* 12px */,

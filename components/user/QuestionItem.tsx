@@ -4,10 +4,8 @@ import Button from '../common/Button';
 import { ButtonIcon } from '../common/Icon';
 import { useModal } from '@/hooks/useModal';
 import QuestionForm from '../common/QuestionForm';
-import Likes from '../common/Likes';
 import { deleteQuestion } from '@/firebase/questions';
 import ConfirmModal from '../common/ConfirmModal';
-import LikeQuestionPart from '../common/LikeQuestionPart';
 
 interface Props {
   user: string;
@@ -19,38 +17,24 @@ const QuestionItem = (props: Props & IQuestion) => {
     props;
   const { openModal, closeModal } = useModal();
 
-  let questionState = <></>;
-  if (approved === 0) {
-    questionState = <Button btnStyle="sm-line-deepGreen">대기</Button>;
-  } else if (approved === 1) {
-    questionState = <Button btnStyle="sm-fill-deepGreen">승인</Button>;
-  } else {
-    questionState = (
-      <>
-        <Button
-          btnStyle="sm-line-deepGreen"
-          styles="text-xs whitespace-nowrap p-1"
-          handleClick={() => {
-            openModal({
-              center: true,
-              children: <div className="p-6">사유 : {message}</div>,
-            });
-          }}
-        >
-          사유
-        </Button>
-        <Button btnStyle="sm-fill-red" styles="whitespace-nowrap">
-          거부
-        </Button>
-      </>
-    );
-  }
-
   return (
     <section className="flex flex-col items-end justify-between">
-      <div className="flex items-center gap-2">{user === userId && questionState}</div>
       <div className="flex ">
-        {approved !== 1 && userId === user ? (
+        {approved === 2 && (
+          <Button
+            btnStyle="sm-line-deepGreen"
+            styles="text-xs whitespace-nowrap p-1"
+            handleClick={() => {
+              openModal({
+                center: true,
+                children: <div className="p-6">사유 : {message}</div>,
+              });
+            }}
+          >
+            사유
+          </Button>
+        )}
+        {approved !== 1 && userId === user && (
           <>
             <ButtonIcon
               iconName="edit"
@@ -74,28 +58,25 @@ const QuestionItem = (props: Props & IQuestion) => {
                 });
               }}
             />
-
-            <ButtonIcon
-              iconName="trash"
-              svgStyles="h-5 w-5 fill-red"
-              handleClick={() => {
-                openModal({
-                  center: true,
-                  children: (
-                    <ConfirmModal
-                      content="삭제하시겠습니까?"
-                      onSuccess={() => {
-                        deleteQuestion(id).then(loadWroteQuestions);
-                      }}
-                    />
-                  ),
-                });
-              }}
-            />
           </>
-        ) : (
-          <LikeQuestionPart {...props} loadQuestions={props.loadWroteQuestions} />
         )}
+        <ButtonIcon
+          iconName="trash"
+          svgStyles="h-5 w-5 fill-red"
+          handleClick={() => {
+            openModal({
+              center: true,
+              children: (
+                <ConfirmModal
+                  content="삭제하시겠습니까?"
+                  onSuccess={() => {
+                    deleteQuestion(id).then(loadWroteQuestions);
+                  }}
+                />
+              ),
+            });
+          }}
+        />
       </div>
     </section>
   );

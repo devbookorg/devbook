@@ -59,7 +59,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
   const dragEnter = (index: number) => {
     dragOverItem.current = index;
   };
-  const drop = (e) => {
+  const drop = () => {
     const newList = [...questionValue.category];
     const dragItemValue = newList[dragItem.current];
     newList.splice(dragItem.current, 1);
@@ -91,6 +91,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
         <div className="input-primary flex gap-2 border p-2">
           {questionValue.category.map((item, index) => (
             <div
+              key={`category_btn_${item}_${index}`}
               draggable
               onDragStart={() => dragStart(index)}
               onDragEnter={() => dragEnter(index)}

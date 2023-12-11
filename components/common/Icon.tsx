@@ -16,6 +16,8 @@ import {
   Settings,
   Moon,
   BellUpdate,
+  CheckCircle,
+  XCircle,
 } from '@/assets/icons';
 import Button from './Button';
 import { ButtonStyle } from '@/types/buttons';
@@ -42,6 +44,8 @@ const iconComponents: IconComponents = {
   settings: Settings,
   moon: Moon,
   bellUpdate: BellUpdate,
+  checkCircle: CheckCircle,
+  xCircle: XCircle,
 };
 
 type IconName =
@@ -61,7 +65,9 @@ type IconName =
   | 'chevronRight'
   | 'settings'
   | 'moon'
-  | 'bellUpdate';
+  | 'bellUpdate'
+  | 'checkCircle'
+  | 'xCircle';
 
 export default function Icon({ name, className }: { name: IconName; className?: string }) {
   const IconComponent = iconComponents[name];
