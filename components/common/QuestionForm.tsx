@@ -10,6 +10,8 @@ import { createQuestion, updateQuestion } from '@/firebase/questions';
 import { questionCategory } from '@/utils/variable';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
+import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialQuestionValue = { category: [], title: '', answer: '' };
 
@@ -19,6 +21,7 @@ interface QuestionsFormProps {
 }
 
 export default function QuestionForm({ question, handleClick }: QuestionsFormProps) {
+  const router = useRouter();
   const user = useRecoilValue(userState);
   const [questionValue, setQuestionValue] = useState(question ?? initialQuestionValue);
 
@@ -33,8 +36,11 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           answer: questionValue.answer,
         };
         updateQuestion(question.questionId, body);
+        router.push(`questions/${question.questionId}`);
       } else {
+        const id = uuidv4();
         const body = {
+          id,
           category: questionValue.category,
           title: questionValue.title,
           answer: questionValue.answer,
@@ -42,6 +48,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
         };
         createQuestion(body).then(() => {
           setQuestionValue(initialQuestionValue);
+          router.push(`questions/${id}`);
         });
       }
       if (handleClick) handleClick();
@@ -97,7 +104,6 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
               onDragEnter={() => dragEnter(index)}
               onDragEnd={drop}
               onDragOver={(e) => e.preventDefault()}
-              key={item}
             >
               <Button
                 btnStyle="sm-line-deepGreen"

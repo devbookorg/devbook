@@ -1,6 +1,5 @@
 import IQuestion, { getQuestionType } from '@/types/questions';
 import { db, storage } from '.';
-import { v4 as uuidv4 } from 'uuid';
 import {
   Query,
   getDoc,
@@ -37,11 +36,12 @@ export const createQuestion = async (body: {
   title: string;
   answer: string;
   userId: string;
+  id: string;
 }) => {
   try {
-    const id = uuidv4();
-    const { category, title, answer, userId } = body;
-    addDoc(questionsCollection, {
+    const { category, title, answer, userId, id } = body;
+
+    const question = {
       id,
       category,
       title,
@@ -52,7 +52,8 @@ export const createQuestion = async (body: {
       message: '',
       approved: 0,
       dataCreated: Timestamp.now(),
-    });
+    };
+    addDoc(questionsCollection, question);
   } catch (error) {
     console.error('Failed to create a new question:', error);
     throw error;
@@ -303,6 +304,22 @@ export const getLikesQuestions = async (
     return { questions: result.slice((page - 1) * 10, page * 10), total: result.length };
   } catch (error) {
     console.error('Failed to get questions', error);
+    throw error;
+  }
+};
+
+export const getQuestion = async (questionId: string): Promise<IQuestion> => {
+  try {
+    const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
+    const firstQuestionDocumentId = questionsQuery.docs[0].id;
+
+    const questionRef = doc(questionsCollection, firstQuestionDocumentId);
+    const updatedQuestionSnapshot = await getDoc(questionRef);
+
+    const question: IQuestion = updatedQuestionSnapshot.data() as IQuestion;
+    return question;
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };
