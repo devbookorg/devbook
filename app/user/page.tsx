@@ -66,7 +66,7 @@ const UserPage = () => {
         {tabs.map((e, i) => (
           <div
             key={e}
-            className={` relative w-full before:absolute before:bottom-0 before:left-0 before:w-full before:border-b-2 before:border-deepGreen  before:content-[''] ${
+            className={` relative w-full before:absolute before:bottom-0 before:left-0  before:border-b-2 before:border-deepGreen  before:content-[''] ${
               selectedTab === i
                 ? 'before:w-full before:duration-300'
                 : 'before:w-0 before:duration-0'
