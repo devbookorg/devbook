@@ -25,54 +25,64 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between px-2 py-2  text-deepGreen sm:px-6 ">
-      <Button
-        btnStyle="sm-ghost"
-        styles="z-50 "
-        handleClick={() => {
-          if (pathname === '/') {
-            history.go(0);
-          } else {
-            router.push('/');
-            handleToggle(true);
-            handleNotificationModal(false);
-          }
-        }}
-      >
-        <h1 className="text-xl font-bold hover:text-green">DevBook</h1>
-      </Button>
-      <section className="flex items-center">
-        <ButtonIcon
-          iconName={isDarkMode ? 'moon' : 'sun'}
-          buttonStyles="z-50"
-          svgStyles="h-6 w-6 stroke-deepGreen"
-          handleClick={handleDarkMode}
-        />
-        {notification ? (
-          <ButtonIcon
-            iconName="bellUpdate"
-            buttonStyles="z-50"
-            svgStyles="h-6 w-6 stroke-deepGreen"
-            handleClick={() => handleNotificationModal()}
-          />
-        ) : (
-          <ButtonIcon
-            iconName="bell"
-            buttonStyles="z-50"
-            svgStyles="h-6 w-6 stroke-deepGreen"
-            handleClick={() => handleNotificationModal()}
-          />
-        )}
-        <HamburgerButton
-          isOff={isOff}
-          handleToggle={() => {
-            handleNotificationModal(false);
-            handleToggle();
-          }}
-        />
-        {!isOff && <Nav handleClose={() => handleToggle(true)} />}
-        {modalOpen && <Notification closeModal={() => handleNotificationModal(false)} />}
-      </section>
+    <header className="flex items-center justify-between border-b-[1px]   px-2 py-2 text-deepGreen sm:px-6">
+      {pathname.includes('questions') ? (
+        <>
+          <Button btnStyle="sm-ghost" handleClick={() => router.back()}>
+            <div className="text-xl font-bold">←</div>
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            btnStyle="sm-ghost"
+            styles="z-50 "
+            handleClick={() => {
+              if (pathname === '/') {
+                history.go(0);
+              } else {
+                router.push('/');
+                handleToggle(true);
+                handleNotificationModal(false);
+              }
+            }}
+          >
+            <h1 className="text-xl font-bold hover:text-green">DevBook</h1>
+          </Button>
+          <section className="flex items-center">
+            <ButtonIcon
+              iconName={isDarkMode ? 'moon' : 'sun'}
+              buttonStyles="z-50"
+              svgStyles="h-6 w-6 stroke-deepGreen"
+              handleClick={handleDarkMode}
+            />
+            {notification ? (
+              <ButtonIcon
+                iconName="bellUpdate"
+                buttonStyles="z-50"
+                svgStyles="h-6 w-6 stroke-deepGreen"
+                handleClick={() => handleNotificationModal()}
+              />
+            ) : (
+              <ButtonIcon
+                iconName="bell"
+                buttonStyles="z-50"
+                svgStyles="h-6 w-6 stroke-deepGreen"
+                handleClick={() => handleNotificationModal()}
+              />
+            )}
+            <HamburgerButton
+              isOff={isOff}
+              handleToggle={() => {
+                handleNotificationModal(false);
+                handleToggle();
+              }}
+            />
+            {!isOff && <Nav handleClose={() => handleToggle(true)} />}
+            {modalOpen && <Notification closeModal={() => handleNotificationModal(false)} />}
+          </section>
+        </>
+      )}
     </header>
   );
 };
