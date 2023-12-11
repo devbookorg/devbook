@@ -1,3 +1,5 @@
+'use client';
+
 import { useModal } from '@/hooks/useModal';
 import React from 'react';
 import { ButtonIcon } from '../common/Icon';

@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import Button from './Button';
 import DropDownBox from './DropDownBox';
 import { LabeledInput } from './Input';
-import { Labeled } from './layout/Layout';
+import { Labeled } from './layout/AppLayout';
 import { getUser } from '@/firebase/users';
 import { createQuestion, updateQuestion } from '@/firebase/questions';
 import { questionCategory } from '@/utils/variable';

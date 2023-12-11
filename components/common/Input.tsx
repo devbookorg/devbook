@@ -1,4 +1,4 @@
-import { Labeled } from './layout/Layout';
+import { Labeled } from './layout/AppLayout';
 
 interface InputType {
   value: string | number;
