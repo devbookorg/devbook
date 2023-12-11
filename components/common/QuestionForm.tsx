@@ -70,7 +70,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
   };
   return (
     <form
-      className="grid gap-6"
+      className="grid gap-5"
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
@@ -97,10 +97,10 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
               onDragEnter={() => dragEnter(index)}
               onDragEnd={drop}
               onDragOver={(e) => e.preventDefault()}
+              key={item}
             >
               <Button
                 btnStyle="sm-line-deepGreen"
-                styles={`${index === 0 && 'bg-red'}`}
                 handleClick={() => {
                   const newArr = questionValue.category.filter((g) => g !== item);
                   changeValue('category', newArr);
@@ -126,7 +126,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           onChange={(e) => {
             changeValue('answer', e.target.value);
           }}
-          className="input-primary h-80 resize-none"
+          className="input-primary min-h-[24rem] resize-none"
           placeholder="답변을 입력해주세요"
           required
         />

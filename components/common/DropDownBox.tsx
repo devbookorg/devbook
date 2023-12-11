@@ -37,7 +37,7 @@ export default function DropDownBox<T>({
     <div className="relative">
       <div
         onClick={dropDownToggle}
-        className={`input-primary -middle flex min-w-[88px] cursor-pointer justify-between  ${boxStyles}`}
+        className={`input-primary -middle flex min-w-[88px] cursor-pointer justify-between text-sm ${boxStyles}`}
       >
         {selectedValue}
         <div>
@@ -50,13 +50,13 @@ export default function DropDownBox<T>({
       </div>
       {dropDownVisible && (
         <div
-          className={`${'absolute left-0 top-full flex h-fit   translate-y-1 flex-row flex-wrap gap-2 bg-white'}  input-primary ${dropBoxStyles}`}
+          className={`${'absolute left-0 top-full flex h-fit translate-y-1 flex-row flex-wrap gap-2 bg-white'}  input-primary ${dropBoxStyles}`}
         >
           {dropDownList.map((item, index) => (
             <Button
               key={`dropDown_${item}_${index}`}
               btnStyle="sm-fill-deepGreen"
-              styles="text-base h-8 w-fit leading-5 py-1 px-2 content-center"
+              styles="text-sm h-8 w-fit leading-5 py-1 px-2 content-center"
               handleClick={() => {
                 dropDownToggle();
                 // setSelectedValue(item as string);

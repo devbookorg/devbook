@@ -27,8 +27,8 @@ interface LabeledType {
 
 export const Labeled = ({ label, children }: LabeledType) => {
   return (
-    <div className="grid gap-4">
-      <label className="text-lg">{label}</label>
+    <div className="grid gap-3">
+      <label className="text-sm">{label}</label>
       {children}
     </div>
   );
