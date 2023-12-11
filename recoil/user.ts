@@ -9,5 +9,6 @@ export const userState = atom<IUser>({
     name: '',
     likeQuestions: [],
     notification: false,
+    notificationMessages: [],
   },
 });

@@ -14,5 +14,5 @@ export interface NotificationMessage {
   approved: 1 | 2;
   approvedDate?: Timestamp;
   questionTitle: string;
-  rejectMessage?: string;
+  rejectionMessage?: string;
 }
