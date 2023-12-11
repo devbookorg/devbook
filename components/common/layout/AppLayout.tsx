@@ -9,7 +9,7 @@ interface Props {
 const AppLayout = (props: Props) => {
   const { children } = props;
   return (
-    <div className="flex min-h-screen min-w-full justify-center bg-bgc">
+    <div className="flex min-h-screen min-w-full scroll-mr-16 justify-center bg-bgc">
       <div className="relative flex h-screen w-[36em] min-w-[320px] max-w-[36em] flex-col bg-white shadow-2xl">
         <Header />
         <Content>{children}</Content>

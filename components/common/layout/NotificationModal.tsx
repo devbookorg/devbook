@@ -51,12 +51,14 @@ const Notification = (props: Props) => {
     setUserState((prev) => ({ ...prev, notification: false }));
   }, []);
   return (
-    <section className="absolute right-0 top-0 z-[40] flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white p-4 pt-16">
-      <ul className="top-0 h-full w-full overflow-scroll">
-        {[...notificationMessages].reverse().map((e, i) => (
-          <NotificationItem key={e.approvedDate.toString() + i} {...e} closeModal={closeModal} />
-        ))}
-      </ul>
+    <section className="absolute right-0 top-0 z-[40] flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white pt-16">
+      <div className="h-full w-full overflow-scroll p-4 lg:p-2">
+        <ul className=" h-full w-full ">
+          {[...notificationMessages].reverse().map((e, i) => (
+            <NotificationItem key={e.approvedDate.toString() + i} {...e} closeModal={closeModal} />
+          ))}
+        </ul>
+      </div>
     </section>
   );
 };
