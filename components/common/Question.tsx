@@ -19,7 +19,7 @@ const Question = (props: IQuestion & Props) => {
         onClick={() => router.push(`/questions/${id}`)}
         className={`${
           approved === 0 ? 'bg-lightGray' : approved === 2 ? 'bg-pink' : ''
-        } flex justify-between border-b-[1px] border-lightGray  p-3  hover:bg-opacity-40`}
+        } flex justify-between border-b-[1px] border-lightGray  px-2 py-3  hover:bg-opacity-40`}
       >
         <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
           <div className="flex gap-1">

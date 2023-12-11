@@ -2,20 +2,24 @@
 
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
+import ConfirmModal from '@/components/common/ConfirmModal';
 import Icon from '@/components/common/Icon';
 import LikeQuestionPart from '@/components/common/LikeQuestionPart';
-import { getQuestion } from '@/firebase/questions';
+import { deleteQuestion, getQuestion } from '@/firebase/questions';
+import { useModal } from '@/hooks/useModal';
 import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { Timestamp } from 'firebase/firestore';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 const Page = () => {
   const { id: userId } = useRecoilValue(userState);
+  const { openModal } = useModal();
   const params = useParams();
+  const router = useRouter();
   const [data, setData] = useState<IQuestion>({
     id: '',
     category: [],
@@ -83,10 +87,32 @@ const Page = () => {
           <hr className="border-lightGray" />
           {userId === data.userId && data.approved !== 1 && (
             <section className="flex gap-4">
-              <Button btnStyle="lg-line-red" styles="flex-1">
+              <Button
+                btnStyle="lg-line-red"
+                styles="flex-1"
+                handleClick={() => {
+                  openModal({
+                    center: true,
+                    children: (
+                      <ConfirmModal
+                        content="삭제하시겠습니까?"
+                        onSuccess={() => {
+                          deleteQuestion(data.id).then(() => {
+                            router.back();
+                          });
+                        }}
+                      />
+                    ),
+                  });
+                }}
+              >
                 삭제
               </Button>
-              <Button btnStyle="lg-line-deepGreen" styles="flex-1">
+              <Button
+                btnStyle="lg-line-deepGreen"
+                styles="flex-1"
+                handleClick={() => router.push('/write')}
+              >
                 수정
               </Button>
             </section>
