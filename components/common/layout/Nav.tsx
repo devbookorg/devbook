@@ -17,7 +17,7 @@ const Nav = (props: Props) => {
   const router = useRouter();
 
   return (
-    <div className="absolute bottom-0 right-0 z-40 flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white p-6 pt-20 ">
+    <div className="absolute bottom-0 right-0 z-40 flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white p-4 pt-20 ">
       {data !== null ? (
         <>
           {user?.admin && (
@@ -68,6 +68,13 @@ const Nav = (props: Props) => {
           로그인
         </Button>
       )}
+
+      <div className="absolute bottom-10 flex w-2/3 flex-col gap-1 text-sm">
+        <hr className="my-3 " />
+        <h3 className="my-1 text-base font-bold">&copy; 2024 Project DevBook</h3>
+        <span>임승환 kingryan9996@gmail.com</span>
+        <span>강미정 jagarmj@gmail.com</span>
+      </div>
     </div>
   );
 };
