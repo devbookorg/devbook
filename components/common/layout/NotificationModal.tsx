@@ -59,9 +59,19 @@ const Notification = (props: Props) => {
     >
       <div className="h-full w-full overflow-scroll p-4 lg:p-2">
         <ul className=" h-full w-full ">
-          {[...notificationMessages].reverse().map((e, i) => (
-            <NotificationItem key={e.approvedDate.toString() + i} {...e} closeModal={closeModal} />
-          ))}
+          {notificationMessages.length !== 0 ? (
+            <div className="my-16 flex items-center justify-center">새로운 알림이 없습니다.</div>
+          ) : (
+            [...notificationMessages]
+              .reverse()
+              .map((e, i) => (
+                <NotificationItem
+                  key={e.approvedDate.toString() + i}
+                  {...e}
+                  closeModal={closeModal}
+                />
+              ))
+          )}
         </ul>
       </div>
     </section>

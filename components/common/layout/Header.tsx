@@ -11,9 +11,11 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 import Notification from './NotificationModal';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
+import { useSession } from 'next-auth/react';
 
 const Header = () => {
   const router = useRouter();
+  const { data } = useSession();
   const pathname = usePathname();
   const { isOff, handleToggle } = useToggle();
   const { isDarkMode, handleDarkMode } = useDarkMode();
@@ -61,27 +63,32 @@ const Header = () => {
               svgStyles="h-6 w-6 stroke-deepGreen"
               handleClick={handleDarkMode}
             />
-            {notification ? (
-              <ButtonIcon
-                iconName="bellUpdate"
-                buttonStyles="z-50"
-                svgStyles={`h-6 w-6 ${modalOpen && 'fill-deepGreen'} stroke-deepGreen`}
-                handleClick={() => {
-                  handleNotificationModal();
-                  handleToggle(true);
-                }}
-              />
-            ) : (
-              <ButtonIcon
-                iconName="bell"
-                buttonStyles="z-50"
-                svgStyles={`h-6 w-6 ${modalOpen && 'fill-deepGreen'} stroke-deepGreen`}
-                handleClick={() => {
-                  handleNotificationModal();
-                  handleToggle(true);
-                }}
-              />
+            {data !== null && (
+              <>
+                {notification ? (
+                  <ButtonIcon
+                    iconName="bellUpdate"
+                    buttonStyles="z-50"
+                    svgStyles={`h-6 w-6 ${modalOpen && 'fill-deepGreen'} stroke-deepGreen`}
+                    handleClick={() => {
+                      handleNotificationModal();
+                      handleToggle(true);
+                    }}
+                  />
+                ) : (
+                  <ButtonIcon
+                    iconName="bell"
+                    buttonStyles="z-50"
+                    svgStyles={`h-6 w-6 ${modalOpen && 'fill-deepGreen'} stroke-deepGreen`}
+                    handleClick={() => {
+                      handleNotificationModal();
+                      handleToggle(true);
+                    }}
+                  />
+                )}
+              </>
             )}
+
             <HamburgerButton
               isOff={isOff}
               handleToggle={() => {
