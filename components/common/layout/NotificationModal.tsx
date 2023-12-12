@@ -59,7 +59,7 @@ const Notification = (props: Props) => {
     >
       <div className="h-full w-full overflow-scroll p-4 lg:p-2">
         <ul className=" h-full w-full ">
-          {notificationMessages.length !== 0 ? (
+          {notificationMessages.length === 0 ? (
             <div className="my-16 flex items-center justify-center">새로운 알림이 없습니다.</div>
           ) : (
             [...notificationMessages]

@@ -91,7 +91,7 @@ const UserPage = () => {
         <Spinner />
       ) : (
         <>
-          {viewQuestions.length !== 0 ? (
+          {viewQuestions.length === 0 ? (
             <div className="my-16 flex items-center justify-center p-4 pb-0">
               {selectedTab === 0 ? '작성한 게시물이 없습니다.' : "'좋아요'한 게시물이 없습니다."}
             </div>
