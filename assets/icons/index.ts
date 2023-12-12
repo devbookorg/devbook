@@ -19,3 +19,4 @@ export { default as CheckCircle } from './checkCircle.svg';
 export { default as XCircle } from './xCircle.svg';
 export { default as Search } from './search.svg';
 export { default as Alert } from './alert.svg';
+export { default as Spinner } from './spinner.svg';

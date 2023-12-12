@@ -25,7 +25,9 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between border-b-[1px]   px-2 py-2 text-deepGreen sm:px-6">
+    <header
+      className={`flex h-[65px] items-center justify-between px-2 py-2 text-deepGreen after:absolute after:left-0 after:top-[65px] after:z-50 after:w-full after:border-b-[1px] after:content-[''] sm:px-6`}
+    >
       {pathname.includes('questions') ? (
         <>
           <ButtonIcon
@@ -63,15 +65,21 @@ const Header = () => {
               <ButtonIcon
                 iconName="bellUpdate"
                 buttonStyles="z-50"
-                svgStyles="h-6 w-6 stroke-deepGreen"
-                handleClick={() => handleNotificationModal()}
+                svgStyles={`h-6 w-6 ${modalOpen && 'fill-deepGreen'} stroke-deepGreen`}
+                handleClick={() => {
+                  handleNotificationModal();
+                  handleToggle(true);
+                }}
               />
             ) : (
               <ButtonIcon
                 iconName="bell"
                 buttonStyles="z-50"
-                svgStyles="h-6 w-6 stroke-deepGreen"
-                handleClick={() => handleNotificationModal()}
+                svgStyles={`h-6 w-6 ${modalOpen && 'fill-deepGreen'} stroke-deepGreen`}
+                handleClick={() => {
+                  handleNotificationModal();
+                  handleToggle(true);
+                }}
               />
             )}
             <HamburgerButton
@@ -81,8 +89,19 @@ const Header = () => {
                 handleToggle();
               }}
             />
-            {!isOff && <Nav handleClose={() => handleToggle(true)} />}
-            {modalOpen && <Notification closeModal={() => handleNotificationModal(false)} />}
+            <Nav
+              close={isOff}
+              handleClose={() => {
+                handleToggle();
+              }}
+            />
+            {!isOff && (
+              <div
+                onClick={() => handleToggle()}
+                className={`absolute left-[0] top-[65px] z-30 h-screen w-full bg-gray/60`}
+              />
+            )}
+            <Notification close={!modalOpen} closeModal={() => {}} />
           </section>
         </>
       )}

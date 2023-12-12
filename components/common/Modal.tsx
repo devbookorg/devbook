@@ -24,8 +24,8 @@ const Modal = () => {
               {!modalData.closeBtnNone && (
                 <ButtonIcon
                   iconName="close"
-                  svgStyles="h-7 w-7"
-                  buttonStyles="absolute top-2 right-2  z-[110]"
+                  svgStyles="h-6 w-6"
+                  buttonStyles="absolute top-0 right-0  z-[110]"
                   handleClick={closeModal}
                 />
               )}

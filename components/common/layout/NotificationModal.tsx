@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 interface Props {
   closeModal: () => void;
+  close?: boolean;
 }
 
 const NotificationItem = (props: NotificationMessage & Props) => {
@@ -44,14 +45,18 @@ const NotificationItem = (props: NotificationMessage & Props) => {
 };
 
 const Notification = (props: Props) => {
-  const { closeModal } = props;
+  const { closeModal, close } = props;
   const { notificationMessages } = useRecoilValue(userState);
   const setUserState = useSetRecoilState(userState);
   useEffect(() => {
     setUserState((prev) => ({ ...prev, notification: false }));
   }, []);
   return (
-    <section className="absolute right-0 top-0 z-[40] flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white pt-16">
+    <section
+      className={`${
+        close ? 'translate-y-full' : 'translate-y-0'
+      } absolute right-0 top-0 z-[40] flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white pt-16 duration-500`}
+    >
       <div className="h-full w-full overflow-scroll p-4 lg:p-2">
         <ul className=" h-full w-full ">
           {[...notificationMessages].reverse().map((e, i) => (

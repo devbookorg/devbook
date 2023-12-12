@@ -22,7 +22,6 @@ export default function LikeQuestionPart(props: Props & IQuestion) {
     if (user.id !== '') {
       const filterArr = user?.likeQuestions.find((question) => question === questionsId);
       const increment = filterArr ? -1 : +1;
-
       setUser((prev) => ({
         ...prev,
         likeQuestions: filterArr
@@ -30,7 +29,6 @@ export default function LikeQuestionPart(props: Props & IQuestion) {
           : [...prev.likeQuestions, questionsId],
       }));
       setCountLikes((prev) => (filterArr ? prev - 1 : prev + 1));
-
       updateQuestionLikes(questionsId, increment).then(() => {
         updateUserLikeQuestions(user?.id, questionsId);
       });

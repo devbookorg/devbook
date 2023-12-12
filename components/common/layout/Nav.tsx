@@ -8,16 +8,21 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   handleClose: () => void;
+  close?: boolean;
 }
 
 const Nav = (props: Props) => {
-  const { handleClose } = props;
+  const { handleClose, close } = props;
   const { data } = useSession();
   const user = useRecoilValue(userState);
   const router = useRouter();
 
   return (
-    <div className="absolute bottom-0 right-0 z-40 flex h-full w-full max-w-[36em] flex-col items-start gap-2 bg-white p-4 pt-20 ">
+    <div
+      className={`${
+        close ? 'translate-x-full' : 'translate-x-1/4'
+      } absolute right-0 top-[65px] z-40 flex h-[calc(100vh-65px)] w-full max-w-[36em] flex-col items-start gap-2 bg-white  p-4 pt-[15px] duration-500`}
+    >
       {data !== null ? (
         <>
           {user?.admin && (

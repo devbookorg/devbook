@@ -1,12 +1,12 @@
 'use client';
 
 import Modal from '@/components/common/Modal';
-import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import Wrapper from './AppWrapper';
+import { SessionProvider } from 'next-auth/react';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <RecoilRoot>
