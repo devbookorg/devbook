@@ -15,11 +15,12 @@ const ConfirmModal = (props: Props) => {
   const { closeModal } = useModal();
 
   return (
-    <section className="flex w-full  max-w-[24em] flex-col items-center rounded-lg bg-white p-6">
+    <section className="flex w-full min-w-[10em]  max-w-[24em] flex-col items-center rounded-lg bg-white ">
       <h2>{content}</h2>
-      <div className="mt-4 flex w-fit gap-4 ">
+      <div className="mt-4 flex  w-full gap-4">
         <Button
           btnStyle="lg-line-red"
+          styles="w-full"
           handleClick={() => {
             onCancel?.();
             closeModal();
@@ -29,6 +30,7 @@ const ConfirmModal = (props: Props) => {
         </Button>
         <Button
           btnStyle="lg-line-deepGreen"
+          styles="w-full"
           handleClick={() => {
             onSuccess?.();
             closeModal();

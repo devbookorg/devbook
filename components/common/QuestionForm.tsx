@@ -5,7 +5,6 @@ import Button from './Button';
 import DropDownBox from './DropDownBox';
 import { LabeledInput } from './Input';
 import { Labeled } from './layout/AppLayout';
-import { getUser } from '@/firebase/users';
 import { createQuestion, updateQuestion } from '@/firebase/questions';
 import { questionCategory } from '@/utils/variable';
 import { useRecoilValue } from 'recoil';

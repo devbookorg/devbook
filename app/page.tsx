@@ -11,8 +11,10 @@ import { questionCategory } from '@/utils/variable';
 import IQuestion, { IQuestionCategory, getQuestionType } from '@/types/questions';
 import { useEffect, useState } from 'react';
 import { ButtonIcon } from '@/components/common/Icon';
+import Spinner from '@/components/common/Spinner';
 
 export default function Home() {
+  const [loadingSuccess, setLoadingSuccess] = useState<boolean>(false);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
   const approvedQuestions = 1; //0:대기|1:승인|2:미승인
@@ -32,6 +34,7 @@ export default function Home() {
   const loadQuestions = () => {
     getFilteredQuestions(questionsFilter).then((res) => {
       setQuestions(res);
+      setLoadingSuccess(true);
     });
   };
 
@@ -67,7 +70,7 @@ export default function Home() {
       >
         <div className="mr-1 flex gap-1">
           <DropDownBox
-            boxStyles={`px-2 py-1.5 text-xs items-center border-deepGreen text-deepGreen ${
+            boxStyles={`px-2 py-1.5 text-xs items-center border-deepGreen text-deepGreen  ${
               questionsFilter.category && 'bg-deepGreen text-white '
             }`}
             dropBoxStyles="min-w-[270px]"
@@ -101,7 +104,7 @@ export default function Home() {
           }}
         >
           <input
-            className="input-primary h-full w-[100px] max-w-[250px] rounded-lg border-deepGreen bg-white px-2 py-1.5 text-xs outline-none duration-100 focus:w-full   "
+            className="input-primary h-full w-[100px] max-w-[250px] rounded-lg border-deepGreen bg-white px-2 py-1.5 text-xs outline-none duration-100 focus:w-full"
             placeholder="검색"
           />
           <ButtonIcon
@@ -112,24 +115,30 @@ export default function Home() {
           />
         </form>
       </div>
-      {questions.length === 0 ? (
-        <div className="mt-4">검색조건과 일치하는 데이터가 없습니다.</div>
+      {!loadingSuccess ? (
+        <Spinner />
       ) : (
         <>
-          <div className="mt-4">
-            {questions.map((question) => (
-              <Question key={question.id} {...question}>
-                <LikeQuestionPart {...question} loadQuestions={loadQuestions} />
-              </Question>
-            ))}
-          </div>
-          <Pagination
-            {...pagination}
-            handleChangePage={(page) => {
-              setQuestionsFilter((prev) => ({ ...prev, page }));
-              pagination.handleChangePage(page);
-            }}
-          />
+          {questions.length === 0 ? (
+            <div className="mt-4">검색조건과 일치하는 데이터가 없습니다.</div>
+          ) : (
+            <>
+              <div className="mt-4">
+                {questions.map((question) => (
+                  <Question key={question.id} {...question}>
+                    <LikeQuestionPart {...question} />
+                  </Question>
+                ))}
+              </div>
+              <Pagination
+                {...pagination}
+                handleChangePage={(page) => {
+                  setQuestionsFilter((prev) => ({ ...prev, page }));
+                  pagination.handleChangePage(page);
+                }}
+              />
+            </>
+          )}
         </>
       )}
     </>

@@ -17,6 +17,7 @@ import { DeleteUserAndLogout } from '@/components/user/DeleteUserAndLogout';
 import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 import Pagination from '@/components/common/Pagination';
 import { usePagination } from '@/hooks/usePagination';
+import Spinner from '@/components/common/Spinner';
 
 const UserPage = () => {
   const user = useRecoilValue(userState);
@@ -28,16 +29,19 @@ const UserPage = () => {
   const [likeQuestionsCount, setLikeQuestionsCount] = useState<number>(0);
   const viewQuestions = selectedTab === 0 ? myWroteQuestions : myLikeQuestions;
   const tabs = ['작성한 게시물', '좋아요'];
+  const [loadingSuccess, setLoadingSuccess] = useState<boolean>(false);
   const pagination = usePagination(selectedTab === 0 ? wroteQuestionsCount : likeQuestionsCount);
   useEffect(() => {
     if (user.email !== '') {
-      loadWroteQuestions();
+      loadWroteQuestions().then(() => {
+        setLoadingSuccess(true);
+      });
       loadMyLikesQuestions();
       updateQuestionsNotification(user.id);
     }
   }, [user]);
 
-  const loadWroteQuestions = () => {
+  const loadWroteQuestions = async () => {
     getFilteredQuestions({ userId: user.id }).then((res) => setMyWroteQuestions(res));
     getQuestionsCount({ userId: user.id }).then((res) => setWroteQuestionsCount(res));
   };
@@ -83,31 +87,37 @@ const UserPage = () => {
           </div>
         ))}
       </div>
-      {viewQuestions.length > 0 ? (
-        <>
-          <div>
-            {viewQuestions.map((question) => (
-              <Question key={question.id} {...question}>
-                {selectedTab === 0 ? (
-                  <QuestionItem
-                    user={user.id}
-                    {...question}
-                    loadWroteQuestions={loadWroteQuestions}
-                  />
-                ) : (
-                  <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
-                )}
-              </Question>
-            ))}
-          </div>
-          <Pagination {...pagination} handleChangePage={onChangePage} />
-        </>
+      {!loadingSuccess ? (
+        <Spinner />
       ) : (
-        <div className="p-4 pb-0">
-          {selectedTab === 0 ? '작성한 게시물이 없습니다.' : "'좋아요'한 게시물이 없습니다."}
-        </div>
+        <>
+          {viewQuestions.length === 0 ? (
+            <div className="p-4 pb-0">
+              {selectedTab === 0 ? '작성한 게시물이 없습니다.' : "'좋아요'한 게시물이 없습니다."}
+            </div>
+          ) : (
+            <>
+              <div>
+                {viewQuestions.map((question) => (
+                  <Question key={question.id} {...question}>
+                    {selectedTab === 0 ? (
+                      <QuestionItem
+                        user={user.id}
+                        {...question}
+                        loadWroteQuestions={loadWroteQuestions}
+                      />
+                    ) : (
+                      <LikeQuestionPart {...question} loadQuestions={loadMyLikesQuestions} />
+                    )}
+                  </Question>
+                ))}
+              </div>
+              <Pagination {...pagination} handleChangePage={onChangePage} />
+            </>
+          )}
+          <DeleteUserAndLogout userId={id} />
+        </>
       )}
-      <DeleteUserAndLogout userId={id} />
     </article>
   );
 };

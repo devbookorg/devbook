@@ -22,15 +22,15 @@ export default function LikeQuestionPart(props: Props & IQuestion) {
     if (user.id !== '') {
       const filterArr = user?.likeQuestions.find((question) => question === questionsId);
       const increment = filterArr ? -1 : +1;
+      setUser((prev) => ({
+        ...prev,
+        likeQuestions: filterArr
+          ? prev.likeQuestions.filter((e) => e !== questionsId)
+          : [...prev.likeQuestions, questionsId],
+      }));
+      setCountLikes((prev) => (filterArr ? prev - 1 : prev + 1));
       updateQuestionLikes(questionsId, increment).then(() => {
         updateUserLikeQuestions(user?.id, questionsId);
-        setUser((prev) => ({
-          ...prev,
-          likeQuestions: filterArr
-            ? prev.likeQuestions.filter((e) => e !== questionsId)
-            : [...prev.likeQuestions, questionsId],
-        }));
-        setCountLikes((prev) => (filterArr ? prev - 1 : prev + 1));
       });
     } else {
       alert('로그인을 해주세요');
