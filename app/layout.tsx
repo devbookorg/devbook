@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from './AppProvider';
@@ -20,6 +20,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#31854C',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
