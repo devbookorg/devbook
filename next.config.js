@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+const withPWA = require('@ducanh2912/next-pwa').default({
+  dest: 'public',
+});
+
 const nextConfig = {
   webpack: (config) => {
     config.module.rules.push({
@@ -15,7 +20,8 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+    ignoreDuringBuilds: true,
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);
