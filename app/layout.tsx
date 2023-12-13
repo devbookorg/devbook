@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   icons: {
     other: [
       {
-        url: '../assets/favicons/icon-512x512.png',
+        url: './favicons/icon-512x512.png',
         media:
           '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)',
         rel: 'apple-touch-startup-image',
@@ -29,7 +29,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko-KR">
-      <link rel="manifest" href="/manifest.json" />
       <body className={notoSans.className}>
         <AppProviders>
           <AppLayout>{children}</AppLayout>

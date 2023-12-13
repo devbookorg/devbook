@@ -6,7 +6,7 @@ export const useDarkMode = () => {
 
   const handleDarkMode = () => {
     const currentTheme = localStorage.theme;
-    if (currentTheme === 'light') {
+    if (currentTheme !== 'dark') {
       setIsDarkMode(true);
       localStorage.theme = 'dark';
       document.documentElement.classList.add('dark');
