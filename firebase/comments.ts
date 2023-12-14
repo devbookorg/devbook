@@ -1,7 +1,7 @@
 import {
-  Timestamp,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -10,7 +10,6 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
 import { db } from '.';
 import IComment from '@/types/comments';
 
@@ -18,26 +17,15 @@ const usersCollection = collection(db, 'users');
 const commentsCollection = collection(db, 'comments');
 
 // 1. add comment
-export const addComment = async (body: { text: string; userId: string; questionId: string }) => {
-  const id = uuidv4();
+export const addComment = async (data: { user: string; newComment: IComment }) => {
   try {
-    const userQuery = await getDocs(query(usersCollection, where('id', '==', body.userId)));
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', data.user)));
 
     if (userQuery.empty) {
       alert('로그인을 해주세요');
       return null;
     } else {
-      const { text, userId, questionId } = body;
-      const comment = {
-        id,
-        text,
-        userId,
-        questionId,
-        emojis: { thumbsUp: [], thumbsDown: [], alien: [], clap: [], eyes: [], blueHeart: [] },
-        reply: [],
-        dataCreated: Timestamp.now(),
-      };
-      addDoc(commentsCollection, comment);
+      addDoc(commentsCollection, data.newComment);
     }
   } catch (error) {
     console.error(error.message);
@@ -64,33 +52,49 @@ export const getComments = async (questionId: string): Promise<IComment[]> => {
   }
 };
 
+// 3. update emojis
 export const updateCommentEmojis = async (body: {
   commentId: string;
   emoji: string;
   userId: string;
+  rootComment?: string;
 }) => {
   try {
-    const { commentId, userId, emoji } = body;
-    const commentQuery = await getDocs(query(commentsCollection, where('id', '==', commentId)));
+    const { commentId, userId, emoji, rootComment } = body;
+    const commentQuery = await getDocs(
+      query(commentsCollection, where('id', '==', rootComment || commentId))
+    );
     const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
     if (userQuery.empty) {
       alert('로그인을 해주세요');
       return null;
     }
+
     if (!commentQuery.empty) {
       const [commentDoc] = commentQuery.docs;
       const commentRef = doc(commentsCollection, commentDoc.id);
       const comment = await getDoc(commentRef);
       if (comment.exists()) {
-        const alreadyChecks = comment.data().emojis[emoji].includes(userId);
+        const alreadyCheck = (currentComment: IComment) =>
+          currentComment.emojis[emoji].includes(userId);
+        const updateEmoji = (comment: IComment) => ({
+          ...comment.emojis,
+          [emoji]: alreadyCheck(comment)
+            ? [...comment.emojis[emoji]].filter((user) => user !== userId)
+            : [...comment.emojis[emoji], userId],
+        });
 
-        if (alreadyChecks) {
-          const emojiData = comment.data().emojis[emoji].filter((e: string) => e !== userId);
-          await updateDoc(commentRef, { emojis: { ...comment.data().emojis, [emoji]: emojiData } });
-        } else {
-          const emojiData = [...comment.data().emojis[emoji], userId];
-          await updateDoc(commentRef, { emojis: { ...comment.data().emojis, [emoji]: emojiData } });
-        }
+        const commentData = comment.data() as IComment;
+        const updateData = rootComment
+          ? {
+              reply: [
+                ...commentData.reply.map((cmt: IComment) =>
+                  cmt.id === commentId ? { ...cmt, emojis: updateEmoji(cmt) } : { ...cmt }
+                ),
+              ],
+            }
+          : { emojis: updateEmoji(commentData) };
+        await updateDoc(commentRef, updateData);
       }
     }
   } catch (error) {
@@ -99,35 +103,59 @@ export const updateCommentEmojis = async (body: {
   }
 };
 
-export const updateCommentReply = async (body: {
-  commentId: string;
-  text: string;
-  userId: string;
-  questionId: string;
+// 4. update Reply
+export const updateCommentReply = async (data: {
+  newComment: IComment;
+  user: string;
+  currentComment: string;
 }) => {
   try {
-    const { commentId, userId, text, questionId } = body;
-    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', data.user)));
     if (userQuery.empty) {
       alert('로그인을 해주세요');
       return null;
     }
-    const commentQuery = await getDocs(query(commentsCollection, where('id', '==', commentId)));
+
+    const commentQuery = await getDocs(
+      query(commentsCollection, where('id', '==', data.currentComment))
+    );
     if (!commentQuery.empty) {
       const [commentDoc] = commentQuery.docs;
       const commentRef = doc(commentsCollection, commentDoc.id);
       const comment = await getDoc(commentRef);
-      const id = uuidv4();
-      const newComment = {
-        id,
-        text,
-        userId,
-        questionId,
-        emojis: { thumbsUp: [], thumbsDown: [], alien: [], clap: [], eyes: [], blueHeart: [] },
-        dataCreated: Timestamp.now(),
-      };
+      await updateDoc(commentRef, { reply: [...comment.data().reply, data.newComment] });
+    }
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};
 
-      await updateDoc(commentRef, { reply: [...comment.data().reply, newComment] });
+// 5. delete Comment
+export const deleteComment = async ({
+  commentId,
+  rootComment,
+}: {
+  commentId: string;
+  rootComment?: string;
+}) => {
+  try {
+    const commentQuery = await getDocs(
+      query(commentsCollection, where('id', '==', rootComment || commentId))
+    );
+    if (!commentQuery.empty) {
+      const [commentDoc] = commentQuery.docs;
+      const commentRef = doc(commentsCollection, commentDoc.id);
+      const comment = await getDoc(commentRef);
+      if (comment.exists()) {
+        if (rootComment) {
+          await updateDoc(commentRef, {
+            reply: [...comment.data().reply.filter((e: IComment) => e.id !== commentId)],
+          });
+        } else {
+          await deleteDoc(commentRef);
+        }
+      }
     }
   } catch (error) {
     console.error(error.message);

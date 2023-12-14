@@ -9,17 +9,38 @@ import Comments from './Comments';
 interface Props {
   idx: number;
   user: string;
+  handleUpdateComments: ({ commentId, emoji }: { commentId: string; emoji: string }) => void;
+  handleDeleteComments: (commentId: string) => void;
 }
 
 const Comment = (props: Props & IComment) => {
-  const { text, idx, dataCreated, emojis, user, id, questionId, reply } = props;
+  const {
+    text,
+    idx,
+    dataCreated,
+    emojis,
+    user,
+    id,
+    questionId,
+    reply,
+    handleUpdateComments,
+    handleDeleteComments,
+  } = props;
   const { isOff: replyFormOff, handleToggle } = useToggle();
   return (
     <>
-      <article className="flex flex-col gap-1.5">
+      <article className="flex flex-col">
         <section className="flex justify-between text-xs">
           <h3 className="text-deepGreen">{`#${idx}`}</h3>
-          <span className="text-gray">{formatUnixTime(dataCreated.seconds)}</span>
+          <div className="flex">
+            <span className="text-gray">{formatUnixTime(dataCreated.seconds)}</span>
+            <ButtonIcon
+              iconName="close"
+              svgStyles="w-4 h-4 stroke-gray"
+              buttonStyles="p-0 pl-2"
+              handleClick={() => handleDeleteComments(id)}
+            />
+          </div>
         </section>
         <section className="mb-2 overflow-hidden">
           <p className="pb-1 pl-1 text-sm">{text}</p>
@@ -35,13 +56,18 @@ const Comment = (props: Props & IComment) => {
             ) : (
               <div />
             )}
-            <CommentEmojis {...emojis} user={user} commentId={id} />
+            <CommentEmojis
+              {...emojis}
+              handleUpdateComments={(emoji: string) =>
+                handleUpdateComments({ commentId: id, emoji })
+              }
+            />
           </div>
         </section>
 
         {!replyFormOff && (
           <section className="mb-2 pl-4">
-            <Comments comments={reply} userId={user} questionId={questionId} />
+            <Comments comments={reply} userId={user} questionId={questionId} commentId={id} />
           </section>
         )}
       </article>

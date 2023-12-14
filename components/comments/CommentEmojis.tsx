@@ -3,15 +3,13 @@ import { emojis } from '@/utils/variable';
 import React from 'react';
 import Button from '../common/Button';
 import IComment from '@/types/comments';
-import { updateCommentEmojis } from '@/firebase/comments';
 
 interface Props {
-  user: string;
-  commentId: string;
+  handleUpdateComments: (emoji: string) => void;
 }
 
 const CommentEmojis = (props: Props & IComment['emojis']) => {
-  const { user, commentId } = props;
+  const { handleUpdateComments } = props;
   const { isOff, handleToggle } = useToggle();
   return (
     <div className="relative text-right">
@@ -33,9 +31,8 @@ const CommentEmojis = (props: Props & IComment['emojis']) => {
             key={emoji}
             styles="flex gap-2"
             handleClick={() => {
-              updateCommentEmojis({ userId: user, emoji, commentId }).then(() => {
-                handleToggle(true);
-              });
+              handleUpdateComments(emoji);
+              handleToggle(true);
             }}
           >
             <span>{emojis[emoji]}</span>

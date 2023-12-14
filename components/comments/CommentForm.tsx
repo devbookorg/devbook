@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
 import Button from '../common/Button';
-import { addComment, updateCommentReply } from '@/firebase/comments';
 
 interface Props {
-  userId: string;
-  questionId: string;
-  commentId?: string;
+  handleAddComments: (text: string) => void;
 }
 
 const CommentForm = (props: Props) => {
-  const { userId, questionId, commentId } = props;
+  const { handleAddComments } = props;
   const [value, setValue] = useState<string>('');
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!value.length) {
       return;
     }
-    if (commentId) {
-      updateCommentReply({ commentId, userId, questionId, text: value });
-    } else {
-      addComment({ text: value, userId, questionId });
-    }
+    handleAddComments(value);
     setValue('');
   };
   return (
@@ -34,7 +27,7 @@ const CommentForm = (props: Props) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="댓글을 입력해주세요"
-          className="min-h-[64px] w-full resize-none rounded-md border border-gray p-2 pr-14 text-sm outline-deepGreen"
+          className="min-h-[64px] w-full resize-none rounded-md border border-gray bg-white p-2 pr-14 text-sm outline-deepGreen"
         />
         <Button type="submit" btnStyle="sm-fill-deepGreen" styles="absolute right-2 bottom-4">
           작성
