@@ -37,7 +37,7 @@ export default function DropDownBox<T>({
     <div className="relative">
       <div
         onClick={dropDownToggle}
-        className={`input-primary -middle flex min-w-[88px] cursor-pointer justify-between text-sm ${boxStyles}`}
+        className={`input-primary -middle flex min-w-[88px] cursor-pointer justify-between whitespace-nowrap text-sm ${boxStyles}`}
       >
         {selectedValue}
         <div>

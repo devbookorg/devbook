@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react';
 
 const Header = () => {
   const router = useRouter();
-  const { data } = useSession();
+  const { data: session } = useSession();
   const pathname = usePathname();
   const { isOff, handleToggle } = useToggle();
   const { isDarkMode, handleDarkMode } = useDarkMode();
@@ -63,7 +63,7 @@ const Header = () => {
               svgStyles="h-6 w-6 stroke-deepGreen"
               handleClick={handleDarkMode}
             />
-            {data !== null && (
+            {session && (
               <>
                 {notification ? (
                   <ButtonIcon
