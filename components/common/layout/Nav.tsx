@@ -63,17 +63,27 @@ const Nav = (props: Props) => {
           />
         </>
       ) : (
-        <Button
-          handleClick={() => {
-            signIn();
-            handleClose();
-          }}
-          btnStyle="lg-line-deepGreen"
-        >
-          로그인
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            handleClick={() => {
+              signIn('google');
+              handleClose();
+            }}
+            btnStyle="lg-line-deepGreen"
+          >
+            구글 로그인
+          </Button>
+          <Button
+            handleClick={() => {
+              signIn('kakao');
+              handleClose();
+            }}
+            btnStyle="lg-line-deepGreen"
+          >
+            카카오 로그인
+          </Button>
+        </div>
       )}
-
       <div className="absolute bottom-10 flex w-2/3 flex-col gap-1 text-sm">
         <hr className="my-3 " />
         <h3 className="my-1 text-base font-bold">&copy; 2024 Project DevBook</h3>
