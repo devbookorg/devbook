@@ -5,14 +5,14 @@ export default interface IComment {
   text: string;
   questionId: string;
   userId: string;
-  reply?: string;
+  reply?: IComment[];
   emojis: {
-    thumbsUp: number;
-    thumbsDown: number;
-    alien: number;
-    blueHeart: number;
-    clap: number;
-    eyes: number;
+    thumbsUp: string[];
+    thumbsDown: string[];
+    alien: string[];
+    blueHeart: string[];
+    clap: string[];
+    eyes: string[];
   };
   dataCreated: Timestamp;
 }

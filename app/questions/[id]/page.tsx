@@ -103,7 +103,7 @@ const Page = () => {
           {data.approved === 1 && <LikeQuestionPart {...data} />}
         </section>
         <hr className="border-lightGray" />
-        <CommentsList comments={comments} />
+        <CommentsList comments={comments} userId={userId} questionId={data.id} />
         {userId === data.userId && data.approved !== 1 && (
           <section className="flex gap-4">
             <Button

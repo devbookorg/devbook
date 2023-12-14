@@ -8,10 +8,11 @@ import CommentForm from './CommentForm';
 
 interface Props {
   idx: number;
+  user: string;
 }
 
 const Comment = (props: Props & IComment) => {
-  const { text, idx, dataCreated, emojis } = props;
+  const { text, idx, dataCreated, emojis, user, id, questionId } = props;
   const { isOff: replyFormOff, handleToggle } = useToggle();
   return (
     <>
@@ -30,13 +31,13 @@ const Comment = (props: Props & IComment) => {
               buttonStyles="flex items-center gap-1 text-gray"
               handleClick={() => handleToggle()}
             />
-            <CommentEmojis {...emojis} />
+            <CommentEmojis {...emojis} user={user} commentId={id} />
           </div>
         </section>
 
         {!replyFormOff && (
           <section className="mb-2 pl-4">
-            <CommentForm />
+            <CommentForm userId={user} questionId={questionId} commentId={id} />
           </section>
         )}
       </article>
