@@ -1,14 +1,17 @@
 'use client';
 
+import CommentsList from '@/components/comments/Comments';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import Icon from '@/components/common/Icon';
 import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 import Spinner from '@/components/common/Spinner';
+import { getComments } from '@/firebase/comments';
 import { deleteQuestion, getQuestion } from '@/firebase/questions';
 import { useModal } from '@/hooks/useModal';
 import { userState } from '@/recoil/user';
+import IComment from '@/types/comments';
 import IQuestion from '@/types/questions';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { Timestamp } from 'firebase/firestore';
@@ -33,9 +36,13 @@ const Page = () => {
     approved: 0,
     dataCreated: Timestamp.now(),
   });
+  const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
     getQuestion(params.id as string).then((res) => setData(res));
+    getComments(params.id as string).then((res) => {
+      setComments(res);
+    });
   }, [params.id]);
 
   if (data.id === '') return <Spinner />;
@@ -96,6 +103,7 @@ const Page = () => {
           {data.approved === 1 && <LikeQuestionPart {...data} />}
         </section>
         <hr className="border-lightGray" />
+        <CommentsList comments={comments} />
         {userId === data.userId && data.approved !== 1 && (
           <section className="flex gap-4">
             <Button
