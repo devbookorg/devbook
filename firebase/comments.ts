@@ -10,7 +10,6 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
 import { db } from '.';
 import IComment from '@/types/comments';
 
@@ -18,26 +17,15 @@ const usersCollection = collection(db, 'users');
 const commentsCollection = collection(db, 'comments');
 
 // 1. add comment
-export const addComment = async (body: { text: string; userId: string; questionId: string }) => {
-  const id = uuidv4();
+export const addComment = async (data: { user: string; newComment: IComment }) => {
   try {
-    const userQuery = await getDocs(query(usersCollection, where('id', '==', body.userId)));
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', data.user)));
 
     if (userQuery.empty) {
       alert('로그인을 해주세요');
       return null;
     } else {
-      const { text, userId, questionId } = body;
-      const comment = {
-        id,
-        text,
-        userId,
-        questionId,
-        emojis: { thumbsUp: [], thumbsDown: [], alien: [], clap: [], eyes: [], blueHeart: [] },
-        reply: [],
-        dataCreated: Timestamp.now(),
-      };
-      addDoc(commentsCollection, comment);
+      addDoc(commentsCollection, data.newComment);
     }
   } catch (error) {
     console.error(error.message);
@@ -99,35 +87,26 @@ export const updateCommentEmojis = async (body: {
   }
 };
 
-export const updateCommentReply = async (body: {
-  commentId: string;
-  text: string;
-  userId: string;
-  questionId: string;
+export const updateCommentReply = async (data: {
+  newComment: IComment;
+  user: string;
+  currentComment: string;
 }) => {
   try {
-    const { commentId, userId, text, questionId } = body;
-    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', data.user)));
     if (userQuery.empty) {
       alert('로그인을 해주세요');
       return null;
     }
-    const commentQuery = await getDocs(query(commentsCollection, where('id', '==', commentId)));
+    const commentQuery = await getDocs(
+      query(commentsCollection, where('id', '==', data.currentComment))
+    );
     if (!commentQuery.empty) {
       const [commentDoc] = commentQuery.docs;
       const commentRef = doc(commentsCollection, commentDoc.id);
       const comment = await getDoc(commentRef);
-      const id = uuidv4();
-      const newComment = {
-        id,
-        text,
-        userId,
-        questionId,
-        emojis: { thumbsUp: [], thumbsDown: [], alien: [], clap: [], eyes: [], blueHeart: [] },
-        dataCreated: Timestamp.now(),
-      };
 
-      await updateDoc(commentRef, { reply: [...comment.data().reply, newComment] });
+      await updateDoc(commentRef, { reply: [...comment.data().reply, data.newComment] });
     }
   } catch (error) {
     console.error(error.message);

@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
 import Button from '../common/Button';
-import { addComment, updateCommentReply } from '@/firebase/comments';
 
 interface Props {
-  userId: string;
-  questionId: string;
-  commentId?: string;
+  handleAddComments: (text: string) => void;
 }
 
 const CommentForm = (props: Props) => {
-  const { userId, questionId, commentId } = props;
+  const { handleAddComments } = props;
   const [value, setValue] = useState<string>('');
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!value.length) {
       return;
     }
-    if (commentId) {
-      updateCommentReply({ commentId, userId, questionId, text: value });
-    } else {
-      addComment({ text: value, userId, questionId });
-    }
+    handleAddComments(value);
     setValue('');
   };
   return (

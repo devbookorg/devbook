@@ -41,7 +41,7 @@ const Comment = (props: Props & IComment) => {
 
         {!replyFormOff && (
           <section className="mb-2 pl-4">
-            <Comments comments={reply} userId={user} questionId={questionId} />
+            <Comments comments={reply} userId={user} questionId={questionId} commentId={id} />
           </section>
         )}
       </article>
