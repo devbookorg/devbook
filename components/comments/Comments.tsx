@@ -17,7 +17,11 @@ const Comments = (props: Props) => {
   });
 
   return (
-    <section className="flex flex-col gap-4">
+    <section
+      className={`flex flex-col gap-4 ${
+        props.commentId ? 'rounded-md bg-deepGreen/20 p-2' : 'bg-white'
+      }`}
+    >
       <CommentForm handleAddComments={handleAddComments} />
       {!comments || !comments.length ? (
         <div className="text-center text-sm text-gray">등록된 댓글이 없습니다. </div>

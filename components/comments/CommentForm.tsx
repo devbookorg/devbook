@@ -27,7 +27,7 @@ const CommentForm = (props: Props) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="댓글을 입력해주세요"
-          className="min-h-[64px] w-full resize-none rounded-md border border-gray p-2 pr-14 text-sm outline-deepGreen"
+          className="min-h-[64px] w-full resize-none rounded-md border border-gray bg-white p-2 pr-14 text-sm outline-deepGreen"
         />
         <Button type="submit" btnStyle="sm-fill-deepGreen" styles="absolute right-2 bottom-4">
           작성
