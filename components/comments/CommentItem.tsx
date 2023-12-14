@@ -9,10 +9,12 @@ import Comments from './Comments';
 interface Props {
   idx: number;
   user: string;
+  handleUpdateComments: ({ commentId, emoji }: { commentId: string; emoji: string }) => void;
 }
 
 const Comment = (props: Props & IComment) => {
-  const { text, idx, dataCreated, emojis, user, id, questionId, reply } = props;
+  const { text, idx, dataCreated, emojis, user, id, questionId, reply, handleUpdateComments } =
+    props;
   const { isOff: replyFormOff, handleToggle } = useToggle();
   return (
     <>
@@ -35,7 +37,12 @@ const Comment = (props: Props & IComment) => {
             ) : (
               <div />
             )}
-            <CommentEmojis {...emojis} user={user} commentId={id} />
+            <CommentEmojis
+              {...emojis}
+              handleUpdateComments={(emoji: string) =>
+                handleUpdateComments({ commentId: id, emoji })
+              }
+            />
           </div>
         </section>
 

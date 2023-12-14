@@ -11,7 +11,10 @@ interface Props {
 }
 
 const Comments = (props: Props) => {
-  const { comments, handleAddComments } = useComments({ ...props, prevComments: props.comments });
+  const { comments, handleAddComments, handleUpdateComments } = useComments({
+    ...props,
+    prevComments: props.comments,
+  });
 
   return (
     <section className="flex flex-col gap-4">
@@ -22,7 +25,14 @@ const Comments = (props: Props) => {
         <ul className=" flex flex-col gap-2">
           {comments.map((comment, idx) => (
             <li key={comment.id}>
-              <Comment {...comment} idx={idx} user={props.userId} />
+              <Comment
+                {...comment}
+                idx={idx}
+                user={props.userId}
+                handleUpdateComments={({ commentId, emoji }) =>
+                  handleUpdateComments({ commentId, emoji, rootComment: props.commentId })
+                }
+              />
             </li>
           ))}
         </ul>

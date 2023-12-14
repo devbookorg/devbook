@@ -1,5 +1,4 @@
 import {
-  Timestamp,
   addDoc,
   collection,
   doc,
@@ -56,29 +55,44 @@ export const updateCommentEmojis = async (body: {
   commentId: string;
   emoji: string;
   userId: string;
+  rootComment?: string;
 }) => {
   try {
-    const { commentId, userId, emoji } = body;
-    const commentQuery = await getDocs(query(commentsCollection, where('id', '==', commentId)));
+    const { commentId, userId, emoji, rootComment } = body;
+    const commentQuery = await getDocs(
+      query(commentsCollection, where('id', '==', rootComment || commentId))
+    );
     const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
     if (userQuery.empty) {
       alert('로그인을 해주세요');
       return null;
     }
+
     if (!commentQuery.empty) {
       const [commentDoc] = commentQuery.docs;
       const commentRef = doc(commentsCollection, commentDoc.id);
       const comment = await getDoc(commentRef);
       if (comment.exists()) {
-        const alreadyChecks = comment.data().emojis[emoji].includes(userId);
+        const alreadyCheck = (currentComment: IComment) =>
+          currentComment.emojis[emoji].includes(userId);
+        const updateEmoji = (comment: IComment) => ({
+          ...comment.emojis,
+          [emoji]: alreadyCheck(comment)
+            ? [...comment.emojis[emoji]].filter((user) => user !== userId)
+            : [...comment.emojis[emoji], userId],
+        });
 
-        if (alreadyChecks) {
-          const emojiData = comment.data().emojis[emoji].filter((e: string) => e !== userId);
-          await updateDoc(commentRef, { emojis: { ...comment.data().emojis, [emoji]: emojiData } });
-        } else {
-          const emojiData = [...comment.data().emojis[emoji], userId];
-          await updateDoc(commentRef, { emojis: { ...comment.data().emojis, [emoji]: emojiData } });
-        }
+        const commentData = comment.data() as IComment;
+        const updateData = rootComment
+          ? {
+              reply: [
+                ...commentData.reply.map((cmt: IComment) =>
+                  cmt.id === commentId ? { ...cmt, emojis: updateEmoji(cmt) } : { ...cmt }
+                ),
+              ],
+            }
+          : { emojis: updateEmoji(commentData) };
+        await updateDoc(commentRef, updateData);
       }
     }
   } catch (error) {
