@@ -6,6 +6,13 @@ export default interface IComment {
   questionId: string;
   userId: string;
   reply?: string;
-  emojis: string[];
+  emojis: {
+    thumbsUp: number;
+    thumbsDown: number;
+    alien: number;
+    blueHeart: number;
+    clap: number;
+    eyes: number;
+  };
   dataCreated: Timestamp;
 }

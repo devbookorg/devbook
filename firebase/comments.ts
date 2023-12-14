@@ -22,7 +22,7 @@ export const addComment = async (body: { text: string; userId: string; questionI
         text,
         userId,
         questionId,
-        emojis: [],
+        emojis: { thumbsUp: 0, thumbsDown: 0, alien: 0, clap: 0, eyes: 0, blueHeart: 0 },
         reply: [],
         dataCreated: Timestamp.now(),
       };
