@@ -19,7 +19,7 @@ const Comments = (props: Props) => {
   return (
     <section
       className={`flex flex-col gap-4 ${
-        props.commentId ? 'rounded-md border border-deepGreen/40 bg-deepGreen/20 p-2' : 'bg-white'
+        props.commentId ? 'rounded-md border border-deepGreen/40 bg-deepGreen/10 p-2' : 'bg-white'
       }`}
     >
       <CommentForm handleAddComments={handleAddComments} />

@@ -9,14 +9,14 @@ interface Props {
 }
 
 const Question = (props: IQuestion & Props) => {
-  const { category, title, answer, children, dataCreated, approved, id } = props;
+  const { category, title, answer, children, dataCreated, id } = props;
   const router = useRouter();
 
   return (
     <>
       <div
         onClick={() => router.push(`/questions/${id}`)}
-        className={`flex justify-between border-b-[1px] border-lightGray  px-2 py-3  hover:bg-opacity-40`}
+        className={`flex justify-between border-b-[1px] border-lightGray  px-2 py-3  hover:cursor-pointer hover:bg-opacity-40`}
       >
         <section className="flex w-[calc(100%-100px)] flex-col gap-1  ">
           <div className="flex gap-1">

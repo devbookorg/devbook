@@ -30,7 +30,7 @@ const Comment = (props: Props & IComment) => {
   const { isOff: replyFormOff, handleToggle } = useToggle();
   return (
     <>
-      <article className="flex flex-col">
+      <article className="flex flex-col gap-1">
         <section className="flex justify-between text-xs">
           <h3 className="text-deepGreen">{`#${idx}`}</h3>
           <div className="flex">

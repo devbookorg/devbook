@@ -22,7 +22,7 @@ const Badge = (props: Props) => {
   if (size === 'lg') {
     return (
       <div
-        className={`w-fit rounded-xl px-2 py-1 text-xs leading-tight ${bg[value]} ${textColor} border border-black bg-opacity-90 hover:bg-opacity-100`}
+        className={`w-fit rounded-xl px-2 py-1 text-xs leading-tight ${bg[value]} ${textColor} border border-black bg-opacity-80 hover:bg-opacity-100`}
       >
         {value}
       </div>
@@ -31,7 +31,7 @@ const Badge = (props: Props) => {
 
   return (
     <div
-      className={`w-fit rounded-md px-1.5 py-0.5 text-xs leading-tight ${bg[value]} ${textColor} bg-opacity-90 hover:bg-opacity-100`}
+      className={`w-fit rounded-md px-1.5 py-0.5 text-xs leading-tight ${bg[value]} ${textColor} bg-opacity-80 hover:bg-opacity-100`}
     >
       {value}
     </div>
