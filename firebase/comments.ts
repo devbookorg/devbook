@@ -98,6 +98,7 @@ export const updateCommentReply = async (data: {
       alert('로그인을 해주세요');
       return null;
     }
+
     const commentQuery = await getDocs(
       query(commentsCollection, where('id', '==', data.currentComment))
     );
@@ -105,7 +106,6 @@ export const updateCommentReply = async (data: {
       const [commentDoc] = commentQuery.docs;
       const commentRef = doc(commentsCollection, commentDoc.id);
       const comment = await getDoc(commentRef);
-
       await updateDoc(commentRef, { reply: [...comment.data().reply, data.newComment] });
     }
   } catch (error) {
