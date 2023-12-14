@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Comments = (props: Props) => {
-  const { comments, handleAddComments, handleUpdateComments } = useComments({
+  const { comments, handleAddComments, handleUpdateComments, handleDeleteComments } = useComments({
     ...props,
     prevComments: props.comments,
   });
@@ -19,12 +19,16 @@ const Comments = (props: Props) => {
   return (
     <section
       className={`flex flex-col gap-4 ${
-        props.commentId ? 'rounded-md bg-deepGreen/20 p-2' : 'bg-white'
+        props.commentId ? 'rounded-md border border-deepGreen/40 bg-deepGreen/20 p-2' : 'bg-white'
       }`}
     >
       <CommentForm handleAddComments={handleAddComments} />
       {!comments || !comments.length ? (
-        <div className="text-center text-sm text-gray">등록된 댓글이 없습니다. </div>
+        <>
+          {!props.commentId && (
+            <div className="py-4 text-center text-sm text-gray">등록된 댓글이 없습니다. </div>
+          )}
+        </>
       ) : (
         <ul className=" flex flex-col gap-2">
           {comments.map((comment, idx) => (
@@ -36,6 +40,9 @@ const Comments = (props: Props) => {
                 handleUpdateComments={({ commentId, emoji }) =>
                   handleUpdateComments({ commentId, emoji, rootComment: props.commentId })
                 }
+                handleDeleteComments={(commentId) => {
+                  handleDeleteComments({ commentId, rootComment: props.commentId });
+                }}
               />
             </li>
           ))}

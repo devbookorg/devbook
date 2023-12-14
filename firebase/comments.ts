@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -51,6 +52,7 @@ export const getComments = async (questionId: string): Promise<IComment[]> => {
   }
 };
 
+// 3. update emojis
 export const updateCommentEmojis = async (body: {
   commentId: string;
   emoji: string;
@@ -101,6 +103,7 @@ export const updateCommentEmojis = async (body: {
   }
 };
 
+// 4. update Reply
 export const updateCommentReply = async (data: {
   newComment: IComment;
   user: string;
@@ -121,6 +124,38 @@ export const updateCommentReply = async (data: {
       const commentRef = doc(commentsCollection, commentDoc.id);
       const comment = await getDoc(commentRef);
       await updateDoc(commentRef, { reply: [...comment.data().reply, data.newComment] });
+    }
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};
+
+// 5. delete Comment
+export const deleteComment = async ({
+  commentId,
+  rootComment,
+}: {
+  commentId: string;
+  rootComment?: string;
+}) => {
+  try {
+    const commentQuery = await getDocs(
+      query(commentsCollection, where('id', '==', rootComment || commentId))
+    );
+    if (!commentQuery.empty) {
+      const [commentDoc] = commentQuery.docs;
+      const commentRef = doc(commentsCollection, commentDoc.id);
+      const comment = await getDoc(commentRef);
+      if (comment.exists()) {
+        if (rootComment) {
+          await updateDoc(commentRef, {
+            reply: [...comment.data().reply.filter((e: IComment) => e.id !== commentId)],
+          });
+        } else {
+          await deleteDoc(commentRef);
+        }
+      }
     }
   } catch (error) {
     console.error(error.message);

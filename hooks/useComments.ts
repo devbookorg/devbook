@@ -1,4 +1,9 @@
-import { addComment, updateCommentEmojis, updateCommentReply } from '@/firebase/comments';
+import {
+  addComment,
+  deleteComment,
+  updateCommentEmojis,
+  updateCommentReply,
+} from '@/firebase/comments';
 import IComment from '@/types/comments';
 import { Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
@@ -66,5 +71,16 @@ export const useComments = ({
     setComments((prev) => prev.map((cmt) => ({ ...cmt, emojis: updateEmoji(cmt) })));
   };
 
-  return { comments, handleAddComments, handleUpdateComments };
+  const handleDeleteComments = ({
+    commentId,
+    rootComment,
+  }: {
+    commentId: string;
+    rootComment?: string;
+  }) => {
+    deleteComment({ commentId, rootComment });
+    setComments((prev) => prev.filter((e) => e.id !== commentId));
+  };
+
+  return { comments, handleAddComments, handleUpdateComments, handleDeleteComments };
 };
