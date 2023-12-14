@@ -4,7 +4,7 @@ import React from 'react';
 import CommentEmojis from './CommentEmojis';
 import { useToggle } from '@/hooks/useToggle';
 import { ButtonIcon } from '../common/Icon';
-import CommentForm from './CommentForm';
+import Comments from './Comments';
 
 interface Props {
   idx: number;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Comment = (props: Props & IComment) => {
-  const { text, idx, dataCreated, emojis, user, id, questionId } = props;
+  const { text, idx, dataCreated, emojis, user, id, questionId, reply } = props;
   const { isOff: replyFormOff, handleToggle } = useToggle();
   return (
     <>
@@ -24,20 +24,24 @@ const Comment = (props: Props & IComment) => {
         <section className="mb-2 overflow-hidden">
           <p className="pb-1 pl-1 text-sm">{text}</p>
           <div className="flex items-center justify-between">
-            <ButtonIcon
-              iconName="cornerDownRight"
-              svgStyles="w-3 h-3 stroke-gray"
-              text="답글"
-              buttonStyles="flex items-center gap-1 text-gray"
-              handleClick={() => handleToggle()}
-            />
+            {reply ? (
+              <ButtonIcon
+                iconName="cornerDownRight"
+                svgStyles="w-3 h-3 stroke-gray"
+                text={`답글 ${reply?.length}`}
+                buttonStyles="flex items-center gap-1 text-gray"
+                handleClick={() => handleToggle()}
+              />
+            ) : (
+              <div />
+            )}
             <CommentEmojis {...emojis} user={user} commentId={id} />
           </div>
         </section>
 
         {!replyFormOff && (
           <section className="mb-2 pl-4">
-            <CommentForm userId={user} questionId={questionId} commentId={id} />
+            <Comments comments={reply} userId={user} questionId={questionId} />
           </section>
         )}
       </article>

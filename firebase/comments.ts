@@ -98,3 +98,39 @@ export const updateCommentEmojis = async (body: {
     throw error;
   }
 };
+
+export const updateCommentReply = async (body: {
+  commentId: string;
+  text: string;
+  userId: string;
+  questionId: string;
+}) => {
+  try {
+    const { commentId, userId, text, questionId } = body;
+    const userQuery = await getDocs(query(usersCollection, where('id', '==', userId)));
+    if (userQuery.empty) {
+      alert('로그인을 해주세요');
+      return null;
+    }
+    const commentQuery = await getDocs(query(commentsCollection, where('id', '==', commentId)));
+    if (!commentQuery.empty) {
+      const [commentDoc] = commentQuery.docs;
+      const commentRef = doc(commentsCollection, commentDoc.id);
+      const comment = await getDoc(commentRef);
+      const id = uuidv4();
+      const newComment = {
+        id,
+        text,
+        userId,
+        questionId,
+        emojis: { thumbsUp: [], thumbsDown: [], alien: [], clap: [], eyes: [], blueHeart: [] },
+        dataCreated: Timestamp.now(),
+      };
+
+      await updateDoc(commentRef, { reply: [...comment.data().reply, newComment] });
+    }
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};

@@ -1,10 +1,30 @@
 import React, { useState } from 'react';
 import Button from '../common/Button';
+import { addComment, updateCommentReply } from '@/firebase/comments';
 
-const CommentForm = () => {
+interface Props {
+  userId: string;
+  questionId: string;
+  commentId?: string;
+}
+
+const CommentForm = (props: Props) => {
+  const { userId, questionId, commentId } = props;
   const [value, setValue] = useState<string>('');
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!value.length) {
+      return;
+    }
+    if (commentId) {
+      updateCommentReply({ commentId, userId, questionId, text: value });
+    } else {
+      addComment({ text: value, userId, questionId });
+    }
+    setValue('');
+  };
   return (
-    <form className="flex w-full flex-col gap-2">
+    <form className="flex w-full flex-col gap-2" onSubmit={handleSubmit}>
       <label title="댓글" htmlFor="comment-textarea" className="text-xs">
         댓글
       </label>
