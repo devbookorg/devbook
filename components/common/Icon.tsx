@@ -21,6 +21,7 @@ import {
   Search,
   Alert,
   Spinner,
+  CornerDownRight,
 } from '@/assets/icons';
 import Button, { ButtonPropertyType } from './Button';
 import { ButtonStyle } from '@/types/buttons';
@@ -52,6 +53,7 @@ const iconComponents: IconComponents = {
   search: Search,
   alert: Alert,
   spinner: Spinner,
+  cornerDownRight: CornerDownRight,
 };
 
 type IconName =
@@ -76,7 +78,8 @@ type IconName =
   | 'xCircle'
   | 'search'
   | 'alert'
-  | 'spinner';
+  | 'spinner'
+  | 'cornerDownRight';
 
 export default function Icon({ name, className }: { name: IconName; className?: string }) {
   const IconComponent = iconComponents[name];
