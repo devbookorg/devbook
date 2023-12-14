@@ -9,16 +9,32 @@ interface Props {
 }
 
 const CommentEmojis = (props: Props & IComment['emojis']) => {
-  const { handleUpdateComments } = props;
+  const { handleUpdateComments, ...rest } = props;
   const { isOff, handleToggle } = useToggle();
+  const checkEmojis = [...Object.values(rest)].flat()?.length;
   return (
     <div className="relative text-right">
       <Button
         btnStyle="sm-line-deepGreen"
         handleClick={() => handleToggle()}
-        styles={isOff ? 'translate-x-0' : 'translate-x-full'}
+        styles={`bg-white flex gap-1 ${checkEmojis ? 'rounded-full' : ''} ${
+          isOff ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
-        {emojis.thumbsUp}
+        {checkEmojis ? (
+          <>
+            {Object.keys(rest)
+              .filter((e) => rest[e].length)
+              .map((emoji) => (
+                <div key={emoji} className="flex items-center gap-1">
+                  <span>{emojis[emoji]}</span>
+                  <span>{props[emoji].length}</span>
+                </div>
+              ))}
+          </>
+        ) : (
+          <>{emojis.thumbsUp}</>
+        )}
       </Button>
       <div
         className={`absolute bottom-0 right-0 flex ${
