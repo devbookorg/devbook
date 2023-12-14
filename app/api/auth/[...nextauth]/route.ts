@@ -1,6 +1,7 @@
 import { addUser } from '@/firebase/users';
 import NextAuth, { DefaultUser } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import KakaoProvider from 'next-auth/providers/kakao';
 
 export const authOptions = {
   providers: [
@@ -8,17 +9,29 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
     async signIn({ user }: { user: DefaultUser }) {
-      if (user.name && user.email) {
+      if (user.id && user.name) {
         const customUser = {
+          userId: user.id,
           name: user.name,
-          email: user.email,
         };
         addUser(customUser);
       }
       return true;
+    },
+    async session({ session, token }) {
+      const user = {
+        id: token.sub,
+        name: session.user.name,
+      };
+      session.user = user;
+      return session;
     },
   },
 };

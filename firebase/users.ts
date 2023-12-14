@@ -21,15 +21,16 @@ const usersCollection = collection(db, 'users');
 const questionsCollection = collection(db, 'questions');
 
 // 1. 유저를 db에 추가하는 함수
-export const addUser = async (userData: { name: string; email: string }) => {
+export const addUser = async (userData: { userId: string; name: string }) => {
   const id = uuidv4();
   try {
-    const userQuery = await getDocs(query(usersCollection, where('email', '==', userData.email)));
+    const userQuery = await getDocs(query(usersCollection, where('userId', '==', userData.userId)));
 
     if (userQuery.empty) {
       addDoc(usersCollection, {
         ...userData,
         id,
+        userId: userData.userId,
         likeQuestions: [],
         notificationMessages: [],
       });
@@ -42,12 +43,9 @@ export const addUser = async (userData: { name: string; email: string }) => {
 
 // 2. 유저정보를 불러오는 함수
 // export const getUser = async (userData: { id: string; email: string }): Promise<IUser | null> => {
-export const getUser = async (userData: { email: string }): Promise<IUser | null> => {
+export const getUser = async (userData: { id: string }): Promise<IUser | null> => {
   try {
-    const userQuery = await getDocs(
-      // query(usersCollection, where('id', '==', userData.id), where('email', '==', userData.email))
-      query(usersCollection, where('email', '==', userData.email))
-    );
+    const userQuery = await getDocs(query(usersCollection, where('userId', '==', userData.id)));
 
     if (userQuery.empty) {
       return null;
