@@ -23,6 +23,7 @@ const Comment = (props: Props & IComment) => {
     id,
     questionId,
     reply,
+    userId,
     handleUpdateComments,
     handleDeleteComments,
   } = props;
@@ -34,12 +35,14 @@ const Comment = (props: Props & IComment) => {
           <h3 className="text-deepGreen">{`#${idx}`}</h3>
           <div className="flex">
             <span className="text-gray">{formatUnixTime(dataCreated.seconds)}</span>
-            <ButtonIcon
-              iconName="close"
-              svgStyles="w-4 h-4 stroke-gray"
-              buttonStyles="p-0 pl-2"
-              handleClick={() => handleDeleteComments(id)}
-            />
+            {userId === user && (
+              <ButtonIcon
+                iconName="close"
+                svgStyles="w-4 h-4 stroke-gray"
+                buttonStyles="p-0 pl-2"
+                handleClick={() => handleDeleteComments(id)}
+              />
+            )}
           </div>
         </section>
         <section className="mb-2 overflow-hidden">
