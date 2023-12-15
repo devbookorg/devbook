@@ -35,6 +35,7 @@ const Page = () => {
     message: '',
     approved: 0,
     dataCreated: Timestamp.now(),
+    tags: [],
   });
   const [comments, setComments] = useState<IComment[]>([]);
 
@@ -79,7 +80,7 @@ const Page = () => {
           </ul>
         </section>
         <section className="flex flex-col gap-3 px-1">
-          <h1 className="items-end text-lg">
+          <h1 className="items-end break-all text-lg">
             <span className="font-bold text-deepGreen">Q. </span>
             {data.title}
           </h1>
@@ -88,21 +89,30 @@ const Page = () => {
             <>
               <hr className="mt-2 w-full border-lightGray" />
               <h1 className="items-end text-lg">
-                <span className="font-bold text-deepGreen">사유. </span>
+                <span className="font-bold text-red">사유. </span>
               </h1>
               <p className="break-all px-2 text-gray">{data.message}</p>
             </>
           )}
         </section>
       </div>
-      <div className="flex flex-col gap-6 py-4">
+      <div className="flex flex-col gap-3 py-4">
+        {data.tags?.length && (
+          <ul className="flex flex-wrap justify-end break-all px-1 text-xs text-deepGreen ">
+            {data.tags?.map((tag) => (
+              <li key={tag}>
+                <span>{`# ${tag}`}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         <section className="flex items-center justify-between px-1">
           <span className="text-right text-xs text-gray">
             {formatUnixTime(data.dataCreated.seconds)}
           </span>
           {data.approved === 1 && <LikeQuestionPart {...data} />}
         </section>
-        <hr className="border-lightGray" />
+        <hr className="my-3 border-lightGray" />
         <CommentsList comments={comments} userId={userId} questionId={data.id} />
         {userId === data.userId && data.approved !== 1 && (
           <section className="flex gap-4">
