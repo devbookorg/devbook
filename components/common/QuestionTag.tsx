@@ -21,11 +21,12 @@ const TagItem = (props: TagItemProps) => {
 
 interface QuestionTagProps {
   handleChange: (tags: string[]) => void;
+  tags?: string[];
 }
 
 const QuestionTag = (props: QuestionTagProps) => {
   const { handleChange } = props;
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(props.tags || []);
   const [value, setValue] = useState<string>('');
   const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter' && !e.nativeEvent.isComposing) {
@@ -44,7 +45,7 @@ const QuestionTag = (props: QuestionTagProps) => {
   };
 
   return (
-    <div className="flex gap-2 overflow-x-scroll rounded-lg border border-gray px-1 py-2">
+    <div className="webkit-scroll-touch flex gap-2 overflow-x-scroll rounded-lg border border-gray px-1 py-2">
       <ul className="flex items-center ">
         {tags.map((tag) => (
           <TagItem key={tag} tag={tag} onDelete={handleDeleteTag} />

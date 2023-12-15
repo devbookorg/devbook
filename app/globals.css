@@ -34,3 +34,9 @@
     @apply rounded-lg p-3 text-sm;
   }
 }
+
+@layer utilities {
+  .webkit-scroll-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+}

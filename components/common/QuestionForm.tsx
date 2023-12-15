@@ -145,7 +145,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           required
         />
       </Labeled>
-      <QuestionTag handleChange={(tags) => changeValue('tags', tags)} />
+      <QuestionTag handleChange={(tags) => changeValue('tags', tags)} tags={questionValue.tags} />
       <Button type="submit" btnStyle="lg-fill-deepGreen">
         작성
       </Button>

@@ -1,11 +1,10 @@
 import IQuestion from '@/types/questions';
-import React, { useCallback } from 'react';
-import Button from '../common/Button';
 import Icon, { ButtonIcon } from '../common/Icon';
 import { useModal } from '@/hooks/useModal';
 import { deleteQuestion } from '@/firebase/questions';
 import ConfirmModal from '../common/ConfirmModal';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useCreateQuery } from '@/hooks/useCreateQuery';
 
 interface Props {
   user: string;
@@ -13,21 +12,10 @@ interface Props {
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { id, user, userId, title, answer, message, category, approved, loadWroteQuestions } =
-    props;
+  const { id, user, userId, approved, loadWroteQuestions } = props;
   const { openModal } = useModal();
-  const searchParams = useSearchParams();
   const router = useRouter();
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams]
-  );
+  const { createQueryString } = useCreateQuery();
 
   return (
     <section className="flex translate-y-[6px] flex-col items-end justify-between">
@@ -41,20 +29,13 @@ const QuestionItem = (props: Props & IQuestion) => {
         )}
 
         {approved !== 1 && userId === user && (
-          <>
-            <ButtonIcon
-              iconName="edit"
-              svgStyles="h-5 w-5  fill-deepGreen"
-              handleClick={() => {
-                router.push(
-                  `/write?${createQueryString(
-                    'writeProps',
-                    JSON.stringify({ questionId: id, category, title, answer })
-                  )}`
-                );
-              }}
-            />
-          </>
+          <ButtonIcon
+            iconName="edit"
+            svgStyles="h-5 w-5 fill-deepGreen"
+            handleClick={() => {
+              router.push(`/write?${createQueryString('question', id)}`);
+            }}
+          />
         )}
         <ButtonIcon
           iconName="trash"

@@ -9,6 +9,7 @@ import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 import Spinner from '@/components/common/Spinner';
 import { getComments } from '@/firebase/comments';
 import { deleteQuestion, getQuestion } from '@/firebase/questions';
+import { useCreateQuery } from '@/hooks/useCreateQuery';
 import { useModal } from '@/hooks/useModal';
 import { userState } from '@/recoil/user';
 import IComment from '@/types/comments';
@@ -24,6 +25,7 @@ const Page = () => {
   const { openModal } = useModal();
   const params = useParams();
   const router = useRouter();
+  const { createQueryString } = useCreateQuery();
   const [data, setData] = useState<IQuestion>({
     id: '',
     category: [],
@@ -98,7 +100,7 @@ const Page = () => {
       </div>
       <div className="flex flex-col gap-3 py-4">
         {data.tags?.length && (
-          <ul className="flex flex-wrap justify-end break-all px-1 text-xs text-deepGreen ">
+          <ul className="flex flex-wrap justify-end gap-2 break-all px-1 text-xs text-deepGreen ">
             {data.tags?.map((tag) => (
               <li key={tag}>
                 <span>{`# ${tag}`}</span>
@@ -140,7 +142,9 @@ const Page = () => {
             <Button
               btnStyle="lg-line-deepGreen"
               styles="flex-1"
-              handleClick={() => router.push('/write')}
+              handleClick={() => {
+                router.push(`/write?${createQueryString('question', data.id)}`);
+              }}
             >
               수정
             </Button>
