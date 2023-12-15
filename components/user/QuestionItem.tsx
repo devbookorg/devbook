@@ -13,7 +13,7 @@ interface Props {
 }
 
 const QuestionItem = (props: Props & IQuestion) => {
-  const { id, user, userId, title, answer, message, category, approved, loadWroteQuestions } =
+  const { id, user, userId, title, answer, message, category, approved, loadWroteQuestions, tags } =
     props;
   const { openModal } = useModal();
   const searchParams = useSearchParams();
@@ -49,7 +49,7 @@ const QuestionItem = (props: Props & IQuestion) => {
                 router.push(
                   `/write?${createQueryString(
                     'writeProps',
-                    JSON.stringify({ questionId: id, category, title, answer })
+                    JSON.stringify({ questionId: id, category, title, answer, tags: tags || [] })
                   )}`
                 );
               }}

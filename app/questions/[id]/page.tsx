@@ -98,7 +98,7 @@ const Page = () => {
       </div>
       <div className="flex flex-col gap-3 py-4">
         {data.tags?.length && (
-          <ul className="flex flex-wrap justify-end break-all px-1 text-xs text-deepGreen ">
+          <ul className="flex flex-wrap justify-end gap-2 break-all px-1 text-xs text-deepGreen ">
             {data.tags?.map((tag) => (
               <li key={tag}>
                 <span>{`# ${tag}`}</span>

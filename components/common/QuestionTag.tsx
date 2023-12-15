@@ -21,11 +21,12 @@ const TagItem = (props: TagItemProps) => {
 
 interface QuestionTagProps {
   handleChange: (tags: string[]) => void;
+  tags?: string[];
 }
 
 const QuestionTag = (props: QuestionTagProps) => {
   const { handleChange } = props;
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(props.tags || []);
   const [value, setValue] = useState<string>('');
   const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter' && !e.nativeEvent.isComposing) {
