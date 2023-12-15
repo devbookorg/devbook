@@ -140,7 +140,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           onChange={(e) => {
             changeValue('answer', e.target.value);
           }}
-          className="input-primary min-h-[24rem] resize-none"
+          className="input-primary min-h-[21rem] resize-none"
           placeholder="답변을 입력해주세요"
           required
         />
