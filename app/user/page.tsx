@@ -63,7 +63,7 @@ const UserPage = () => {
 
   return (
     <article className="flex flex-col ">
-      <section className="flex items-center gap-2 pl-2 ">
+      <section className="flex items-center gap-2 p-2 pt-1 ">
         <b className="text-lg">{name}</b>님
       </section>
       <div className="flex">
