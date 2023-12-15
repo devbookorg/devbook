@@ -44,7 +44,7 @@ const QuestionTag = (props: QuestionTagProps) => {
   };
 
   return (
-    <div className="flex gap-2 overflow-x-scroll rounded-lg border border-gray px-1 py-2">
+    <div className="webkit-scroll-touch flex gap-2 overflow-x-scroll rounded-lg border border-gray px-1 py-2">
       <ul className="flex items-center ">
         {tags.map((tag) => (
           <TagItem key={tag} tag={tag} onDelete={handleDeleteTag} />
