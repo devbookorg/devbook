@@ -11,11 +11,18 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import QuestionTag from './QuestionTag';
 
-const initialQuestionValue = { category: [], title: '', answer: '' };
+const initialQuestionValue = { category: [], title: '', answer: '', tags: [] };
 
 interface QuestionsFormProps {
-  question?: { questionId: string; category: string[]; title: string; answer: string };
+  question?: {
+    questionId: string;
+    category: string[];
+    title: string;
+    answer: string;
+    tags?: string[];
+  };
   handleClick?: () => void;
 }
 
@@ -33,6 +40,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           category: questionValue.category,
           title: questionValue.title,
           answer: questionValue.answer,
+          tags: questionValue.tags,
         };
         updateQuestion(question.questionId, body);
         router.push(`questions/${question.questionId}`);
@@ -44,6 +52,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           title: questionValue.title,
           answer: questionValue.answer,
           userId: user.id,
+          tags: questionValue.tags,
         };
         createQuestion(body).then(() => {
           setQuestionValue(initialQuestionValue);
@@ -54,7 +63,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
     }
   };
 
-  const changeValue = (key: 'category' | 'title' | 'answer', value: string | string[]) => {
+  const changeValue = (key: 'category' | 'title' | 'answer' | 'tags', value: string | string[]) => {
     setQuestionValue({ ...questionValue, [key]: value });
   };
   const dragItem = useRef(null);
@@ -136,6 +145,7 @@ export default function QuestionForm({ question, handleClick }: QuestionsFormPro
           required
         />
       </Labeled>
+      <QuestionTag handleChange={(tags) => changeValue('tags', tags)} />
       <Button type="submit" btnStyle="lg-fill-deepGreen">
         작성
       </Button>

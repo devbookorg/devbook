@@ -37,9 +37,10 @@ export const createQuestion = async (body: {
   answer: string;
   userId: string;
   id: string;
+  tags?: string[];
 }) => {
   try {
-    const { category, title, answer, userId, id } = body;
+    const { category, title, answer, userId, id, tags } = body;
 
     const question = {
       id,
@@ -52,6 +53,7 @@ export const createQuestion = async (body: {
       message: '',
       approved: 0,
       dataCreated: Timestamp.now(),
+      tags: tags || [],
     };
     addDoc(questionsCollection, question);
   } catch (error) {
@@ -63,7 +65,7 @@ export const createQuestion = async (body: {
 // 2. question의 title, answer를 수정하는 로직
 export const updateQuestion = async (
   questionId: string,
-  body: { category: string[]; title: string; answer: string }
+  body: { category: string[]; title: string; answer: string; tags?: string[] }
 ): Promise<IQuestion | null> => {
   try {
     const questionsQuery = await getDocs(query(questionsCollection, where('id', '==', questionId)));
@@ -75,6 +77,7 @@ export const updateQuestion = async (
       title: body.title,
       lowercaseTitle: body.title.toLowerCase(),
       answer: body.answer,
+      tags: body.tags || [],
     };
 
     await updateDoc(questionRef, updatedData);

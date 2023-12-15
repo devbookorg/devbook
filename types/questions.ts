@@ -11,6 +11,7 @@ export default interface IQuestion {
   message: string;
   approved: 0 | 1 | 2;
   dataCreated: Timestamp;
+  tags?: string[];
 }
 
 export type IQuestionCategory = 'JS' | 'TS' | 'HTML' | 'CSS' | 'REACT' | 'NEXT' | 'CS';

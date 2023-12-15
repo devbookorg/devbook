@@ -19,19 +19,28 @@ const TagItem = (props: TagItemProps) => {
   );
 };
 
-const QuestionTag = () => {
+interface QuestionTagProps {
+  handleChange: (tags: string[]) => void;
+}
+
+const QuestionTag = (props: QuestionTagProps) => {
+  const { handleChange } = props;
   const [tags, setTags] = useState<string[]>([]);
   const [value, setValue] = useState<string>('');
   const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
-      setTags((prev) => (!prev.includes(value) ? [...prev, value] : [...prev]));
+      const newTags = !tags.includes(value) ? [...tags, value] : [...tags];
+      setTags(newTags);
+      handleChange(newTags);
       setValue('');
     }
   };
 
   const handleDeleteTag = (tag: string) => {
-    setTags((prev) => prev.filter((t) => t !== tag));
+    const newTags = tags.filter((t) => t !== tag);
+    setTags(newTags);
+    handleChange(newTags);
   };
 
   return (
