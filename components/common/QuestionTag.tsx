@@ -11,11 +11,7 @@ const TagItem = (props: TagItemProps) => {
   const { tag, onDelete } = props;
   return (
     <li className="whitespace-nowrap text-gray">
-      <Button
-        btnStyle="sm-ghost"
-        handleClick={() => onDelete(tag)}
-        styles="flex items-center gap-1"
-      >
+      <Button btnStyle="sm-ghost" handleClick={() => onDelete(tag)} styles="flex gap-0.5">
         {`# ${tag}`}
         <Icon name="close" className="h-3 w-3 stroke-gray" />
       </Button>
@@ -51,8 +47,8 @@ const QuestionTag = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleTags}
-        placeholder="태그를 입력해주세요"
-        className=" py-2 text-sm outline-none disabled:cursor-not-allowed"
+        placeholder={tags.length >= 5 ? '' : '태그를 입력해주세요.'}
+        className="w-full py-2 text-sm outline-none disabled:cursor-not-allowed"
         disabled={tags.length >= 5}
       />
     </div>
