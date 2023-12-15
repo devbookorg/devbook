@@ -99,7 +99,7 @@ const Page = () => {
         </section>
       </div>
       <div className="flex flex-col gap-3 py-4">
-        {data.tags?.length && (
+        {!!data.tags?.length && (
           <ul className="flex flex-wrap justify-end gap-2 break-all px-1 text-xs text-deepGreen ">
             {data.tags?.map((tag) => (
               <li key={tag}>
@@ -115,7 +115,9 @@ const Page = () => {
           {data.approved === 1 && <LikeQuestionPart {...data} />}
         </section>
         <hr className="my-3 border-lightGray" />
-        <CommentsList comments={comments} userId={userId} questionId={data.id} />
+        {data.approved === 1 && (
+          <CommentsList comments={comments} userId={userId} questionId={data.id} />
+        )}
         {userId === data.userId && data.approved !== 1 && (
           <section className="flex gap-4">
             <Button
