@@ -10,9 +10,11 @@ const config: Config = {
   theme: {
     colors: {
       white: 'rgb(var(--default-bg))',
+      onlyWhite: '#FFFFFF',
       lightGray: '#D6D6D6',
       gray: '#878484',
       black: 'rgb(var(--default-text))',
+      onlyBlack: '#000000',
       green: '#A7D6B7',
       deepGreen: 'rgb(var(--primary-color))',
       red: '#E34646',
