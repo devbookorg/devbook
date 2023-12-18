@@ -5,11 +5,11 @@ import Button from '../common/Button';
 import IComment from '@/types/comments';
 
 interface Props {
-  handleUpdateComments: (emoji: string) => void;
+  onUpdateComments: (emoji: string) => void;
 }
 
 const CommentEmojis = (props: Props & IComment['emojis']) => {
-  const { handleUpdateComments, ...rest } = props;
+  const { onUpdateComments, ...rest } = props;
   const { isOff, handleToggle } = useToggle();
   const checkEmojis = [...Object.values(rest)].flat()?.length;
   return (
@@ -47,7 +47,7 @@ const CommentEmojis = (props: Props & IComment['emojis']) => {
             key={emoji}
             styles="flex gap-2"
             handleClick={() => {
-              handleUpdateComments(emoji);
+              onUpdateComments(emoji);
               handleToggle(true);
             }}
           >

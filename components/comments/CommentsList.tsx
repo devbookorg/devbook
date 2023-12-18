@@ -1,32 +1,34 @@
 import IComment from '@/types/comments';
-import Comment from './CommentItem';
+
 import CommentForm from './CommentForm';
-import { useComments } from '@/hooks/useComments';
 import React from 'react';
+import CommentItem from './CommentItem';
 
 interface Props {
   comments: IComment[];
   userId: string;
-  questionId: string;
-  commentId?: string;
+  handleAddComments: ({ text, rootComment }) => void;
+  handleDeleteComments: ({ commentId, rootComment }) => void;
+  handleUpdateComments: ({ commentId, emoji, rootComment }) => void;
+  rootComment?: string;
 }
 
-const Comments = (props: Props) => {
-  const { comments, handleAddComments, handleUpdateComments, handleDeleteComments } = useComments({
-    ...props,
-    prevComments: props.comments,
-  });
+const CommentsList = (props: Props) => {
+  const { comments, handleAddComments, handleDeleteComments, handleUpdateComments, rootComment } =
+    props;
+
+  console.log(comments);
 
   return (
     <section
       className={`flex flex-col gap-4 py-4 ${
-        props.commentId ? 'rounded-md border border-deepGreen/40 bg-deepGreen/10 p-2' : 'bg-white'
+        rootComment ? 'rounded-md border border-deepGreen/40 bg-deepGreen/10 p-2' : 'bg-white'
       }`}
     >
-      <CommentForm handleAddComments={handleAddComments} />
+      <CommentForm handleAddComments={handleAddComments} rootComment={rootComment} />
       {!comments || !comments.length ? (
         <>
-          {!props.commentId && (
+          {!rootComment && (
             <div className="py-3 text-center text-sm text-gray">등록된 댓글이 없습니다. </div>
           )}
         </>
@@ -35,16 +37,16 @@ const Comments = (props: Props) => {
           {comments.map((comment, idx) => (
             <React.Fragment key={comment.id}>
               <li key={comment.id}>
-                <Comment
+                <CommentItem
                   {...comment}
                   idx={idx}
                   user={props.userId}
+                  handleAddComments={handleAddComments}
                   handleUpdateComments={({ commentId, emoji }) =>
-                    handleUpdateComments({ commentId, emoji, rootComment: props.commentId })
+                    handleUpdateComments({ commentId, emoji, rootComment })
                   }
-                  handleDeleteComments={(commentId) => {
-                    handleDeleteComments({ commentId, rootComment: props.commentId });
-                  }}
+                  handleDeleteComments={handleDeleteComments}
+                  rootComment={rootComment}
                 />
               </li>
               {comments.length - 1 !== idx && <hr className="border-lightGray" />}
@@ -56,4 +58,4 @@ const Comments = (props: Props) => {
   );
 };
 
-export default Comments;
+export default CommentsList;

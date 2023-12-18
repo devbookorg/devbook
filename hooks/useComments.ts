@@ -1,6 +1,7 @@
 import {
   addComment,
   deleteComment,
+  getComments,
   updateCommentEmojis,
   updateCommentReply,
 } from '@/firebase/comments';
@@ -21,38 +22,45 @@ const makeNewComment = (data: { text: string; userId: string; questionId: string
   };
 };
 
-export const useComments = ({
-  prevComments,
-  userId,
-  questionId,
-  commentId,
-}: {
-  prevComments: IComment[];
-  userId: string;
-  questionId: string;
-  commentId?: string;
-}) => {
-  const [comments, setComments] = useState<IComment[]>(prevComments || []);
+export const useComments = ({ userId, questionId }: { userId: string; questionId: string }) => {
+  const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
-    setComments(prevComments);
-  }, [prevComments?.length]);
+    getComments(questionId).then((res) => setComments(res));
+  }, [questionId]);
 
-  const handleAddComments = (text: string) => {
+  const handleAddComments = ({ text, rootComment }: { text: string; rootComment: string }) => {
     const newComment = makeNewComment({ text, userId, questionId });
-    const updatedComment = commentId
-      ? { ...newComment, rootComment: commentId }
+    // console.log(rootComment);
+    // console.log(newComment.id);
+    console.log({ ...newComment, rootComment }, '안될때 11');
+    console.log({ ...newComment, reply: [], rootComment: null }, '될때 222 ');
+    const updatedComment = rootComment
+      ? { ...newComment, rootComment }
       : { ...newComment, reply: [], rootComment: null };
-    if (commentId) {
+
+    console.log(rootComment);
+    if (rootComment) {
       updateCommentReply({
-        rootComment: commentId,
+        rootComment,
         commentId: updatedComment.id,
       });
       addComment({ newComment: updatedComment, user: userId });
+      setComments((prev: IComment[]) =>
+        prev.map((cmt: IComment) => {
+          if (cmt.id === rootComment) {
+            return { ...cmt, reply: [...cmt.reply, updatedComment] };
+          } else {
+            return { ...cmt };
+          }
+        })
+      );
+      console.log(comments);
     } else {
+      console.log({ newComment: updatedComment, user: userId }, '<<<<');
       addComment({ newComment: updatedComment, user: userId });
+      setComments((prev) => [...prev, updatedComment]);
     }
-    setComments((prev) => [...prev, updatedComment]);
   };
 
   const handleUpdateComments = ({
@@ -85,9 +93,50 @@ export const useComments = ({
     commentId: string;
     rootComment?: string;
   }) => {
-    deleteComment(commentId);
+    console.log(rootComment);
+    deleteComment({ commentId });
     updateCommentReply({ rootComment, commentId });
-    setComments((prev) => prev.filter((e) => e.id !== commentId));
+
+    const a = [1, 2, 3, 4, 5];
+
+    const b = a.filter((e) => e === 2);
+    console.log(comments, 'comments');
+    console.log(
+      comments.filter((comment) => {
+        return comment.id !== commentId;
+      })
+    );
+    // console.log(comments);
+    // console.log(comments);
+    // console.log(comments);
+
+    // const result = comments.filter((e) => {
+    //   if (rootComment) {
+
+    //   } else {
+    //     return e.id !== commentId;
+    //   }
+    // });
+    // console.log(result, 'result');
+    // return result;
+
+    // setComments(result);
+
+    // setComments((prev) => {
+    //   const result = prev.filter((e) => {
+    //     if (rootComment) {
+    //       // return e.reply.filter((d) => console.log(d.id, 'd.id'));
+    //       // return e.reply.filter((d) => d.id !== commentId);
+    //       return e.reply[0];
+    //     } else {
+    //       return e.id !== commentId;
+    //     }
+    //   }
+
+    //   );
+    //   console.log(result, 'result');
+    //   return result;
+    // });
   };
 
   return { comments, handleAddComments, handleUpdateComments, handleDeleteComments };

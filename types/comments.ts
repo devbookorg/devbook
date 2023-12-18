@@ -5,7 +5,7 @@ export default interface IComment {
   text: string;
   questionId: string;
   userId: string;
-  reply?: IComment['id'][] | IComment[];
+  reply?: IComment[];
   emojis: {
     thumbsUp: string[];
     thumbsDown: string[];

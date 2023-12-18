@@ -1,18 +1,17 @@
 'use client';
 
-import CommentsList from '@/components/comments/Comments';
+import CommentsList from '@/components/comments/CommentsList';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import Icon from '@/components/common/Icon';
 import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 import Spinner from '@/components/common/Spinner';
-import { getComments } from '@/firebase/comments';
 import { deleteQuestion, getQuestion } from '@/firebase/questions';
+import { useComments } from '@/hooks/useComments';
 import { useCreateQuery } from '@/hooks/useCreateQuery';
 import { useModal } from '@/hooks/useModal';
 import { userState } from '@/recoil/user';
-import IComment from '@/types/comments';
 import IQuestion from '@/types/questions';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { Timestamp } from 'firebase/firestore';
@@ -39,14 +38,15 @@ const Page = () => {
     dataCreated: Timestamp.now(),
     tags: [],
   });
-  const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
     getQuestion(params.id as string).then((res) => setData(res));
-    getComments(params.id as string).then((res) => {
-      setComments(res);
-    });
   }, [params.id]);
+
+  const { comments, handleAddComments, handleDeleteComments, handleUpdateComments } = useComments({
+    questionId: params.id as string,
+    userId,
+  });
 
   if (data.id === '') return <Spinner />;
 
@@ -116,7 +116,13 @@ const Page = () => {
         </section>
         <hr className="my-3 border-lightGray" />
         {data.approved === 1 && (
-          <CommentsList comments={comments} userId={userId} questionId={data.id} />
+          <CommentsList
+            comments={comments}
+            userId={userId}
+            handleAddComments={handleAddComments}
+            handleUpdateComments={handleUpdateComments}
+            handleDeleteComments={handleDeleteComments}
+          />
         )}
         {userId === data.userId && data.approved !== 1 && (
           <section className="flex gap-4">
