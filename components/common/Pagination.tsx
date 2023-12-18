@@ -12,6 +12,7 @@ interface Props {
 
 const Pagination = (props: Props) => {
   const { currentPage, startPage, endPage, totalPages, handleChangePage } = props;
+
   const range = [];
   for (let i = startPage; i <= endPage; i++) {
     range.push(i);
