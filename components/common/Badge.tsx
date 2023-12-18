@@ -13,11 +13,11 @@ const Badge = (props: Props) => {
     HTML: 'bg-orange',
     CSS: 'bg-blue',
     REACT: 'bg-sky',
-    NEXT: 'bg-black',
+    NEXT: 'bg-onlyBlack',
     CS: 'bg-deepGreen',
   };
 
-  const textColor = value === 'JS' ? 'text-black' : 'text-white';
+  const textColor = value === 'JS' ? 'text-black' : 'text-onlyWhite';
 
   if (size === 'lg') {
     return (
