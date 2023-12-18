@@ -12,8 +12,11 @@ import IQuestion, { IQuestionCategory, getQuestionType } from '@/types/questions
 import { useEffect, useState } from 'react';
 import { ButtonIcon } from '@/components/common/Icon';
 import Spinner from '@/components/common/Spinner';
+import { useRecoilState } from 'recoil';
+import { pageState } from '@/recoil/page';
 
 export default function Home() {
+  const [pageNumber, setPageNumber] = useRecoilState(pageState);
   const [loadingSuccess, setLoadingSuccess] = useState<boolean>(false);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
@@ -21,7 +24,7 @@ export default function Home() {
   const [questionsCategory, setQuestionsCategory] = useState('카테고리');
   const [questionsFilter, setQuestionsFilter] = useState<getQuestionType>({
     approved: approvedQuestions,
-    page: 1,
+    page: pageNumber,
   });
 
   const pagination = usePagination(numberOfQuestions);
@@ -30,6 +33,10 @@ export default function Home() {
     loadQuestions();
     getQuestionsCount(questionsFilter).then((res) => setNumberOfQuestions(res));
   }, [questionsFilter]);
+
+  useEffect(() => {
+    setQuestionsFilter((prev) => ({ ...prev, page: pageNumber }));
+  }, [pageNumber]);
 
   const loadQuestions = () => {
     getFilteredQuestions(questionsFilter).then((res) => {
@@ -133,7 +140,8 @@ export default function Home() {
               <Pagination
                 {...pagination}
                 handleChangePage={(page) => {
-                  setQuestionsFilter((prev) => ({ ...prev, page }));
+                  // setQuestionsFilter((prev) => ({ ...prev, page: pageNumber }));
+                  setPageNumber(page);
                   pagination.handleChangePage(page);
                 }}
               />

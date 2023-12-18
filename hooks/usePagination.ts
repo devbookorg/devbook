@@ -1,7 +1,9 @@
+import { pageState } from '@/recoil/page';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 export const usePagination = (total: number) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [startPage, setStartPage] = useState<number>(1);
   const [endPage, setEndPage] = useState<number>(1);
   const pageRange = 5;
