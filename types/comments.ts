@@ -5,7 +5,7 @@ export default interface IComment {
   text: string;
   questionId: string;
   userId: string;
-  reply?: IComment[];
+  reply?: IComment['id'][] | IComment[];
   emojis: {
     thumbsUp: string[];
     thumbsDown: string[];
@@ -15,4 +15,5 @@ export default interface IComment {
     eyes: string[];
   };
   dataCreated: Timestamp;
+  rootComment?: IComment['id'];
 }
