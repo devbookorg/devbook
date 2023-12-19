@@ -18,7 +18,6 @@ const commentsCollection = collection(db, 'comments');
 
 // 1. add comment
 export const addComment = async (data: { user: string; newComment: IComment }) => {
-  console.log(data, '1. add comment');
   try {
     const userQuery = await getDocs(query(usersCollection, where('id', '==', data.user)));
 
@@ -137,7 +136,7 @@ export const updateCommentReply = async ({
 };
 
 // 5. delete comment
-export const deleteComment = async ({ commentId }) => {
+export const deleteComment = async (commentId: string) => {
   try {
     const commentQuery = await getDocs(query(commentsCollection, where('id', '==', commentId)));
     if (!commentQuery.empty) {

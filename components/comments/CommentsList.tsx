@@ -17,8 +17,6 @@ const CommentsList = (props: Props) => {
   const { comments, handleAddComments, handleDeleteComments, handleUpdateComments, rootComment } =
     props;
 
-  console.log(comments);
-
   return (
     <section
       className={`flex flex-col gap-4 py-4 ${
@@ -42,9 +40,7 @@ const CommentsList = (props: Props) => {
                   idx={idx}
                   user={props.userId}
                   handleAddComments={handleAddComments}
-                  handleUpdateComments={({ commentId, emoji }) =>
-                    handleUpdateComments({ commentId, emoji, rootComment })
-                  }
+                  handleUpdateComments={handleUpdateComments}
                   handleDeleteComments={handleDeleteComments}
                   rootComment={rootComment}
                 />

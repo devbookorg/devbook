@@ -10,7 +10,7 @@ interface Props {
   idx: number;
   user: string;
   handleAddComments: ({ text, rootComment }: { text: string; rootComment?: string }) => void;
-  handleUpdateComments: ({ commentId, emoji }) => void;
+  handleUpdateComments: ({ commentId, emoji, rootComment }) => void;
   handleDeleteComments: ({ commentId, rootComment }) => void;
   rootComment?: string;
 }
@@ -64,7 +64,9 @@ const CommentItem = (props: Props & IComment) => {
           )}
           <CommentEmojis
             {...emojis}
-            onUpdateComments={(emoji: string) => handleUpdateComments({ commentId: id, emoji })}
+            onUpdateComments={(emoji: string) =>
+              handleUpdateComments({ commentId: id, emoji, rootComment })
+            }
           />
         </div>
       </section>
