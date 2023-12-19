@@ -55,7 +55,7 @@ const CommentItem = (props: Props & IComment) => {
             <ButtonIcon
               iconName="cornerDownRight"
               svgStyles="w-3 h-3 stroke-gray"
-              text={`답글 ${reply?.length}`}
+              text={`답글 ${reply?.length}개`}
               buttonStyles="flex items-center gap-1 text-gray"
               handleClick={() => handleToggle()}
             />
