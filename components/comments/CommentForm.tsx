@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import Button from '../common/Button';
 
 interface Props {
-  handleAddComments: (text: string) => void;
+  handleAddComments: ({ text, rootComment }: { text: string; rootComment?: string }) => void;
+  rootComment?: string;
 }
 
 const CommentForm = (props: Props) => {
-  const { handleAddComments } = props;
+  const { handleAddComments, rootComment } = props;
   const [value, setValue] = useState<string>('');
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!value.length) {
       return;
     }
-    handleAddComments(value);
+    handleAddComments({ text: value, rootComment });
     setValue('');
   };
   return (

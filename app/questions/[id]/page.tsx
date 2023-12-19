@@ -1,18 +1,17 @@
 'use client';
 
-import CommentsList from '@/components/comments/Comments';
+import CommentsList from '@/components/comments/CommentsList';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import Icon from '@/components/common/Icon';
 import LikeQuestionPart from '@/components/common/LikeQuestionPart';
 import Spinner from '@/components/common/Spinner';
-import { getComments } from '@/firebase/comments';
 import { deleteQuestion, getQuestion } from '@/firebase/questions';
+import { useComments } from '@/hooks/useComments';
 import { useCreateQuery } from '@/hooks/useCreateQuery';
 import { useModal } from '@/hooks/useModal';
 import { userState } from '@/recoil/user';
-import IComment from '@/types/comments';
 import IQuestion from '@/types/questions';
 import formatUnixTime from '@/utils/functions/formatUnixTime';
 import { Timestamp } from 'firebase/firestore';
@@ -39,14 +38,17 @@ const Page = () => {
     dataCreated: Timestamp.now(),
     tags: [],
   });
-  const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
     getQuestion(params.id as string).then((res) => setData(res));
-    getComments(params.id as string).then((res) => {
-      setComments(res);
-    });
   }, [params.id]);
+
+  const { comments, handleAddComments, handleDeleteComments, handleUpdateComments } = useComments({
+    questionId: params.id as string,
+    userId,
+    questionWriter: data.userId,
+    questionTitle: data.title,
+  });
 
   if (data.id === '') return <Spinner />;
 
@@ -90,16 +92,16 @@ const Page = () => {
           {data.approved === 2 && (
             <>
               <hr className="mt-2 w-full border-lightGray" />
-              <h1 className="items-end text-lg">
-                <span className="font-bold text-red">사유. </span>
+              <h1 className="items-end">
+                <span className="font-bold text-red">사유 : </span>
               </h1>
-              <p className="break-all px-2 text-gray">{data.message}</p>
+              <p className="break-all px-2 text-sm text-gray">{data.message}</p>
             </>
           )}
         </section>
       </div>
       <div className="flex flex-col gap-3 py-4">
-        {data.tags?.length && (
+        {!!data.tags?.length && (
           <ul className="flex flex-wrap justify-end gap-2 break-all px-1 text-xs text-deepGreen ">
             {data.tags?.map((tag) => (
               <li key={tag}>
@@ -115,7 +117,15 @@ const Page = () => {
           {data.approved === 1 && <LikeQuestionPart {...data} />}
         </section>
         <hr className="my-3 border-lightGray" />
-        <CommentsList comments={comments} userId={userId} questionId={data.id} />
+        {data.approved === 1 && (
+          <CommentsList
+            comments={comments}
+            userId={userId}
+            handleAddComments={handleAddComments}
+            handleUpdateComments={handleUpdateComments}
+            handleDeleteComments={handleDeleteComments}
+          />
+        )}
         {userId === data.userId && data.approved !== 1 && (
           <section className="flex gap-4">
             <Button

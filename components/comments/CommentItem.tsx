@@ -4,16 +4,18 @@ import React from 'react';
 import CommentEmojis from './CommentEmojis';
 import { useToggle } from '@/hooks/useToggle';
 import { ButtonIcon } from '../common/Icon';
-import Comments from './Comments';
+import CommentsList from './CommentsList';
 
 interface Props {
   idx: number;
   user: string;
-  handleUpdateComments: ({ commentId, emoji }: { commentId: string; emoji: string }) => void;
-  handleDeleteComments: (commentId: string) => void;
+  handleAddComments: ({ text, rootComment }: { text: string; rootComment?: string }) => void;
+  handleUpdateComments: ({ commentId, emoji, rootComment }) => void;
+  handleDeleteComments: ({ commentId, rootComment }) => void;
+  rootComment?: string;
 }
 
-const Comment = (props: Props & IComment) => {
+const CommentItem = (props: Props & IComment) => {
   const {
     text,
     idx,
@@ -21,13 +23,15 @@ const Comment = (props: Props & IComment) => {
     emojis,
     user,
     id,
-    questionId,
     reply,
     userId,
     handleUpdateComments,
     handleDeleteComments,
+    handleAddComments,
+    rootComment,
   } = props;
   const { isOff: replyFormOff, handleToggle } = useToggle();
+
   return (
     <article className="flex flex-col gap-1">
       <section className="flex justify-between text-xs">
@@ -39,7 +43,7 @@ const Comment = (props: Props & IComment) => {
               iconName="close"
               svgStyles="w-4 h-4 stroke-gray"
               buttonStyles="p-0 pl-2"
-              handleClick={() => handleDeleteComments(id)}
+              handleClick={() => handleDeleteComments({ commentId: id, rootComment })}
             />
           )}
         </div>
@@ -60,18 +64,27 @@ const Comment = (props: Props & IComment) => {
           )}
           <CommentEmojis
             {...emojis}
-            handleUpdateComments={(emoji: string) => handleUpdateComments({ commentId: id, emoji })}
+            onUpdateComments={(emoji: string) =>
+              handleUpdateComments({ commentId: id, emoji, rootComment })
+            }
           />
         </div>
       </section>
 
       {!replyFormOff && (
         <section className="mb-2 pl-4">
-          <Comments comments={reply} userId={user} questionId={questionId} commentId={id} />
+          <CommentsList
+            comments={reply as IComment[]}
+            userId={userId}
+            rootComment={id}
+            handleAddComments={handleAddComments}
+            handleDeleteComments={handleDeleteComments}
+            handleUpdateComments={handleUpdateComments}
+          />
         </section>
       )}
     </article>
   );
 };
 
-export default Comment;
+export default CommentItem;

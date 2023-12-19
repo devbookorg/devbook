@@ -15,4 +15,5 @@ export default interface IComment {
     eyes: string[];
   };
   dataCreated: Timestamp;
+  rootComment?: IComment['id'];
 }

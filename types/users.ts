@@ -11,8 +11,10 @@ export default interface IUser {
 }
 
 export interface NotificationMessage {
-  approved: 1 | 2;
-  approvedDate?: Timestamp;
+  updatedDate?: Timestamp;
+  reason: 'comment' | 'approved';
+  approved?: 1 | 2;
+  questionId: string;
   questionTitle: string;
   rejectionMessage?: string;
 }
