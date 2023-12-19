@@ -16,16 +16,16 @@ export const metadata: Metadata = {
     description: '프론트엔드 기술면접 질문 아카이브',
     images: '/opengraph-image.png',
   },
-  icons: {
-    other: [
-      {
-        url: './favicons/icon-512x512.png',
-        media:
-          '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)',
-        rel: 'apple-touch-startup-image',
-      },
-    ],
-  },
+  icons: [
+    {
+      url: '/favicons/icon-512x512.png',
+      media: '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)',
+      rel: 'apple-touch-startup-image',
+    },
+    {
+      url: '/favicons/icon-192x192.png',
+    },
+  ],
 };
 
 export const viewport: Viewport = {
