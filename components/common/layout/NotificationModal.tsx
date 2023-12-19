@@ -11,7 +11,7 @@ interface Props {
 }
 
 const NotificationItem = (props: NotificationMessage & Props) => {
-  const { approved, approvedDate, questionTitle, rejectionMessage, closeModal } = props;
+  const { approved, updatedDate, questionTitle, closeModal } = props;
   const isApproved = approved === 1 ? '승인' : '거부';
   return (
     <>
@@ -34,7 +34,7 @@ const NotificationItem = (props: NotificationMessage & Props) => {
               <p className="px-1 text-xs text-gray">사유 : {rejectionMessage}</p>
             )} */}
             <span className="text-right text-xs text-gray">
-              {formatUnixTime(approvedDate.seconds)}
+              {formatUnixTime(updatedDate.seconds)}
             </span>
           </div>
         </Link>
@@ -66,7 +66,7 @@ const Notification = (props: Props) => {
               .reverse()
               .map((e, i) => (
                 <NotificationItem
-                  key={e.approvedDate.toString() + i}
+                  key={e.updatedDate.toString() + i}
                   {...e}
                   closeModal={closeModal}
                 />

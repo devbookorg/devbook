@@ -15,6 +15,7 @@ import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { userState } from '@/recoil/user';
 import IQuestion from '@/types/questions';
+import { NotificationMessage } from '@/types/users';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -58,6 +59,8 @@ export default function AdminPage() {
         approved,
         questionTitle: question.title,
         rejectionMessage: message ?? '',
+        reason: 'approved' as NotificationMessage['reason'],
+        questionId: question.id,
       },
     };
     updateUserNotificationMessage(body);

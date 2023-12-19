@@ -135,11 +135,10 @@ export const updateUserNotificationMessage = async (body: {
 
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data() as IUser;
-      let updateNotificationMessages: NotificationMessage[];
 
-      updateNotificationMessages = [
+      const updateNotificationMessages: NotificationMessage[] = [
         ...userData.notificationMessages,
-        { ...notificationMessage, approvedDate: Timestamp.now() },
+        { ...notificationMessage, updatedDate: Timestamp.now() },
       ];
       await updateDoc(userRef, {
         notification: true,
@@ -147,6 +146,7 @@ export const updateUserNotificationMessage = async (body: {
       });
     }
   } catch (error) {
+    console.error(error.message);
     throw error;
   }
 };
