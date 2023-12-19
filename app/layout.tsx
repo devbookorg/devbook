@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   manifest: './manifest.json',
   title: 'DevBook',
   description: 'DevBook',
+  openGraph: {
+    title: 'DevBook',
+    description: '프론트엔드 기술면접 질문 아카이브',
+    images: './opengraph-image.png',
+  },
   icons: {
     other: [
       {
