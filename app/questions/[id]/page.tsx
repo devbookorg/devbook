@@ -92,10 +92,10 @@ const Page = () => {
           {data.approved === 2 && (
             <>
               <hr className="mt-2 w-full border-lightGray" />
-              <h1 className="items-end text-lg">
-                <span className="font-bold text-red">사유. </span>
+              <h1 className="items-end">
+                <span className="font-bold text-red">사유 : </span>
               </h1>
-              <p className="break-all px-2 text-gray">{data.message}</p>
+              <p className="break-all px-2 text-sm text-gray">{data.message}</p>
             </>
           )}
         </section>

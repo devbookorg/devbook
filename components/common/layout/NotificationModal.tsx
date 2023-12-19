@@ -11,12 +11,12 @@ interface Props {
 }
 
 const NotificationItem = (props: NotificationMessage & Props) => {
-  const { approved, updatedDate, questionTitle, closeModal, rejectionMessage } = props;
+  const { approved, updatedDate, questionTitle, closeModal, rejectionMessage, questionId } = props;
   const messageType = approved ? (approved === 1 ? '승인' : '거부') : '댓글';
   return (
     <>
       <li className="py-2">
-        <Link href="/user" onClick={closeModal}>
+        <Link href={`/questions/${questionId}`} onClick={closeModal}>
           <div className="flex flex-col gap-0.5">
             <h3
               className={`mb-0.5 text-xs font-bold ${
