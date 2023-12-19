@@ -5,6 +5,7 @@ import {
   updateCommentEmojis,
   updateCommentReply,
 } from '@/firebase/comments';
+import { updateUserNotificationMessage } from '@/firebase/users';
 import IComment from '@/types/comments';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -22,7 +23,17 @@ const makeNewComment = (data: { text: string; userId: string; questionId: string
   };
 };
 
-export const useComments = ({ userId, questionId }: { userId: string; questionId: string }) => {
+export const useComments = ({
+  userId,
+  questionId,
+  questionWriter,
+  questionTitle,
+}: {
+  userId: string;
+  questionId: string;
+  questionWriter: string;
+  questionTitle: string;
+}) => {
   const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
@@ -54,6 +65,15 @@ export const useComments = ({ userId, questionId }: { userId: string; questionId
       addComment({ newComment: updatedComment, user: userId });
       setComments((prev) => [...prev, updatedComment]);
     }
+
+    updateUserNotificationMessage({
+      userId: questionWriter,
+      notificationMessage: {
+        reason: 'comment',
+        questionId,
+        questionTitle,
+      },
+    });
   };
 
   const handleUpdateComments = ({

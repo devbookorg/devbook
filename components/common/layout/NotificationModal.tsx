@@ -11,28 +11,27 @@ interface Props {
 }
 
 const NotificationItem = (props: NotificationMessage & Props) => {
-  const { approved, updatedDate, questionTitle, closeModal } = props;
-  const isApproved = approved === 1 ? '승인' : '거부';
+  const { approved, updatedDate, questionTitle, closeModal, rejectionMessage } = props;
+  const messageType = approved ? (approved === 1 ? '승인' : '거부') : '댓글';
   return (
     <>
       <li className="py-2">
         <Link href="/user" onClick={closeModal}>
           <div className="flex flex-col gap-0.5">
             <h3
-              className={`text-xs font-bold ${
-                isApproved === '승인' ? 'text-deepGreen' : 'text-red'
+              className={`mb-0.5 text-xs font-bold ${
+                approved ? (messageType === '승인' ? 'text-deepGreen' : 'text-red') : 'text-gray'
               }`}
             >
-              {isApproved}
+              {messageType}
             </h3>
             <p className="px-1 text-sm text-black">
               <span className="text-deepGreen">&#39;{questionTitle}&#39; </span>
-              문제가 {isApproved}
-              되었습니다.
+              {approved ? `문제가 ${messageType}되었습니다.` : '문제에 댓글이 달렸습니다.'}
             </p>
-            {/* {rejectionMessage && (
-              <p className="px-1 text-xs text-gray">사유 : {rejectionMessage}</p>
-            )} */}
+            {rejectionMessage && (
+              <p className="mt-0.5 truncate px-2 text-xs text-gray"> 사유 : {rejectionMessage}</p>
+            )}
             <span className="text-right text-xs text-gray">
               {formatUnixTime(updatedDate.seconds)}
             </span>

@@ -46,6 +46,8 @@ const Page = () => {
   const { comments, handleAddComments, handleDeleteComments, handleUpdateComments } = useComments({
     questionId: params.id as string,
     userId,
+    questionWriter: data.userId,
+    questionTitle: data.title,
   });
 
   if (data.id === '') return <Spinner />;
