@@ -40,15 +40,11 @@ export const useComments = ({
     getComments(questionId).then((res) => setComments(res));
   }, [questionId]);
 
-  const checkLogin = () => {
+  const handleAddComments = ({ text, rootComment }: { text: string; rootComment: string }) => {
     if (!userId) {
       alert('로그인을 해주세요');
       return;
     }
-  };
-
-  const handleAddComments = ({ text, rootComment }: { text: string; rootComment: string }) => {
-    checkLogin();
     const newComment = makeNewComment({ text, userId, questionId });
     const updatedComment = rootComment
       ? { ...newComment, rootComment }
@@ -93,7 +89,10 @@ export const useComments = ({
     emoji: string;
     rootComment?: string;
   }) => {
-    checkLogin();
+    if (!userId) {
+      alert('로그인을 해주세요');
+      return;
+    }
     updateCommentEmojis({ commentId, emoji, userId });
     const alreadyCheck = (currentComment: IComment) =>
       currentComment.emojis[emoji].includes(userId);
@@ -136,7 +135,10 @@ export const useComments = ({
     commentId: string;
     rootComment?: string;
   }) => {
-    checkLogin();
+    if (!userId) {
+      alert('로그인을 해주세요');
+      return;
+    }
 
     if (rootComment) {
       setComments((prev) =>

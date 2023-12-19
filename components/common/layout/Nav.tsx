@@ -5,6 +5,8 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/recoil/user';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { links } from '@/utils/variable';
 
 interface Props {
   handleClose: () => void;
@@ -86,9 +88,18 @@ const Nav = (props: Props) => {
       )}
       <div className="absolute bottom-10 flex w-2/3 flex-col gap-1 text-sm">
         <hr className="my-3 " />
-        <h3 className="my-1 text-base font-bold">&copy; 2024 Project DevBook</h3>
-        <span>임승환 kingryan9996@gmail.com</span>
-        <span>강미정 jagarmj@gmail.com</span>
+        <Link href="https://github.com/devbookorg/devbook">
+          <h3 className="my-1 text-base font-bold">&copy; 2024 Project DevBook</h3>
+        </Link>
+        {links.map(({ name, mail, github, portfolio }) => (
+          <div className="flex items-center gap-1.5" key={name}>
+            <Link href={portfolio}>{name}</Link>
+            <span className="text-xs">|</span>
+            <Link href={github}>GitHub</Link>
+            <span className="text-xs">|</span>
+            <a href={`mailto:${mail}`}>Mail</a>
+          </div>
+        ))}
       </div>
     </div>
   );
