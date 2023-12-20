@@ -57,12 +57,14 @@ const Header = () => {
             <h1 className="text-xl font-bold hover:text-green">DevBook</h1>
           </Button>
           <section className="flex items-center">
-            <ButtonIcon
-              iconName={isDarkMode ? 'moon' : 'sun'}
-              buttonStyles="z-50"
-              svgStyles="h-6 w-6 stroke-deepGreen"
-              handleClick={handleDarkMode}
-            />
+            {isDarkMode !== null && (
+              <ButtonIcon
+                iconName={isDarkMode ? 'moon' : 'sun'}
+                buttonStyles="z-50"
+                svgStyles="h-6 w-6 stroke-deepGreen"
+                handleClick={handleDarkMode}
+              />
+            )}
             {session && (
               <>
                 {notification ? (
