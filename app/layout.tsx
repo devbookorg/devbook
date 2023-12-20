@@ -33,23 +33,18 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const themeInitializerScript = `(function() {
-    ${setInitTheme.toString()}
-    setInitTheme();
-  })()
-  `;
-
-  function setInitTheme() {
+  const themeInitScript = `(function() {
     const currentTheme = localStorage.theme;
     if (currentTheme === 'dark') document.documentElement.dataset.theme = 'dark';
-  }
+  })()
+  `;
 
   return (
     <html lang="ko-KR">
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: themeInitializerScript,
+            __html: themeInitScript,
           }}
         ></script>
       </head>
