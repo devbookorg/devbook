@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useDarkMode = () => {
-  const [isDarkMode, setIsDarkMode] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(null);
 
   useEffect(() => {
-    setIsDarkMode(localStorage.theme === 'dark');
+    setIsDarkMode(document.cookie.includes('theme=dark'));
   }, []);
 
   const handleDarkMode = () => {
     if (!isDarkMode) {
       setIsDarkMode(true);
-      localStorage.theme = 'dark';
+      document.cookie = 'theme=dark';
       document.documentElement.dataset.theme = 'dark';
     } else {
       setIsDarkMode(false);
-      localStorage.theme = 'light';
+      document.cookie = 'theme=';
       document.documentElement.dataset.theme = '';
     }
   };

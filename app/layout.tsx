@@ -3,6 +3,7 @@ import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from './AppProvider';
 import AppLayout from '@/components/common/layout/AppLayout';
+import { cookies } from 'next/headers';
 
 const notoSans = Noto_Sans_KR({ subsets: ['latin'] });
 
@@ -33,21 +34,10 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const themeInitScript = `(function() {
-    const currentTheme = localStorage.theme;
-    if (currentTheme === 'dark') document.documentElement.dataset.theme = 'dark';
-  })()
-  `;
+  const currentTheme = cookies().get('theme').value;
 
   return (
-    <html lang="ko-KR">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: themeInitScript,
-          }}
-        ></script>
-      </head>
+    <html lang="ko-KR" data-theme={currentTheme}>
       <body className={notoSans.className}>
         <AppProviders>
           <AppLayout>{children}</AppLayout>
