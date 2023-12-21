@@ -88,9 +88,9 @@ const Nav = (props: Props) => {
       )}
       <div className="absolute bottom-10 flex w-2/3 flex-col gap-1 text-sm">
         <hr className="my-3 " />
-        <Link href="https://github.com/devbookorg/devbook">
-          <h3 className="my-1 text-base font-bold">&copy; 2024 Project DevBook</h3>
-        </Link>
+        <h3 className="my-1 text-base font-bold">
+          <Link href="https://github.com/devbookorg/devbook">&copy; 2024 Project DevBook</Link>
+        </h3>
         {links.map(({ name, mail, github, portfolio }) => (
           <div className="flex items-center gap-1.5" key={name}>
             <Link href={portfolio}>{name}</Link>
